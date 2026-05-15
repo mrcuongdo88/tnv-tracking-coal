@@ -1,17 +1,4 @@
-type Application = {
-  id: number
-  bank: string
-  branch: string
-  fileType: string
-  amount: string
-  sentDate: string
-  progress: number
-  status: string
-  priority: string
-  owner: string
-}
-
-const applications: Application[] = [
+const applications = [
   {
     id: 1,
     bank: 'Vietcombank',
