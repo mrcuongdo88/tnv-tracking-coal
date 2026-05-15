@@ -49,7 +49,7 @@ const applications = [
   }
 ]
 
-function getStatusColor(status: string) {
+function getStatusColor(status) {
   switch (status) {
     case 'Đang thẩm định':
       return 'bg-amber-100 text-amber-700'
@@ -68,7 +68,7 @@ function getStatusColor(status: string) {
   }
 }
 
-function getPriorityColor(priority: string) {
+function getPriorityColor(priority) {
   switch (priority) {
     case 'Khẩn':
       return 'text-red-600'
@@ -101,10 +101,10 @@ export default function App() {
             <input
               type="text"
               placeholder="Tìm kiếm hồ sơ..."
-              className="px-4 py-3 rounded-2xl border border-slate-200 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+              className="px-4 py-3 rounded-2xl border border-slate-200 bg-white shadow-sm"
             />
 
-            <button className="bg-slate-800 text-white px-5 py-3 rounded-2xl shadow-lg hover:opacity-90 transition-all">
+            <button className="bg-slate-800 text-white px-5 py-3 rounded-2xl shadow-lg">
               + Thêm hồ sơ
             </button>
           </div>
@@ -112,75 +112,55 @@ export default function App() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
+          <div className="bg-white rounded-3xl p-6 shadow-sm">
             <p className="text-slate-500 text-sm">Tổng hồ sơ</p>
             <h2 className="text-4xl font-bold mt-3 text-slate-800">24</h2>
             <p className="text-blue-600 mt-2 text-sm">+12% tháng này</p>
           </div>
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
+          <div className="bg-white rounded-3xl p-6 shadow-sm">
             <p className="text-slate-500 text-sm">Đang xử lý</p>
             <h2 className="text-4xl font-bold mt-3 text-slate-800">11</h2>
             <p className="text-amber-600 mt-2 text-sm">Cần follow-up</p>
           </div>
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
+          <div className="bg-white rounded-3xl p-6 shadow-sm">
             <p className="text-slate-500 text-sm">Đã phê duyệt</p>
             <h2 className="text-4xl font-bold mt-3 text-slate-800">8</h2>
             <p className="text-green-600 mt-2 text-sm">Tỷ lệ thành công 78%</p>
           </div>
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
+          <div className="bg-white rounded-3xl p-6 shadow-sm">
             <p className="text-slate-500 text-sm">Tổng hạn mức</p>
             <h2 className="text-4xl font-bold mt-3 text-slate-800">126 tỷ</h2>
             <p className="text-purple-600 mt-2 text-sm">Working Capital</p>
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+        <div className="bg-white rounded-3xl shadow-sm overflow-hidden">
 
-          <div className="p-6 border-b border-slate-100 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-            <div>
-              <h3 className="text-2xl font-semibold text-slate-800">
-                Danh sách hồ sơ
-              </h3>
+          <div className="p-6 border-b border-slate-100">
+            <h3 className="text-2xl font-semibold text-slate-800">
+              Danh sách hồ sơ
+            </h3>
 
-              <p className="text-slate-500 mt-1 text-sm">
-                Quản lý tiến độ xử lý hồ sơ theo ngân hàng
-              </p>
-            </div>
-
-            <div className="flex gap-3">
-              <select className="px-4 py-3 rounded-2xl border border-slate-200 bg-white text-sm">
-                <option>Tất cả trạng thái</option>
-                <option>Đang xử lý</option>
-                <option>Đã phê duyệt</option>
-                <option>Chờ bổ sung</option>
-              </select>
-
-              <select className="px-4 py-3 rounded-2xl border border-slate-200 bg-white text-sm">
-                <option>Tất cả ngân hàng</option>
-                <option>Vietcombank</option>
-                <option>BIDV</option>
-                <option>Techcombank</option>
-              </select>
-            </div>
+            <p className="text-slate-500 mt-1 text-sm">
+              Quản lý tiến độ xử lý hồ sơ theo ngân hàng
+            </p>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full">
 
-              <thead className="bg-slate-50 text-slate-500 text-sm uppercase tracking-wide">
+              <thead className="bg-slate-50 text-slate-500 text-sm uppercase">
                 <tr>
                   <th className="text-left px-6 py-4">STT</th>
                   <th className="text-left px-6 py-4">Ngân hàng</th>
                   <th className="text-left px-6 py-4">Loại hồ sơ</th>
                   <th className="text-left px-6 py-4">Giá trị</th>
-                  <th className="text-left px-6 py-4">Ngày gửi</th>
                   <th className="text-left px-6 py-4">Tiến độ</th>
                   <th className="text-left px-6 py-4">Trạng thái</th>
                   <th className="text-left px-6 py-4">Ưu tiên</th>
-                  <th className="text-left px-6 py-4">PIC</th>
                 </tr>
               </thead>
 
@@ -188,9 +168,9 @@ export default function App() {
                 {applications.map((item) => (
                   <tr
                     key={item.id}
-                    className="border-t border-slate-100 hover:bg-slate-50 transition-all"
+                    className="border-t border-slate-100 hover:bg-slate-50"
                   >
-                    <td className="px-6 py-5 font-semibold text-slate-700">
+                    <td className="px-6 py-5 font-semibold">
                       {item.id}
                     </td>
 
@@ -200,22 +180,18 @@ export default function App() {
                           {item.bank}
                         </p>
 
-                        <p className="text-sm text-slate-500 mt-1">
+                        <p className="text-sm text-slate-500">
                           {item.branch}
                         </p>
                       </div>
                     </td>
 
-                    <td className="px-6 py-5 text-slate-700">
+                    <td className="px-6 py-5">
                       {item.fileType}
                     </td>
 
-                    <td className="px-6 py-5 font-semibold text-slate-800">
+                    <td className="px-6 py-5 font-semibold">
                       {item.amount}
-                    </td>
-
-                    <td className="px-6 py-5 text-slate-700">
-                      {item.sentDate}
                     </td>
 
                     <td className="px-6 py-5 min-w-[220px]">
@@ -228,7 +204,7 @@ export default function App() {
                           />
                         </div>
 
-                        <span className="text-sm font-semibold text-slate-600 min-w-[40px]">
+                        <span className="text-sm font-semibold text-slate-600">
                           {item.progress}%
                         </span>
                       </div>
@@ -245,110 +221,11 @@ export default function App() {
                     <td className={`px-6 py-5 font-semibold ${getPriorityColor(item.priority)}`}>
                       {item.priority}
                     </td>
-
-                    <td className="px-6 py-5 text-slate-700">
-                      {item.owner}
-                    </td>
                   </tr>
                 ))}
               </tbody>
+
             </table>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
-
-          <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
-            <h3 className="text-xl font-semibold text-slate-800 mb-5">
-              Hồ sơ cần follow-up
-            </h3>
-
-            <div className="space-y-4">
-
-              <div className="border border-slate-100 rounded-2xl p-4 hover:bg-slate-50 transition-all">
-                <div className="flex justify-between items-center">
-                  <p className="font-semibold text-slate-800">
-                    BIDV - Hồ sơ bảo lãnh
-                  </p>
-
-                  <span className="text-red-500 text-xs font-semibold">
-                    Khẩn
-                  </span>
-                </div>
-
-                <p className="text-sm text-slate-500 mt-2">
-                  Cần bổ sung hợp đồng mua bán trước 18/05.
-                </p>
-              </div>
-
-              <div className="border border-slate-100 rounded-2xl p-4 hover:bg-slate-50 transition-all">
-                <div className="flex justify-between items-center">
-                  <p className="font-semibold text-slate-800">
-                    Techcombank - Hạn mức SME
-                  </p>
-
-                  <span className="text-orange-500 text-xs font-semibold">
-                    Cao
-                  </span>
-                </div>
-
-                <p className="text-sm text-slate-500 mt-2">
-                  Follow-up phản hồi thẩm định tín dụng.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 xl:col-span-2">
-            <h3 className="text-xl font-semibold text-slate-800 mb-5">
-              Timeline xử lý hồ sơ
-            </h3>
-
-            <div className="space-y-5">
-
-              <div className="flex gap-4 items-start">
-                <div className="w-3 h-3 rounded-full bg-blue-500 mt-2" />
-
-                <div>
-                  <p className="font-semibold text-slate-800">
-                    14/05/2026 - Vietcombank
-                  </p>
-
-                  <p className="text-sm text-slate-500 mt-1">
-                    Đã tiếp nhận hồ sơ và chuyển thẩm định tín dụng.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4 items-start">
-                <div className="w-3 h-3 rounded-full bg-amber-500 mt-2" />
-
-                <div>
-                  <p className="font-semibold text-slate-800">
-                    13/05/2026 - BIDV
-                  </p>
-
-                  <p className="text-sm text-slate-500 mt-1">
-                    Yêu cầu bổ sung hồ sơ pháp lý doanh nghiệp.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4 items-start">
-                <div className="w-3 h-3 rounded-full bg-green-500 mt-2" />
-
-                <div>
-                  <p className="font-semibold text-slate-800">
-                    10/05/2026 - MB Bank
-                  </p>
-
-                  <p className="text-sm text-slate-500 mt-1">
-                    Hồ sơ LC đã được phê duyệt sơ bộ.
-                  </p>
-                </div>
-              </div>
-
-            </div>
           </div>
         </div>
       </div>
