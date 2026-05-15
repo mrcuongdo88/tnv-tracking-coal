@@ -8,13 +8,15 @@ import AddApplicationModal from './components/AddApplicationModal'
 import Timeline from './components/Timeline'
 
 import { initialApplications } from './data/mockData'
+
 import { exportToExcel } from './utils/exportExcel'
 
 export default function App() {
 
   const [applications, setApplications] = useState(() => {
 
-    const saved = localStorage.getItem('applications')
+    const saved =
+      localStorage.getItem('applications')
 
     return saved
       ? JSON.parse(saved)
@@ -23,9 +25,11 @@ export default function App() {
 
   const [search, setSearch] = useState('')
 
-  const [filterStatus, setFilterStatus] = useState('Tất cả')
+  const [filterStatus, setFilterStatus] =
+    useState('Tất cả')
 
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] =
+    useState(false)
 
   useEffect(() => {
 
@@ -40,11 +44,17 @@ export default function App() {
 
     const newItem = {
       id: Date.now(),
+
       bank: data.bank,
+
       fileType: data.fileType,
+
       amount: data.amount,
+
       progress: 10,
+
       status: 'Đã tiếp nhận',
+
       document: data.document
         ? data.document.name
         : null
@@ -60,62 +70,68 @@ export default function App() {
 
   function deleteApplication(id) {
 
-    const filtered = applications.filter(
-      item => item.id !== id
-    )
+    const filtered =
+      applications.filter(
+        item => item.id !== id
+      )
 
     setApplications(filtered)
   }
 
   function updateProgress(id, value) {
 
-    const updated = applications.map(item => {
+    const updated =
+      applications.map(item => {
 
-      if (item.id === id) {
+        if (item.id === id) {
 
-        return {
-          ...item,
-          progress: Number(value)
+          return {
+            ...item,
+            progress: Number(value)
+          }
         }
-      }
 
-      return item
-    })
+        return item
+      })
 
     setApplications(updated)
   }
 
   function updateStatus(id, value) {
 
-    const updated = applications.map(item => {
+    const updated =
+      applications.map(item => {
 
-      if (item.id === id) {
+        if (item.id === id) {
 
-        return {
-          ...item,
-          status: value
+          return {
+            ...item,
+            status: value
+          }
         }
-      }
 
-      return item
-    })
+        return item
+      })
 
     setApplications(updated)
   }
 
-  const filteredApplications = applications.filter(item => {
+  const filteredApplications =
+    applications.filter(item => {
 
-    const matchSearch =
-      item.bank
-        .toLowerCase()
-        .includes(search.toLowerCase())
+      const matchSearch =
+        item.bank
+          .toLowerCase()
+          .includes(
+            search.toLowerCase()
+          )
 
-    const matchStatus =
-      filterStatus === 'Tất cả'
-      || item.status === filterStatus
+      const matchStatus =
+        filterStatus === 'Tất cả'
+        || item.status === filterStatus
 
-    return matchSearch && matchStatus
-  })
+      return matchSearch && matchStatus
+    })
 
   return (
 
@@ -126,11 +142,15 @@ export default function App() {
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 
           <Header
-            onOpenModal={() => setShowModal(true)}
+            onOpenModal={() =>
+              setShowModal(true)
+            }
           />
 
           <button
-            onClick={() => exportToExcel(applications)}
+            onClick={() =>
+              exportToExcel(applications)
+            }
             className="bg-green-600 text-white px-5 py-3 rounded-2xl shadow-lg hover:bg-green-700"
           >
             Export Excel
@@ -138,7 +158,9 @@ export default function App() {
 
         </div>
 
-        <KPI applications={applications} />
+        <KPI
+          applications={applications}
+        />
 
         <Filters
           search={search}
@@ -154,7 +176,9 @@ export default function App() {
           updateStatus={updateStatus}
         />
 
-        <Timeline applications={applications} />
+        <Timeline
+          applications={applications}
+        />
 
       </div>
 
