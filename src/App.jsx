@@ -33,27 +33,22 @@ export default function App() {
 
   async function fetchApplications() {
 
-    setLoading(true)
+  const { data, error } =
+    await supabase
+      .from('applications')
+      .select('*')
 
-    const { data, error } =
-      await supabase
-        .from('applications')
-        .select('*')
-        .order('id', {
-          ascending: false
-        })
+  console.log('SUPABASE DATA:', data)
 
-    if (!error) {
+  if (error) {
 
-      setApplications(data || [])
+    console.log(error)
 
-    } else {
+  } else {
 
-      console.log(error)
-    }
-
-    setLoading(false)
+    setApplications(data || [])
   }
+}
 
   function exportToExcel() {
 
@@ -207,11 +202,16 @@ export default function App() {
   }
 
   const filteredApplications =
-    applications.filter(item =>
-      item.bank
-        ?.toLowerCase()
-        .includes(search.toLowerCase())
-    )
+  applications.filter(item => {
+
+    if (!search) return true
+
+    return item.bank
+      ?.toLowerCase()
+      .includes(
+        search.toLowerCase()
+      )
+  })
 
   return (
 
