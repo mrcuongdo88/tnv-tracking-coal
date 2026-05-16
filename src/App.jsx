@@ -28,7 +28,7 @@ const bankDirectory = [
     name: 'ACB',
 
     logo:
-      'https://upload.wikimedia.org/wikipedia/commons/9/91/Logo_ACB.png'
+      'https://acb.com.vn/_next/image?url=%2Fimages%2Flogo.svg&w=256&q=70'
   },
 
   {
@@ -41,7 +41,7 @@ const bankDirectory = [
     name: 'MBBank',
 
     logo:
-      'https://upload.wikimedia.org/wikipedia/commons/2/25/Logo_MB_new.png'
+      'https://www.mbbank.com.vn/images/logo.png'
   },
 
   {
