@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
-
 import { supabase } from './lib/supabase'
 
 export default function App() {
@@ -14,9 +13,6 @@ export default function App() {
 
   const [showModal, setShowModal] =
     useState(false)
-
-  const [loading, setLoading] =
-    useState(true)
 
   const [newApplication, setNewApplication] =
     useState({
@@ -33,64 +29,24 @@ export default function App() {
 
   async function fetchApplications() {
 
-  setLoading(true)
+    const { data, error } =
+      await supabase
+        .from('applications')
+        .select('*')
+        .order('id', {
+          ascending: false
+        })
 
-  const { data, error } =
-    await supabase
-      .from('applications')
-      .select('*')
+    if (error) {
 
-  console.log(data)
+      console.log(error)
 
-  if (error) {
+    } else {
 
-    console.log(error)
+      console.log(data)
 
-  } else {
-
-    setApplications(data || [])
-  }
-
-  setLoading(false)
-}
-}
-
-  function exportToExcel() {
-
-    const worksheet =
-      XLSX.utils.json_to_sheet(applications)
-
-    const workbook =
-      XLSX.utils.book_new()
-
-    XLSX.utils.book_append_sheet(
-      workbook,
-      worksheet,
-      'Applications'
-    )
-
-    const excelBuffer =
-      XLSX.write(
-        workbook,
-        {
-          bookType: 'xlsx',
-          type: 'array'
-        }
-      )
-
-    const fileData =
-      new Blob(
-        [excelBuffer],
-        {
-          type:
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        }
-      )
-
-    saveAs(
-      fileData,
-      'DanhSachHoSo.xlsx'
-    )
+      setApplications(data || [])
+    }
   }
 
   async function addApplication() {
@@ -121,7 +77,11 @@ export default function App() {
           }
         ])
 
-    if (!error) {
+    if (error) {
+
+      console.log(error)
+
+    } else {
 
       fetchApplications()
 
@@ -132,10 +92,6 @@ export default function App() {
       })
 
       setShowModal(false)
-
-    } else {
-
-      console.log(error)
     }
   }
 
@@ -185,6 +141,44 @@ export default function App() {
     }
   }
 
+  function exportToExcel() {
+
+    const worksheet =
+      XLSX.utils.json_to_sheet(applications)
+
+    const workbook =
+      XLSX.utils.book_new()
+
+    XLSX.utils.book_append_sheet(
+      workbook,
+      worksheet,
+      'Applications'
+    )
+
+    const excelBuffer =
+      XLSX.write(
+        workbook,
+        {
+          bookType: 'xlsx',
+          type: 'array'
+        }
+      )
+
+    const fileData =
+      new Blob(
+        [excelBuffer],
+        {
+          type:
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        }
+      )
+
+    saveAs(
+      fileData,
+      'DanhSachHoSo.xlsx'
+    )
+  }
+
   function getStatusColor(status) {
 
     switch (status) {
@@ -207,22 +201,24 @@ export default function App() {
   }
 
   const filteredApplications =
-  applications.filter(item => {
+    applications.filter(item => {
 
-    if (!search) return true
+      if (!search) return true
 
-    return item.bank
-      ?.toLowerCase()
-      .includes(
-        search.toLowerCase()
-      )
-  })
+      return item.bank
+        ?.toLowerCase()
+        .includes(
+          search.toLowerCase()
+        )
+    })
 
   return (
 
     <div className="min-h-screen bg-slate-100 p-6">
 
       <div className="max-w-7xl mx-auto space-y-6">
+
+        {/* HEADER */}
 
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 
@@ -259,6 +255,8 @@ export default function App() {
           </div>
 
         </div>
+
+        {/* KPI */}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
 
@@ -312,6 +310,8 @@ export default function App() {
 
         </div>
 
+        {/* SEARCH */}
+
         <div className="bg-white rounded-3xl p-6 shadow-sm">
 
           <input
@@ -325,6 +325,8 @@ export default function App() {
           />
 
         </div>
+
+        {/* TABLE */}
 
         <div className="bg-white rounded-3xl shadow-sm overflow-hidden">
 
@@ -366,139 +368,109 @@ export default function App() {
 
               <tbody>
 
-  {loading ? (
+                {filteredApplications.map(item => (
 
-    <tr>
+                  <tr
+                    key={item.id}
+                    className="border-t border-slate-100 hover:bg-slate-50"
+                  >
 
-      <td
-        colSpan="6"
-        className="text-center py-10 text-slate-500"
-      >
-        Đang tải dữ liệu...
-      </td>
+                    <td className="px-6 py-5 font-semibold">
+                      {item.bank}
+                    </td>
 
-    </tr>
+                    <td className="px-6 py-5">
+                      {item.file_type}
+                    </td>
 
-  ) : filteredApplications.length === 0 ? (
+                    <td className="px-6 py-5">
+                      {item.amount}
+                    </td>
 
-    <tr>
+                    <td className="px-6 py-5 min-w-[240px]">
 
-      <td
-        colSpan="6"
-        className="text-center py-10 text-slate-400"
-      >
-        Không có dữ liệu
-      </td>
+                      <div className="space-y-3">
 
-    </tr>
+                        <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
 
-  ) : (
+                          <div
+                            className="bg-slate-800 h-full"
+                            style={{
+                              width: `${item.progress}%`
+                            }}
+                          />
 
-    filteredApplications.map(item => (
+                        </div>
 
-      <tr
-        key={item.id}
-        className="border-t border-slate-100 hover:bg-slate-50"
-      >
+                        <input
+                          type="range"
+                          min="0"
+                          max="100"
+                          value={item.progress}
+                          onChange={(e) =>
+                            updateProgress(
+                              item.id,
+                              e.target.value
+                            )
+                          }
+                          className="w-full"
+                        />
 
-        <td className="px-6 py-5 font-semibold">
-          {item.bank}
-        </td>
+                      </div>
 
-        <td className="px-6 py-5">
-          {item.file_type}
-        </td>
+                    </td>
 
-        <td className="px-6 py-5">
-          {item.amount}
-        </td>
+                    <td className="px-6 py-5">
 
-        <td className="px-6 py-5 min-w-[240px]">
+                      <select
+                        value={item.status}
+                        onChange={(e) =>
+                          updateStatus(
+                            item.id,
+                            e.target.value
+                          )
+                        }
+                        className={`px-4 py-2 rounded-full border-0 ${getStatusColor(item.status)}`}
+                      >
 
-          <div className="space-y-3">
+                        <option>
+                          Đã tiếp nhận
+                        </option>
 
-            <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
+                        <option>
+                          Đang thẩm định
+                        </option>
 
-              <div
-                className="bg-slate-800 h-full"
-                style={{
-                  width: `${item.progress}%`
-                }}
-              />
+                        <option>
+                          Chờ bổ sung
+                        </option>
 
-            </div>
+                        <option>
+                          Hoàn thành
+                        </option>
 
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={item.progress}
-              onChange={(e) =>
-                updateProgress(
-                  item.id,
-                  e.target.value
-                )
-              }
-              className="w-full"
-            />
+                      </select>
 
-          </div>
+                    </td>
 
-        </td>
+                    <td className="px-6 py-5">
 
-        <td className="px-6 py-5">
+                      <button
+                        onClick={() =>
+                          deleteApplication(item.id)
+                        }
+                        className="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600"
+                      >
+                        Xóa
+                      </button>
 
-          <select
-            value={item.status}
-            onChange={(e) =>
-              updateStatus(
-                item.id,
-                e.target.value
-              )
-            }
-            className={`px-4 py-2 rounded-full border-0 ${getStatusColor(item.status)}`}
-          >
+                    </td>
 
-            <option>
-              Đã tiếp nhận
-            </option>
+                  </tr>
 
-            <option>
-              Đang thẩm định
-            </option>
+                ))}
 
-            <option>
-              Chờ bổ sung
-            </option>
-
-            <option>
-              Hoàn thành
-            </option>
-
-          </select>
-
-        </td>
-
-        <td className="px-6 py-5">
-
-          <button
-            onClick={() =>
-              deleteApplication(item.id)
-            }
-            className="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600"
-          >
-            Xóa
-          </button>
-
-        </td>
-
-      </tr>
-
-    ))
-
-  )}
-
-</tbody>
+              </tbody>
 
             </table>
 
@@ -507,6 +479,8 @@ export default function App() {
         </div>
 
       </div>
+
+      {/* MODAL */}
 
       {showModal && (
 
