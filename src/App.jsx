@@ -22,8 +22,6 @@ export default function App() {
       fileType: '',
       amount: ''
     })
-    const [selectedFile, setSelectedFile] =
-  useState(null)
 const [selectedFile, setSelectedFile] =
   useState(null)
   useEffect(() => {
