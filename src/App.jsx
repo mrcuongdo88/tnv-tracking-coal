@@ -929,9 +929,7 @@ export default function App() {
                   <th className="text-left px-6 py-4">
                     Follow-up
                   </th>
-<th className="text-left px-6 py-4">
-  Stage
-</th>
+
                   <th className="text-left px-6 py-4">
                     PDF
                   </th>
@@ -947,6 +945,7 @@ export default function App() {
               <tbody>
 
                 {filteredApplications.map(item => {
+
                   const aging =
                     calculateAging(
                       item.submission_date
@@ -956,43 +955,15 @@ export default function App() {
                     detectBank(
                       item.bank
                     )
-const stage =
-  getStage(item)
+
                   return (
 
                     <tr
                       key={item.id}
                       className="border-t border-slate-100 hover:bg-slate-50"
                     >
-<td className="px-6 py-5">
 
-  <div className="flex items-center justify-center">
 
-    {bankInfo?.logo ? (
-
-      <div className="w-[120px] h-[56px] bg-white border border-slate-200 rounded-2xl flex items-center justify-center p-2 shadow-sm">
-
-        <img
-          src={bankInfo.logo}
-          alt={item.bank}
-          className="max-h-[36px] max-w-[90px] object-contain"
-        />
-
-      </div>
-
-    ) : (
-
-      <div className="w-[120px] h-[56px] bg-slate-100 rounded-2xl flex items-center justify-center text-slate-400 text-sm font-medium">
-
-        {item.bank}
-
-      </div>
-
-    )}
-
-  </div>
-
-</td>
 
                       <td className="px-6 py-5">
                         {item.file_type}
@@ -1021,17 +992,7 @@ const stage =
                         </span>
 
                       </td>
-<td className="px-6 py-5">
 
-  <span
-    className={`px-4 py-2 rounded-full text-sm font-semibold ${stage.color}`}
-  >
-
-    {stage.label}
-
-  </span>
-
-</td>
                       <td className="px-6 py-5">
 
                         <div className="max-w-[200px]">
