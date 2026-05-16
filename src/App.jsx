@@ -17,6 +17,92 @@ import {
   CartesianGrid
 } from 'recharts'
 
+const bankDirectory = [
+
+  {
+    keywords: [
+      'acb',
+      'asia commercial'
+    ],
+
+    name: 'ACB',
+
+    logo:
+      'https://upload.wikimedia.org/wikipedia/commons/9/91/Logo_ACB.png'
+  },
+
+  {
+    keywords: [
+      'mb',
+      'mbbank',
+      'military bank'
+    ],
+
+    name: 'MBBank',
+
+    logo:
+      'https://upload.wikimedia.org/wikipedia/commons/2/25/Logo_MB_new.png'
+  },
+
+  {
+    keywords: [
+      'msb',
+      'maritime'
+    ],
+
+    name: 'MSB',
+
+    logo:
+      'https://upload.wikimedia.org/wikipedia/commons/5/5f/MSB_Logo.png'
+  },
+
+  {
+    keywords: [
+      'shb'
+    ],
+
+    name: 'SHB',
+
+    logo:
+      'https://upload.wikimedia.org/wikipedia/commons/e/e7/Logo_SHB.svg'
+  },
+
+  {
+    keywords: [
+      'vcb',
+      'vietcombank'
+    ],
+
+    name: 'Vietcombank',
+
+    logo:
+      'https://upload.wikimedia.org/wikipedia/commons/6/68/Logo_Vietcombank.png'
+  },
+
+  {
+    keywords: [
+      'bidv'
+    ],
+
+    name: 'BIDV',
+
+    logo:
+      'https://upload.wikimedia.org/wikipedia/commons/1/18/Logo_BIDV.png'
+  },
+
+  {
+    keywords: [
+      'techcombank',
+      'tcb'
+    ],
+
+    name: 'Techcombank',
+
+    logo:
+      'https://upload.wikimedia.org/wikipedia/commons/5/5e/Techcombank_logo.png'
+  }
+]
+
 export default function App() {
 
   const [applications, setApplications] =
@@ -49,7 +135,9 @@ export default function App() {
       bank: '',
       fileType: '',
       amount: '',
-      submissionDate: ''
+      submissionDate: '',
+      nextAction: '',
+      nextFollowupDate: ''
     })
 
   useEffect(() => {
@@ -73,6 +161,41 @@ export default function App() {
       setApplications(data || [])
     }
   }
+
+  function detectBank(bankName) {
+
+    if (!bankName) return null
+
+    const normalized =
+      bankName
+        .toLowerCase()
+        .trim()
+
+    return bankDirectory.find(
+      bank =>
+
+        bank.keywords.some(
+          keyword =>
+
+            normalized.includes(
+              keyword
+            )
+        )
+    )
+  }
+
+  const bankSuggestions =
+
+    bankDirectory.filter(
+      bank =>
+
+        bank.name
+          .toLowerCase()
+          .includes(
+            newApplication.bank
+              .toLowerCase()
+          )
+    )
 
   async function addTimeline(
     applicationId,
@@ -201,8 +324,6 @@ export default function App() {
     let documentUrl = ''
     let documentName = ''
 
-    // upload pdf
-
     if (selectedFile) {
 
       const fileExt =
@@ -236,8 +357,6 @@ export default function App() {
       }
     }
 
-    // insert db
-
     const { data, error } =
       await supabase
         .from('applications')
@@ -255,6 +374,12 @@ export default function App() {
 
             submission_date:
               newApplication.submissionDate,
+
+            next_action:
+              newApplication.nextAction,
+
+            next_followup_date:
+              newApplication.nextFollowupDate,
 
             progress: 10,
 
@@ -283,7 +408,9 @@ export default function App() {
         bank: '',
         fileType: '',
         amount: '',
-        submissionDate: ''
+        submissionDate: '',
+        nextAction: '',
+        nextFollowupDate: ''
       })
 
       setSelectedFile(null)
@@ -404,6 +531,16 @@ export default function App() {
     }
   }
 
+  function isFollowupOverdue(date) {
+
+    if (!date) return false
+
+    return (
+      new Date(date) <
+      new Date()
+    )
+  }
+
   const filteredApplications =
     applications.filter(item => {
 
@@ -447,6 +584,14 @@ export default function App() {
       )
 
     }).length
+
+  const followupOverdueCount =
+    applications.filter(item =>
+
+      isFollowupOverdue(
+        item.next_followup_date
+      )
+    ).length
 
   const totalAmount =
     applications.reduce(
@@ -527,8 +672,6 @@ export default function App() {
 
       <div className="max-w-7xl mx-auto space-y-6">
 
-        {/* HEADER */}
-
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 
           <div>
@@ -565,9 +708,7 @@ export default function App() {
 
         </div>
 
-        {/* KPI */}
-
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-5">
 
           <div className="bg-white rounded-3xl p-6 shadow-sm">
 
@@ -620,10 +761,22 @@ export default function App() {
           <div className="bg-white rounded-3xl p-6 shadow-sm">
 
             <p className="text-slate-500 text-sm">
+              Follow-up overdue
+            </p>
+
+            <h2 className="text-4xl font-bold mt-3 text-amber-600">
+              {followupOverdueCount}
+            </h2>
+
+          </div>
+
+          <div className="bg-white rounded-3xl p-6 shadow-sm">
+
+            <p className="text-slate-500 text-sm">
               Tổng pipeline
             </p>
 
-            <h2 className="text-2xl font-bold mt-3 text-slate-800">
+            <h2 className="text-xl font-bold mt-3 text-slate-800">
               {formatCurrency(totalAmount)} VNĐ
             </h2>
 
@@ -631,16 +784,12 @@ export default function App() {
 
         </div>
 
-        {/* EXECUTIVE DASHBOARD */}
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
           <div className="bg-white rounded-3xl p-6 shadow-sm">
 
             <h2 className="text-xl font-bold text-slate-800 mb-6">
-
               Trạng thái hồ sơ
-
             </h2>
 
             <div className="h-[320px]">
@@ -691,9 +840,7 @@ export default function App() {
           <div className="bg-white rounded-3xl p-6 shadow-sm">
 
             <h2 className="text-xl font-bold text-slate-800 mb-6">
-
               Tiến độ theo ngân hàng
-
             </h2>
 
             <div className="h-[320px]">
@@ -731,8 +878,6 @@ export default function App() {
 
         </div>
 
-        {/* SEARCH */}
-
         <div className="bg-white rounded-3xl p-6 shadow-sm">
 
           <input
@@ -746,8 +891,6 @@ export default function App() {
           />
 
         </div>
-
-        {/* TABLE */}
 
         <div className="bg-white rounded-3xl shadow-sm overflow-hidden">
 
@@ -780,23 +923,19 @@ export default function App() {
                   </th>
 
                   <th className="text-left px-6 py-4">
+                    Next Action
+                  </th>
+
+                  <th className="text-left px-6 py-4">
+                    Follow-up
+                  </th>
+
+                  <th className="text-left px-6 py-4">
                     PDF
                   </th>
 
                   <th className="text-left px-6 py-4">
-                    Tiến độ
-                  </th>
-
-                  <th className="text-left px-6 py-4">
-                    Trạng thái
-                  </th>
-
-                  <th className="text-left px-6 py-4">
                     Timeline
-                  </th>
-
-                  <th className="text-left px-6 py-4">
-                    Action
                   </th>
 
                 </tr>
@@ -812,6 +951,11 @@ export default function App() {
                       item.submission_date
                     )
 
+                  const bankInfo =
+                    detectBank(
+                      item.bank
+                    )
+
                   return (
 
                     <tr
@@ -819,8 +963,37 @@ export default function App() {
                       className="border-t border-slate-100 hover:bg-slate-50"
                     >
 
-                      <td className="px-6 py-5 font-semibold">
-                        {item.bank}
+                      <td className="px-6 py-5">
+
+                        <div className="flex items-center gap-3">
+
+                          {bankInfo?.logo && (
+
+                            <img
+                              src={
+                                bankInfo.logo
+                              }
+                              alt={item.bank}
+                              className="h-10 w-auto object-contain"
+                            />
+
+                          )}
+
+                          <div>
+
+                            <p className="font-semibold text-slate-800">
+                              {bankInfo?.name ||
+                                item.bank}
+                            </p>
+
+                            <p className="text-xs text-slate-400">
+                              Banking Partner
+                            </p>
+
+                          </div>
+
+                        </div>
+
                       </td>
 
                       <td className="px-6 py-5">
@@ -846,10 +1019,49 @@ export default function App() {
                         <span
                           className={`px-3 py-2 rounded-full text-sm font-semibold ${getAgingColor(aging)}`}
                         >
-
                           {aging} ngày
-
                         </span>
+
+                      </td>
+
+                      <td className="px-6 py-5">
+
+                        <div className="max-w-[200px]">
+
+                          <p className="font-medium text-slate-700">
+                            {item.next_action ||
+                              '-'}
+                          </p>
+
+                        </div>
+
+                      </td>
+
+                      <td className="px-6 py-5">
+
+                        {item.next_followup_date ? (
+
+                          <span
+                            className={`px-3 py-2 rounded-full text-sm font-semibold ${
+                              isFollowupOverdue(
+                                item.next_followup_date
+                              )
+                                ? 'bg-red-100 text-red-700'
+                                : 'bg-green-100 text-green-700'
+                            }`}
+                          >
+
+                            {new Date(
+                              item.next_followup_date
+                            ).toLocaleDateString()}
+
+                          </span>
+
+                        ) : (
+
+                          '-'
+
+                        )}
 
                       </td>
 
@@ -876,75 +1088,6 @@ export default function App() {
 
                       </td>
 
-                      <td className="px-6 py-5 min-w-[240px]">
-
-                        <div className="space-y-3">
-
-                          <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
-
-                            <div
-                              className="bg-slate-800 h-full"
-                              style={{
-                                width: `${item.progress || 0}%`
-                              }}
-                            />
-
-                          </div>
-
-                          <input
-                            type="range"
-                            min="0"
-                            max="100"
-                            value={item.progress || 0}
-                            onChange={(e) =>
-                              updateProgress(
-                                item.id,
-                                e.target.value
-                              )
-                            }
-                            className="w-full"
-                          />
-
-                        </div>
-
-                      </td>
-
-                      <td className="px-6 py-5">
-
-                        <select
-                          value={
-                            item.status ||
-                            'Đã tiếp nhận'
-                          }
-                          onChange={(e) =>
-                            updateStatus(
-                              item.id,
-                              e.target.value
-                            )
-                          }
-                          className={`px-4 py-2 rounded-full border-0 ${getStatusColor(item.status)}`}
-                        >
-
-                          <option>
-                            Đã tiếp nhận
-                          </option>
-
-                          <option>
-                            Đang thẩm định
-                          </option>
-
-                          <option>
-                            Chờ bổ sung
-                          </option>
-
-                          <option>
-                            Hoàn thành
-                          </option>
-
-                        </select>
-
-                      </td>
-
                       <td className="px-6 py-5">
 
                         <button
@@ -954,19 +1097,6 @@ export default function App() {
                           className="bg-indigo-500 text-white px-4 py-2 rounded-xl hover:bg-indigo-600"
                         >
                           Xem
-                        </button>
-
-                      </td>
-
-                      <td className="px-6 py-5">
-
-                        <button
-                          onClick={() =>
-                            deleteApplication(item.id)
-                          }
-                          className="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600"
-                        >
-                          Xóa
                         </button>
 
                       </td>
@@ -986,8 +1116,6 @@ export default function App() {
 
       </div>
 
-      {/* ADD MODAL */}
-
       {showModal && (
 
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
@@ -998,18 +1126,60 @@ export default function App() {
               Thêm hồ sơ mới
             </h2>
 
-            <input
-              type="text"
-              placeholder="Tên ngân hàng"
-              value={newApplication.bank}
-              onChange={(e) =>
-                setNewApplication({
-                  ...newApplication,
-                  bank: e.target.value
-                })
-              }
-              className="w-full px-4 py-3 rounded-2xl border border-slate-200"
-            />
+            <div className="space-y-2">
+
+              <input
+                type="text"
+                placeholder="Tên ngân hàng"
+                value={newApplication.bank}
+                onChange={(e) =>
+                  setNewApplication({
+                    ...newApplication,
+                    bank: e.target.value
+                  })
+                }
+                className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+              />
+
+              {newApplication.bank && (
+
+                <div className="bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden">
+
+                  {bankSuggestions.map(
+                    bank => (
+
+                      <button
+                        key={bank.name}
+                        type="button"
+                        onClick={() =>
+                          setNewApplication({
+                            ...newApplication,
+                            bank: bank.name
+                          })
+                        }
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-100 text-left"
+                      >
+
+                        <img
+                          src={bank.logo}
+                          alt={bank.name}
+                          className="h-8 w-auto object-contain"
+                        />
+
+                        <span className="font-medium">
+                          {bank.name}
+                        </span>
+
+                      </button>
+
+                    )
+                  )}
+
+                </div>
+
+              )}
+
+            </div>
 
             <input
               type="text"
@@ -1040,12 +1210,47 @@ export default function App() {
               className="w-full px-4 py-3 rounded-2xl border border-slate-200"
             />
 
+            <input
+              type="text"
+              placeholder="Next Action"
+              value={newApplication.nextAction}
+              onChange={(e) =>
+                setNewApplication({
+                  ...newApplication,
+                  nextAction:
+                    e.target.value
+                })
+              }
+              className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+            />
+
             <div className="space-y-2">
 
               <label className="text-sm font-medium text-slate-600">
+                Ngày follow-up tiếp theo
+              </label>
 
+              <input
+                type="date"
+                value={
+                  newApplication.nextFollowupDate
+                }
+                onChange={(e) =>
+                  setNewApplication({
+                    ...newApplication,
+                    nextFollowupDate:
+                      e.target.value
+                  })
+                }
+                className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+              />
+
+            </div>
+
+            <div className="space-y-2">
+
+              <label className="text-sm font-medium text-slate-600">
                 Ngày gửi hồ sơ ngân hàng
-
               </label>
 
               <input
@@ -1068,9 +1273,7 @@ export default function App() {
             <div className="space-y-2">
 
               <label className="text-sm font-medium text-slate-600">
-
                 Upload hồ sơ PDF
-
               </label>
 
               <input
@@ -1112,8 +1315,6 @@ export default function App() {
 
       )}
 
-      {/* TIMELINE MODAL */}
-
       {showTimeline && (
 
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
@@ -1136,8 +1337,6 @@ export default function App() {
               </button>
 
             </div>
-
-            {/* QUICK NOTE */}
 
             <div className="bg-slate-50 p-4 rounded-2xl mb-6 space-y-3">
 
@@ -1164,8 +1363,6 @@ export default function App() {
               </div>
 
             </div>
-
-            {/* TIMELINE */}
 
             <div className="space-y-4 max-h-[500px] overflow-y-auto">
 
