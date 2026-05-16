@@ -1062,23 +1062,40 @@ async function updateNextAction(
                      <td className="px-6 py-5">
 
   <input
-    type="text"
-    value={
-      item.next_action || ''
-    }
-    onChange={(e) =>
-      updateNextAction(
-        item.id,
-        e.target.value
-      )
-    }
-    placeholder="Nhập next action..."
-    className="w-[220px] px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-800 outline-none"
-    style={{
-  color: '#0f172a'
-}}
-  />
+  type="text"
 
+  value={
+    item.next_action || ''
+  }
+
+  onChange={(e) => {
+
+    const updated =
+      applications.map(app =>
+
+        app.id === item.id
+          ? {
+              ...app,
+              next_action:
+                e.target.value
+            }
+          : app
+      )
+
+    setApplications(updated)
+  }}
+
+  onBlur={(e) =>
+    updateNextAction(
+      item.id,
+      e.target.value
+    )
+  }
+
+  placeholder="Nhập next action..."
+
+  className="w-[220px] px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-800"
+/>
 </td>
 
                       <td className="px-6 py-5">
