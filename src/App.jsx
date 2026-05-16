@@ -962,39 +962,35 @@ export default function App() {
                       key={item.id}
                       className="border-t border-slate-100 hover:bg-slate-50"
                     >
+<td className="px-6 py-5">
 
-                      <td className="px-6 py-5">
+  <div className="flex items-center justify-center">
 
-                        <div className="flex items-center gap-3">
+    {bankInfo?.logo ? (
 
-                          {bankInfo?.logo && (
+      <div className="w-[120px] h-[56px] bg-white border border-slate-200 rounded-2xl flex items-center justify-center p-2 shadow-sm">
 
-                            <img
-                              src={
-                                bankInfo.logo
-                              }
-                              alt={item.bank}
-                              className="h-10 w-auto object-contain"
-                            />
+        <img
+          src={bankInfo.logo}
+          alt={item.bank}
+          className="max-h-[36px] max-w-[90px] object-contain"
+        />
 
-                          )}
+      </div>
 
-                          <div>
+    ) : (
 
-                            <p className="font-semibold text-slate-800">
-                              {bankInfo?.name ||
-                                item.bank}
-                            </p>
+      <div className="w-[120px] h-[56px] bg-slate-100 rounded-2xl flex items-center justify-center text-slate-400 text-sm font-medium">
 
-                            <p className="text-xs text-slate-400">
-                              Banking Partner
-                            </p>
+        {item.bank}
 
-                          </div>
+      </div>
 
-                        </div>
+    )}
 
-                      </td>
+  </div>
+
+</td>
 
                       <td className="px-6 py-5">
                         {item.file_type}
