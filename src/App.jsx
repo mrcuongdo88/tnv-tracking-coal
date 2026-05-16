@@ -33,12 +33,14 @@ export default function App() {
 
   async function fetchApplications() {
 
+  setLoading(true)
+
   const { data, error } =
     await supabase
       .from('applications')
       .select('*')
 
-  console.log('SUPABASE DATA:', data)
+  console.log(data)
 
   if (error) {
 
@@ -48,6 +50,9 @@ export default function App() {
 
     setApplications(data || [])
   }
+
+  setLoading(false)
+}
 }
 
   function exportToExcel() {
