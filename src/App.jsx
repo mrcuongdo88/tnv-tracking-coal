@@ -18,6 +18,12 @@ export default function App() {
   const [selectedFile, setSelectedFile] =
     useState(null)
 
+  const [selectedTimeline, setSelectedTimeline] =
+    useState([])
+
+  const [showTimeline, setShowTimeline] =
+    useState(false)
+
   const [newApplication, setNewApplication] =
     useState({
       bank: '',
@@ -41,13 +47,43 @@ export default function App() {
           ascending: false
         })
 
-    console.log('DATA:', data)
-    console.log('ERROR:', error)
-
     if (!error) {
 
       setApplications(data || [])
     }
+  }
+
+  async function addTimeline(
+    applicationId,
+    action
+  ) {
+
+    await supabase
+      .from('application_timeline')
+      .insert([
+        {
+          application_id:
+            applicationId,
+
+          action
+        }
+      ])
+  }
+
+  async function fetchTimeline(id) {
+
+    const { data } =
+      await supabase
+        .from('application_timeline')
+        .select()
+        .eq('application_id', id)
+        .order('created_at', {
+          ascending: false
+        })
+
+    setSelectedTimeline(data || [])
+
+    setShowTimeline(true)
   }
 
   async function addApplication() {
@@ -99,7 +135,7 @@ export default function App() {
 
     // insert db
 
-    const { error } =
+    const { data, error } =
       await supabase
         .from('applications')
         .insert([
@@ -125,10 +161,16 @@ export default function App() {
               documentName
           }
         ])
+        .select()
 
     console.log(error)
 
     if (!error) {
+
+      await addTimeline(
+        data[0].id,
+        'Hồ sơ được tạo'
+      )
 
       fetchApplications()
 
@@ -170,9 +212,12 @@ export default function App() {
         })
         .eq('id', Number(id))
 
-    console.log(error)
-
     if (!error) {
+
+      await addTimeline(
+        id,
+        `Tiến độ cập nhật ${value}%`
+      )
 
       fetchApplications()
     }
@@ -188,9 +233,12 @@ export default function App() {
         })
         .eq('id', Number(id))
 
-    console.log(error)
-
     if (!error) {
+
+      await addTimeline(
+        id,
+        `Status chuyển sang ${value}`
+      )
 
       fetchApplications()
     }
@@ -424,6 +472,10 @@ export default function App() {
                   </th>
 
                   <th className="text-left px-6 py-4">
+                    Timeline
+                  </th>
+
+                  <th className="text-left px-6 py-4">
                     Action
                   </th>
 
@@ -547,6 +599,19 @@ export default function App() {
 
                       <button
                         onClick={() =>
+                          fetchTimeline(item.id)
+                        }
+                        className="bg-indigo-500 text-white px-4 py-2 rounded-xl hover:bg-indigo-600"
+                      >
+                        Xem
+                      </button>
+
+                    </td>
+
+                    <td className="px-6 py-5">
+
+                      <button
+                        onClick={() =>
                           deleteApplication(item.id)
                         }
                         className="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600"
@@ -570,7 +635,7 @@ export default function App() {
 
       </div>
 
-      {/* MODAL */}
+      {/* ADD MODAL */}
 
       {showModal && (
 
@@ -621,8 +686,6 @@ export default function App() {
               className="w-full px-4 py-3 rounded-2xl border border-slate-200"
             />
 
-            {/* FILE UPLOAD */}
-
             <div className="space-y-2">
 
               <label className="text-sm font-medium text-slate-600">
@@ -661,6 +724,64 @@ export default function App() {
               >
                 Lưu hồ sơ
               </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
+
+      {/* TIMELINE MODAL */}
+
+      {showTimeline && (
+
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
+
+          <div className="bg-white rounded-3xl p-6 w-full max-w-2xl shadow-2xl">
+
+            <div className="flex items-center justify-between mb-6">
+
+              <h2 className="text-2xl font-bold">
+                Timeline Hồ Sơ
+              </h2>
+
+              <button
+                onClick={() =>
+                  setShowTimeline(false)
+                }
+                className="bg-slate-200 px-4 py-2 rounded-xl"
+              >
+                Đóng
+              </button>
+
+            </div>
+
+            <div className="space-y-4 max-h-[500px] overflow-y-auto">
+
+              {selectedTimeline.map(item => (
+
+                <div
+                  key={item.id}
+                  className="border-l-4 border-slate-800 bg-slate-50 p-4 rounded-xl"
+                >
+
+                  <p className="font-semibold text-slate-800">
+                    {item.action}
+                  </p>
+
+                  <p className="text-sm text-slate-500 mt-2">
+
+                    {new Date(
+                      item.created_at
+                    ).toLocaleString()}
+
+                  </p>
+
+                </div>
+
+              ))}
 
             </div>
 
