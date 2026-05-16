@@ -87,28 +87,45 @@ export default function App() {
 
   async function deleteApplication(id) {
 
+  const { error } =
     await supabase
       .from('applications')
       .delete()
       .eq('id', id)
 
+  if (error) {
+
+    console.log(error)
+
+  } else {
+
     fetchApplications()
   }
+}
 
   async function updateProgress(id, value) {
 
+  const { error } =
     await supabase
       .from('applications')
       .update({
-        progress: Number(value)
+        progress: parseInt(value)
       })
       .eq('id', id)
 
+  if (error) {
+
+    console.log(error)
+
+  } else {
+
     fetchApplications()
   }
+}
 
   async function updateStatus(id, value) {
 
+  const { error } =
     await supabase
       .from('applications')
       .update({
@@ -116,8 +133,15 @@ export default function App() {
       })
       .eq('id', id)
 
+  if (error) {
+
+    console.log(error)
+
+  } else {
+
     fetchApplications()
   }
+}
 
   function exportToExcel() {
 
