@@ -366,126 +366,139 @@ export default function App() {
 
               <tbody>
 
-                {loading ? (
+  {loading ? (
 
-                  <tr>
+    <tr>
 
-                    <td
-                      colSpan="6"
-                      className="text-center py-10 text-slate-500"
-                    >
-                      Đang tải dữ liệu...
-                    </td>
+      <td
+        colSpan="6"
+        className="text-center py-10 text-slate-500"
+      >
+        Đang tải dữ liệu...
+      </td>
 
-                  </tr>
+    </tr>
 
-                ) : (
+  ) : filteredApplications.length === 0 ? (
 
-                  filteredApplications.map(item => (
+    <tr>
 
-                    <tr
-                      key={item.id}
-                      className="border-t border-slate-100 hover:bg-slate-50"
-                    >
+      <td
+        colSpan="6"
+        className="text-center py-10 text-slate-400"
+      >
+        Không có dữ liệu
+      </td>
 
-                      <td className="px-6 py-5 font-semibold">
-                        {item.bank}
-                      </td>
+    </tr>
 
-                      <td className="px-6 py-5">
-                        {item.file_type}
-                      </td>
+  ) : (
 
-                      <td className="px-6 py-5">
-                        {item.amount}
-                      </td>
+    filteredApplications.map(item => (
 
-                      <td className="px-6 py-5 min-w-[240px]">
+      <tr
+        key={item.id}
+        className="border-t border-slate-100 hover:bg-slate-50"
+      >
 
-                        <div className="space-y-3">
+        <td className="px-6 py-5 font-semibold">
+          {item.bank}
+        </td>
 
-                          <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
+        <td className="px-6 py-5">
+          {item.file_type}
+        </td>
 
-                            <div
-                              className="bg-slate-800 h-full"
-                              style={{
-                                width: `${item.progress}%`
-                              }}
-                            />
+        <td className="px-6 py-5">
+          {item.amount}
+        </td>
 
-                          </div>
+        <td className="px-6 py-5 min-w-[240px]">
 
-                          <input
-                            type="range"
-                            min="0"
-                            max="100"
-                            value={item.progress}
-                            onChange={(e) =>
-                              updateProgress(
-                                item.id,
-                                e.target.value
-                              )
-                            }
-                            className="w-full"
-                          />
+          <div className="space-y-3">
 
-                        </div>
+            <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
 
-                      </td>
+              <div
+                className="bg-slate-800 h-full"
+                style={{
+                  width: `${item.progress}%`
+                }}
+              />
 
-                      <td className="px-6 py-5">
+            </div>
 
-                        <select
-                          value={item.status}
-                          onChange={(e) =>
-                            updateStatus(
-                              item.id,
-                              e.target.value
-                            )
-                          }
-                          className={`px-4 py-2 rounded-full border-0 ${getStatusColor(item.status)}`}
-                        >
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={item.progress}
+              onChange={(e) =>
+                updateProgress(
+                  item.id,
+                  e.target.value
+                )
+              }
+              className="w-full"
+            />
 
-                          <option>
-                            Đã tiếp nhận
-                          </option>
+          </div>
 
-                          <option>
-                            Đang thẩm định
-                          </option>
+        </td>
 
-                          <option>
-                            Chờ bổ sung
-                          </option>
+        <td className="px-6 py-5">
 
-                          <option>
-                            Hoàn thành
-                          </option>
+          <select
+            value={item.status}
+            onChange={(e) =>
+              updateStatus(
+                item.id,
+                e.target.value
+              )
+            }
+            className={`px-4 py-2 rounded-full border-0 ${getStatusColor(item.status)}`}
+          >
 
-                        </select>
+            <option>
+              Đã tiếp nhận
+            </option>
 
-                      </td>
+            <option>
+              Đang thẩm định
+            </option>
 
-                      <td className="px-6 py-5">
+            <option>
+              Chờ bổ sung
+            </option>
 
-                        <button
-                          onClick={() =>
-                            deleteApplication(item.id)
-                          }
-                          className="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600"
-                        >
-                          Xóa
-                        </button>
+            <option>
+              Hoàn thành
+            </option>
 
-                      </td>
+          </select>
 
-                    </tr>
+        </td>
 
-                  ))
+        <td className="px-6 py-5">
 
-                )}
+          <button
+            onClick={() =>
+              deleteApplication(item.id)
+            }
+            className="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600"
+          >
+            Xóa
+          </button>
 
-              </tbody>
+        </td>
+
+      </tr>
+
+    ))
+
+  )}
+
+</tbody>
 
             </table>
 
