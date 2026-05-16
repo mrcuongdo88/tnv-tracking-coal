@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
 import { supabase } from './lib/supabase'
-import { v4 as uuidv4 }
-from 'uuid'
+import { v4 as uuidv4 } from 'uuid'
 
 export default function App() {
 
@@ -16,14 +15,16 @@ export default function App() {
   const [showModal, setShowModal] =
     useState(false)
 
+  const [selectedFile, setSelectedFile] =
+    useState(null)
+
   const [newApplication, setNewApplication] =
     useState({
       bank: '',
       fileType: '',
       amount: ''
     })
-const [selectedFile, setSelectedFile] =
-  useState(null)
+
   useEffect(() => {
 
     fetchApplications()
@@ -32,158 +33,168 @@ const [selectedFile, setSelectedFile] =
 
   async function fetchApplications() {
 
-  const { data, error } =
-    await supabase
-      .from('applications')
-      .select()
+    const { data, error } =
+      await supabase
+        .from('applications')
+        .select()
+        .order('id', {
+          ascending: false
+        })
 
-  console.log('DATA:', data)
-  console.log('ERROR:', error)
+    console.log('DATA:', data)
+    console.log('ERROR:', error)
 
-  if (data) {
+    if (!error) {
 
-    setApplications(data)
-  }
-}
-
-  async function addApplication() {
-
-  if (
-    !newApplication.bank ||
-    !newApplication.fileType
-  ) return
-
-  let documentUrl = ''
-  let documentName = ''
-
-  // upload pdf
-
-  if (selectedFile) {
-
-    const fileExt =
-      selectedFile.name.split('.').pop()
-
-    const fileName =
-      `${uuidv4()}.${fileExt}`
-
-    const { error: uploadError } =
-      await supabase.storage
-        .from('documents')
-        .upload(
-          fileName,
-          selectedFile
-        )
-
-    if (!uploadError) {
-
-      const { data } =
-        supabase.storage
-          .from('documents')
-          .getPublicUrl(fileName)
-
-      documentUrl =
-        data.publicUrl
-
-      documentName =
-        selectedFile.name
+      setApplications(data || [])
     }
   }
 
-  // insert database
+  async function addApplication() {
 
-  const { error } =
-    await supabase
-      .from('applications')
-      .insert([
-        {
-          bank:
-            newApplication.bank,
+    if (
+      !newApplication.bank ||
+      !newApplication.fileType
+    ) return
 
-          file_type:
-            newApplication.fileType,
+    let documentUrl = ''
+    let documentName = ''
 
-          amount:
-            newApplication.amount,
+    // upload pdf
 
-          progress: 10,
+    if (selectedFile) {
 
-          status:
-            'Đã tiếp nhận',
+      const fileExt =
+        selectedFile.name
+          .split('.')
+          .pop()
 
-          document_url:
-            documentUrl,
+      const fileName =
+        `${uuidv4()}.${fileExt}`
 
-          document_name:
-            documentName
-        }
-      ])
+      const { error: uploadError } =
+        await supabase.storage
+          .from('documents')
+          .upload(
+            fileName,
+            selectedFile
+          )
 
-  if (!error) {
+      console.log(uploadError)
 
-    fetchApplications()
+      if (!uploadError) {
 
-    setNewApplication({
-      bank: '',
-      fileType: '',
-      amount: ''
-    })
+        const { data } =
+          supabase.storage
+            .from('documents')
+            .getPublicUrl(fileName)
 
-    setSelectedFile(null)
+        documentUrl =
+          data.publicUrl
 
-    setShowModal(false)
+        documentName =
+          selectedFile.name
+      }
+    }
+
+    // insert db
+
+    const { error } =
+      await supabase
+        .from('applications')
+        .insert([
+          {
+            bank:
+              newApplication.bank,
+
+            file_type:
+              newApplication.fileType,
+
+            amount:
+              newApplication.amount,
+
+            progress: 10,
+
+            status:
+              'Đã tiếp nhận',
+
+            document_url:
+              documentUrl,
+
+            document_name:
+              documentName
+          }
+        ])
+
+    console.log(error)
+
+    if (!error) {
+
+      fetchApplications()
+
+      setNewApplication({
+        bank: '',
+        fileType: '',
+        amount: ''
+      })
+
+      setSelectedFile(null)
+
+      setShowModal(false)
+    }
   }
-}
 
   async function deleteApplication(id) {
 
-  console.log('DELETE ID:', id)
+    const { error } =
+      await supabase
+        .from('applications')
+        .delete()
+        .eq('id', Number(id))
 
-  const response =
-    await supabase
-      .from('applications')
-      .delete()
-      .eq('id', Number(id))
-      .select()
+    console.log(error)
 
-  console.log('DELETE RESPONSE:', response)
+    if (!error) {
 
-  fetchApplications()
-}
+      fetchApplications()
+    }
+  }
 
   async function updateProgress(id, value) {
 
-  console.log('UPDATE ID:', id)
-  console.log('UPDATE VALUE:', value)
+    const { error } =
+      await supabase
+        .from('applications')
+        .update({
+          progress: parseInt(value)
+        })
+        .eq('id', Number(id))
 
-  const response =
-    await supabase
-      .from('applications')
-      .update({
-        progress: parseInt(value)
-      })
-      .eq('id', Number(id))
-      .select()
+    console.log(error)
 
-  console.log('UPDATE RESPONSE:', response)
+    if (!error) {
 
-  fetchApplications()
-}
+      fetchApplications()
+    }
+  }
 
   async function updateStatus(id, value) {
 
-  const response =
-    await supabase
-      .from('applications')
-      .update({
-        status: value
-      })
-      .eq('id', Number(id))
-      .select()
+    const { error } =
+      await supabase
+        .from('applications')
+        .update({
+          status: value
+        })
+        .eq('id', Number(id))
 
-  console.log('STATUS RESPONSE:', response)
+    console.log(error)
 
-  fetchApplications()
-}
+    if (!error) {
+
+      fetchApplications()
+    }
+  }
 
   function exportToExcel() {
 
@@ -233,14 +244,11 @@ const [selectedFile, setSelectedFile] =
       case 'Chờ bổ sung':
         return 'bg-red-100 text-red-700'
 
-      case 'Đã tiếp nhận':
-        return 'bg-blue-100 text-blue-700'
-
       case 'Hoàn thành':
         return 'bg-green-100 text-green-700'
 
       default:
-        return 'bg-slate-100 text-slate-700'
+        return 'bg-blue-100 text-blue-700'
     }
   }
 
@@ -402,9 +410,11 @@ const [selectedFile, setSelectedFile] =
                   <th className="text-left px-6 py-4">
                     Giá trị
                   </th>
-<th className="text-left px-6 py-4">
-  Hồ sơ PDF
-</th>
+
+                  <th className="text-left px-6 py-4">
+                    PDF
+                  </th>
+
                   <th className="text-left px-6 py-4">
                     Tiến độ
                   </th>
@@ -426,7 +436,7 @@ const [selectedFile, setSelectedFile] =
                 {filteredApplications.map(item => (
 
                   <tr
-                    key={String(item.id)}
+                    key={item.id}
                     className="border-t border-slate-100 hover:bg-slate-50"
                   >
 
@@ -441,27 +451,29 @@ const [selectedFile, setSelectedFile] =
                     <td className="px-6 py-5">
                       {item.amount}
                     </td>
-<td className="px-6 py-5">
 
-  {item.document_url ? (
+                    <td className="px-6 py-5">
 
-    <a
-      href={item.document_url}
-      target="_blank"
-      className="text-blue-600 underline"
-    >
-      📄 {item.document_name}
-    </a>
+                      {item.document_url ? (
 
-  ) : (
+                        <a
+                          href={item.document_url}
+                          target="_blank"
+                          className="text-blue-600 underline"
+                        >
+                          📄 {item.document_name}
+                        </a>
 
-    <span className="text-slate-400">
-      Không có file
-    </span>
+                      ) : (
 
-  )}
+                        <span className="text-slate-400">
+                          Không có file
+                        </span>
 
-</td>
+                      )}
+
+                    </td>
+
                     <td className="px-6 py-5 min-w-[240px]">
 
                       <div className="space-y-3">
@@ -608,46 +620,30 @@ const [selectedFile, setSelectedFile] =
               }
               className="w-full px-4 py-3 rounded-2xl border border-slate-200"
             />
+
+            {/* FILE UPLOAD */}
+
             <div className="space-y-2">
 
-  <label className="text-sm font-medium text-slate-600">
+              <label className="text-sm font-medium text-slate-600">
 
-    Upload hồ sơ PDF
+                Upload hồ sơ PDF
 
-  </label>
+              </label>
 
-  <input
-    type="file"
-    accept=".pdf"
-    onChange={(e) =>
-      setSelectedFile(
-        e.target.files[0]
-      )
-    }
-    className="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-white"
-  />
+              <input
+                type="file"
+                accept=".pdf"
+                onChange={(e) =>
+                  setSelectedFile(
+                    e.target.files[0]
+                  )
+                }
+                className="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-white"
+              />
 
-</div>
-<div className="space-y-2">
+            </div>
 
-  <label className="text-sm font-medium text-slate-600">
-
-    Upload hồ sơ PDF
-
-  </label>
-
-  <input
-    type="file"
-    accept=".pdf"
-    onChange={(e) =>
-      setSelectedFile(
-        e.target.files[0]
-      )
-    }
-    className="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-white"
-  />
-
-</div>
             <div className="flex justify-end gap-3 pt-3">
 
               <button
