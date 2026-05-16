@@ -53,7 +53,7 @@ const bankDirectory = [
     name: 'MSB',
 
     logo:
-      'https://upload.wikimedia.org/wikipedia/commons/5/5f/MSB_Logo.png'
+      'https://www.msb.com.vn/wp-content/themes/msb-website/assets/images/package_images/logo_white.svg'
   },
 
   {
@@ -64,7 +64,7 @@ const bankDirectory = [
     name: 'SHB',
 
     logo:
-      'https://upload.wikimedia.org/wikipedia/commons/e/e7/Logo_SHB.svg'
+      'https://www.shb.com.vn/wp-content/uploads/2016/03/Logo-SHB-VN.png'
   },
 
   {
@@ -76,7 +76,7 @@ const bankDirectory = [
     name: 'Vietcombank',
 
     logo:
-      'https://upload.wikimedia.org/wikipedia/commons/6/68/Logo_Vietcombank.png'
+      'https://www.vietcombank.com.vn/-/media/Project/VCB-Sites/VCB/Home-page/VCB-Logo/Logo-VCB-no-60.png?ts=20240605031450'
   },
 
   {
@@ -87,7 +87,7 @@ const bankDirectory = [
     name: 'BIDV',
 
     logo:
-      'https://upload.wikimedia.org/wikipedia/commons/1/18/Logo_BIDV.png'
+      'https://bidv.com.vn/wps/wcm/connect/cc5c0724-338e-4cf5-bbe7-676f1f36fd7b/logopc.png?MOD=AJPERES&CACHEID=ROOTWORKSPACE-cc5c0724-338e-4cf5-bbe7-676f1f36fd7b-p5AGqf.&cache=none'
   },
 
   {
@@ -99,7 +99,29 @@ const bankDirectory = [
     name: 'Techcombank',
 
     logo:
-      'https://upload.wikimedia.org/wikipedia/commons/5/5e/Techcombank_logo.png'
+      'https://techcombank.com/content/dam/techcombank/public-site/seo/techcombank_logo_svg_86201e50d1.svg'
+  },
+  {
+    keywords: [
+      'anbinhbank',
+      'abb'
+    ],
+
+    name: 'An Binh Bank',
+
+    logo:
+      'https://abbank.vn/uploads/images/2026/02/01/logo-160x62-697e39f2c1aaa.png'
+  },
+  {
+    keywords: [
+      'GPBank',
+      'GPBank'
+    ],
+
+    name: 'GPBank',
+
+    logo:
+      'https://www.gpbank.com.vn/-/media/logo/logo-final.svg'
   }
 ]
 
