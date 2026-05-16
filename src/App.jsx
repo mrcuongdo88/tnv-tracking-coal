@@ -37,6 +37,13 @@ export default function App() {
   const [showTimeline, setShowTimeline] =
     useState(false)
 
+  const [timelineNote, setTimelineNote] =
+    useState('')
+
+  const [selectedApplicationId,
+    setSelectedApplicationId] =
+    useState(null)
+
   const [newApplication, setNewApplication] =
     useState({
       bank: '',
@@ -97,7 +104,28 @@ export default function App() {
 
     setSelectedTimeline(data || [])
 
+    setSelectedApplicationId(id)
+
     setShowTimeline(true)
+  }
+
+  async function addNote() {
+
+    if (
+      !timelineNote ||
+      !selectedApplicationId
+    ) return
+
+    await addTimeline(
+      selectedApplicationId,
+      timelineNote
+    )
+
+    setTimelineNote('')
+
+    fetchTimeline(
+      selectedApplicationId
+    )
   }
 
   function calculateAging(date) {
@@ -135,6 +163,32 @@ export default function App() {
     }
 
     return 'bg-green-100 text-green-700'
+  }
+
+  function formatCurrency(value) {
+
+    if (!value) return '-'
+
+    const number =
+      parseFloat(
+        value.toString()
+          .replace(/[^\d]/g, '')
+      )
+
+    return number.toLocaleString(
+      'vi-VN'
+    )
+  }
+
+  function formatInputCurrency(value) {
+
+    const number =
+      value.replace(/[^\d]/g, '')
+
+    return number.replace(
+      /\B(?=(\d{3})+(?!\d))/g,
+      ','
+    )
   }
 
   async function addApplication() {
@@ -196,7 +250,8 @@ export default function App() {
               newApplication.fileType,
 
             amount:
-              newApplication.amount,
+              newApplication.amount
+                .replace(/[^\d]/g, ''),
 
             submission_date:
               newApplication.submissionDate,
@@ -219,7 +274,7 @@ export default function App() {
 
       await addTimeline(
         data[0].id,
-        'Hồ sơ được tạo'
+        '📄 Hồ sơ được tạo'
       )
 
       fetchApplications()
@@ -265,7 +320,7 @@ export default function App() {
 
       await addTimeline(
         id,
-        `Tiến độ cập nhật ${value}%`
+        `📊 Tiến độ cập nhật ${value}%`
       )
 
       fetchApplications()
@@ -286,7 +341,7 @@ export default function App() {
 
       await addTimeline(
         id,
-        `Status chuyển sang ${value}`
+        `🔄 Status chuyển sang ${value}`
       )
 
       fetchApplications()
@@ -400,7 +455,6 @@ export default function App() {
         const value =
           parseFloat(
             item.amount
-              ?.replace(/[^\d]/g, '')
           ) || 0
 
         return sum + value
@@ -570,7 +624,7 @@ export default function App() {
             </p>
 
             <h2 className="text-2xl font-bold mt-3 text-slate-800">
-              {totalAmount.toLocaleString()} VNĐ
+              {formatCurrency(totalAmount)} VNĐ
             </h2>
 
           </div>
@@ -773,8 +827,8 @@ export default function App() {
                         {item.file_type}
                       </td>
 
-                      <td className="px-6 py-5">
-                        {item.amount}
+                      <td className="px-6 py-5 font-semibold text-slate-800">
+                        {formatCurrency(item.amount)}
                       </td>
 
                       <td className="px-6 py-5">
@@ -977,7 +1031,10 @@ export default function App() {
               onChange={(e) =>
                 setNewApplication({
                   ...newApplication,
-                  amount: e.target.value
+                  amount:
+                    formatInputCurrency(
+                      e.target.value
+                    )
                 })
               }
               className="w-full px-4 py-3 rounded-2xl border border-slate-200"
@@ -1066,7 +1123,7 @@ export default function App() {
             <div className="flex items-center justify-between mb-6">
 
               <h2 className="text-2xl font-bold">
-                Timeline Hồ Sơ
+                CRM Follow-up Timeline
               </h2>
 
               <button
@@ -1080,6 +1137,36 @@ export default function App() {
 
             </div>
 
+            {/* QUICK NOTE */}
+
+            <div className="bg-slate-50 p-4 rounded-2xl mb-6 space-y-3">
+
+              <textarea
+                placeholder="Nhập follow-up / ghi chú / trao đổi với ngân hàng..."
+                value={timelineNote}
+                onChange={(e) =>
+                  setTimelineNote(
+                    e.target.value
+                  )
+                }
+                className="w-full border border-slate-200 rounded-2xl p-4 min-h-[100px]"
+              />
+
+              <div className="flex justify-end">
+
+                <button
+                  onClick={addNote}
+                  className="bg-slate-800 text-white px-5 py-3 rounded-2xl"
+                >
+                  + Thêm ghi chú
+                </button>
+
+              </div>
+
+            </div>
+
+            {/* TIMELINE */}
+
             <div className="space-y-4 max-h-[500px] overflow-y-auto">
 
               {selectedTimeline.map(item => (
@@ -1089,7 +1176,7 @@ export default function App() {
                   className="border-l-4 border-slate-800 bg-slate-50 p-4 rounded-xl"
                 >
 
-                  <p className="font-semibold text-slate-800">
+                  <p className="font-semibold text-slate-800 whitespace-pre-wrap">
                     {item.action}
                   </p>
 
