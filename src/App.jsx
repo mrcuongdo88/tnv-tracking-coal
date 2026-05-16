@@ -32,18 +32,13 @@ export default function App() {
     const { data, error } =
       await supabase
         .from('applications')
-        .select('*')
-        .order('id', {
-          ascending: false
-        })
+        .select()
 
     if (error) {
 
       console.log(error)
 
     } else {
-
-      console.log(data)
 
       setApplications(data || [])
     }
@@ -77,11 +72,7 @@ export default function App() {
           }
         ])
 
-    if (error) {
-
-      console.log(error)
-
-    } else {
+    if (!error) {
 
       fetchApplications()
 
@@ -101,38 +92,6 @@ export default function App() {
       await supabase
         .from('applications')
         .delete()
-        .eq('id', id)
-
-    if (!error) {
-
-      fetchApplications()
-    }
-  }
-
-  async function updateProgress(id, value) {
-
-    const { error } =
-      await supabase
-        .from('applications')
-        .update({
-          progress: Number(value)
-        })
-        .eq('id', id)
-
-    if (!error) {
-
-      fetchApplications()
-    }
-  }
-
-  async function updateStatus(id, value) {
-
-    const { error } =
-      await supabase
-        .from('applications')
-        .update({
-          status: value
-        })
         .eq('id', id)
 
     if (!error) {
@@ -179,27 +138,6 @@ export default function App() {
     )
   }
 
-  function getStatusColor(status) {
-
-    switch (status) {
-
-      case 'Đang thẩm định':
-        return 'bg-amber-100 text-amber-700'
-
-      case 'Chờ bổ sung':
-        return 'bg-red-100 text-red-700'
-
-      case 'Đã tiếp nhận':
-        return 'bg-blue-100 text-blue-700'
-
-      case 'Hoàn thành':
-        return 'bg-green-100 text-green-700'
-
-      default:
-        return 'bg-slate-100 text-slate-700'
-    }
-  }
-
   const filteredApplications =
     applications.filter(item => {
 
@@ -217,8 +155,6 @@ export default function App() {
     <div className="min-h-screen bg-slate-100 p-6">
 
       <div className="max-w-7xl mx-auto space-y-6">
-
-        {/* HEADER */}
 
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 
@@ -238,7 +174,7 @@ export default function App() {
 
             <button
               onClick={exportToExcel}
-              className="bg-green-600 text-white px-5 py-3 rounded-2xl shadow-lg hover:bg-green-700"
+              className="bg-green-600 text-white px-5 py-3 rounded-2xl"
             >
               Export Excel
             </button>
@@ -247,7 +183,7 @@ export default function App() {
               onClick={() =>
                 setShowModal(true)
               }
-              className="bg-slate-800 text-white px-5 py-3 rounded-2xl shadow-lg hover:bg-slate-700"
+              className="bg-slate-800 text-white px-5 py-3 rounded-2xl"
             >
               + Thêm hồ sơ
             </button>
@@ -255,62 +191,6 @@ export default function App() {
           </div>
 
         </div>
-
-        {/* KPI */}
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
-
-            <p className="text-slate-500 text-sm">
-              Tổng hồ sơ
-            </p>
-
-            <h2 className="text-4xl font-bold mt-3 text-slate-800">
-              {applications.length}
-            </h2>
-
-          </div>
-
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
-
-            <p className="text-slate-500 text-sm">
-              Đang xử lý
-            </p>
-
-            <h2 className="text-4xl font-bold mt-3 text-slate-800">
-
-              {
-                applications.filter(
-                  item => item.progress < 100
-                ).length
-              }
-
-            </h2>
-
-          </div>
-
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
-
-            <p className="text-slate-500 text-sm">
-              Hoàn thành
-            </p>
-
-            <h2 className="text-4xl font-bold mt-3 text-slate-800">
-
-              {
-                applications.filter(
-                  item => item.progress === 100
-                ).length
-              }
-
-            </h2>
-
-          </div>
-
-        </div>
-
-        {/* SEARCH */}
 
         <div className="bg-white rounded-3xl p-6 shadow-sm">
 
@@ -325,8 +205,6 @@ export default function App() {
           />
 
         </div>
-
-        {/* TABLE */}
 
         <div className="bg-white rounded-3xl shadow-sm overflow-hidden">
 
@@ -351,14 +229,6 @@ export default function App() {
                   </th>
 
                   <th className="text-left px-6 py-4">
-                    Tiến độ
-                  </th>
-
-                  <th className="text-left px-6 py-4">
-                    Trạng thái
-                  </th>
-
-                  <th className="text-left px-6 py-4">
                     Hành động
                   </th>
 
@@ -372,10 +242,10 @@ export default function App() {
 
                   <tr
                     key={item.id}
-                    className="border-t border-slate-100 hover:bg-slate-50"
+                    className="border-t border-slate-100"
                   >
 
-                    <td className="px-6 py-5 font-semibold">
+                    <td className="px-6 py-5">
                       {item.bank}
                     </td>
 
@@ -387,79 +257,13 @@ export default function App() {
                       {item.amount}
                     </td>
 
-                    <td className="px-6 py-5 min-w-[240px]">
-
-                      <div className="space-y-3">
-
-                        <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
-
-                          <div
-                            className="bg-slate-800 h-full"
-                            style={{
-                              width: `${item.progress}%`
-                            }}
-                          />
-
-                        </div>
-
-                        <input
-                          type="range"
-                          min="0"
-                          max="100"
-                          value={item.progress}
-                          onChange={(e) =>
-                            updateProgress(
-                              item.id,
-                              e.target.value
-                            )
-                          }
-                          className="w-full"
-                        />
-
-                      </div>
-
-                    </td>
-
-                    <td className="px-6 py-5">
-
-                      <select
-                        value={item.status}
-                        onChange={(e) =>
-                          updateStatus(
-                            item.id,
-                            e.target.value
-                          )
-                        }
-                        className={`px-4 py-2 rounded-full border-0 ${getStatusColor(item.status)}`}
-                      >
-
-                        <option>
-                          Đã tiếp nhận
-                        </option>
-
-                        <option>
-                          Đang thẩm định
-                        </option>
-
-                        <option>
-                          Chờ bổ sung
-                        </option>
-
-                        <option>
-                          Hoàn thành
-                        </option>
-
-                      </select>
-
-                    </td>
-
                     <td className="px-6 py-5">
 
                       <button
                         onClick={() =>
                           deleteApplication(item.id)
                         }
-                        className="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600"
+                        className="bg-red-500 text-white px-4 py-2 rounded-xl"
                       >
                         Xóa
                       </button>
@@ -480,21 +284,19 @@ export default function App() {
 
       </div>
 
-      {/* MODAL */}
-
       {showModal && (
 
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4">
 
-          <div className="bg-white rounded-3xl p-6 w-full max-w-md space-y-4 shadow-2xl">
+          <div className="bg-white rounded-3xl p-6 w-full max-w-md space-y-4">
 
-            <h2 className="text-2xl font-bold text-slate-800">
-              Thêm hồ sơ mới
+            <h2 className="text-2xl font-bold">
+              Thêm hồ sơ
             </h2>
 
             <input
               type="text"
-              placeholder="Tên ngân hàng"
+              placeholder="Ngân hàng"
               value={newApplication.bank}
               onChange={(e) =>
                 setNewApplication({
@@ -520,7 +322,7 @@ export default function App() {
 
             <input
               type="text"
-              placeholder="Giá trị khoản vay"
+              placeholder="Giá trị"
               value={newApplication.amount}
               onChange={(e) =>
                 setNewApplication({
@@ -531,7 +333,7 @@ export default function App() {
               className="w-full px-4 py-3 rounded-2xl border border-slate-200"
             />
 
-            <div className="flex justify-end gap-3 pt-3">
+            <div className="flex justify-end gap-3">
 
               <button
                 onClick={() =>
@@ -546,7 +348,7 @@ export default function App() {
                 onClick={addApplication}
                 className="px-5 py-3 rounded-2xl bg-slate-800 text-white"
               >
-                Lưu hồ sơ
+                Lưu
               </button>
 
             </div>
