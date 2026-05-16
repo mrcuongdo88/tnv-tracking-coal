@@ -1073,7 +1073,10 @@ async function updateNextAction(
       )
     }
     placeholder="Nhập next action..."
-    className="w-[220px] px-4 py-2 rounded-xl border border-slate-200 bg-white"
+    className="w-[220px] px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-800 outline-none"
+    style={{
+  color: '#0f172a'
+}}
   />
 
 </td>
