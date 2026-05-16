@@ -4,6 +4,19 @@ import { saveAs } from 'file-saver'
 import { supabase } from './lib/supabase'
 import { v4 as uuidv4 } from 'uuid'
 
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid
+} from 'recharts'
+
 export default function App() {
 
   const [applications, setApplications] =
@@ -116,8 +129,6 @@ export default function App() {
             selectedFile
           )
 
-      console.log(uploadError)
-
       if (!uploadError) {
 
         const { data } =
@@ -163,8 +174,6 @@ export default function App() {
         ])
         .select()
 
-    console.log(error)
-
     if (!error) {
 
       await addTimeline(
@@ -193,8 +202,6 @@ export default function App() {
         .from('applications')
         .delete()
         .eq('id', Number(id))
-
-    console.log(error)
 
     if (!error) {
 
@@ -333,6 +340,80 @@ export default function App() {
 
     }).length
 
+  const totalAmount =
+    applications.reduce(
+      (sum, item) => {
+
+        const value =
+          parseFloat(
+            item.amount
+              ?.replace(/[^\d]/g, '')
+          ) || 0
+
+        return sum + value
+
+      },
+      0
+    )
+
+  const statusData = [
+
+    {
+      name: 'Đã tiếp nhận',
+      value:
+        applications.filter(
+          item =>
+            item.status ===
+            'Đã tiếp nhận'
+        ).length
+    },
+
+    {
+      name: 'Đang thẩm định',
+      value:
+        applications.filter(
+          item =>
+            item.status ===
+            'Đang thẩm định'
+        ).length
+    },
+
+    {
+      name: 'Chờ bổ sung',
+      value:
+        applications.filter(
+          item =>
+            item.status ===
+            'Chờ bổ sung'
+        ).length
+    },
+
+    {
+      name: 'Hoàn thành',
+      value:
+        applications.filter(
+          item =>
+            item.status ===
+            'Hoàn thành'
+        ).length
+    }
+  ]
+
+  const COLORS = [
+    '#3b82f6',
+    '#f59e0b',
+    '#ef4444',
+    '#22c55e'
+  ]
+
+  const bankData = applications.map(
+    item => ({
+      bank: item.bank,
+      progress:
+        item.progress || 0
+    })
+  )
+
   return (
 
     <div className="min-h-screen bg-slate-100 p-6">
@@ -346,11 +427,11 @@ export default function App() {
           <div>
 
             <h1 className="text-4xl font-bold text-slate-800">
-              Dashboard Hồ Sơ Ngân Hàng
+              Banking LOS Dashboard
             </h1>
 
             <p className="text-slate-500 mt-2">
-              CRM quản lý pipeline tín dụng doanh nghiệp
+              Credit Workflow Management System
             </p>
 
           </div>
@@ -379,7 +460,7 @@ export default function App() {
 
         {/* KPI */}
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
 
           <div className="bg-white rounded-3xl p-6 shadow-sm">
 
@@ -414,6 +495,122 @@ export default function App() {
             <h2 className="text-4xl font-bold mt-3 text-slate-800">
               {completedCount}
             </h2>
+
+          </div>
+
+          <div className="bg-white rounded-3xl p-6 shadow-sm">
+
+            <p className="text-slate-500 text-sm">
+              Tổng pipeline
+            </p>
+
+            <h2 className="text-2xl font-bold mt-3 text-slate-800">
+              {totalAmount.toLocaleString()} VNĐ
+            </h2>
+
+          </div>
+
+        </div>
+
+        {/* EXECUTIVE DASHBOARD */}
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          {/* PIE CHART */}
+
+          <div className="bg-white rounded-3xl p-6 shadow-sm">
+
+            <h2 className="text-xl font-bold text-slate-800 mb-6">
+
+              Trạng thái hồ sơ
+
+            </h2>
+
+            <div className="h-[320px]">
+
+              <ResponsiveContainer
+                width="100%"
+                height="100%"
+              >
+
+                <PieChart>
+
+                  <Pie
+                    data={statusData}
+                    dataKey="value"
+                    nameKey="name"
+                    outerRadius={110}
+                    label
+                  >
+
+                    {statusData.map(
+                      (entry, index) => (
+
+                        <Cell
+                          key={index}
+                          fill={
+                            COLORS[
+                              index %
+                              COLORS.length
+                            ]
+                          }
+                        />
+
+                      )
+                    )}
+
+                  </Pie>
+
+                  <Tooltip />
+
+                </PieChart>
+
+              </ResponsiveContainer>
+
+            </div>
+
+          </div>
+
+          {/* BAR CHART */}
+
+          <div className="bg-white rounded-3xl p-6 shadow-sm">
+
+            <h2 className="text-xl font-bold text-slate-800 mb-6">
+
+              Tiến độ theo ngân hàng
+
+            </h2>
+
+            <div className="h-[320px]">
+
+              <ResponsiveContainer
+                width="100%"
+                height="100%"
+              >
+
+                <BarChart data={bankData}>
+
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                  />
+
+                  <XAxis dataKey="bank" />
+
+                  <YAxis />
+
+                  <Tooltip />
+
+                  <Bar
+                    dataKey="progress"
+                    fill="#0f172a"
+                    radius={[8, 8, 0, 0]}
+                  />
+
+                </BarChart>
+
+              </ResponsiveContainer>
+
+            </div>
 
           </div>
 
@@ -511,6 +708,7 @@ export default function App() {
                         <a
                           href={item.document_url}
                           target="_blank"
+                          rel="noreferrer"
                           className="text-blue-600 underline"
                         >
                           📄 {item.document_name}
