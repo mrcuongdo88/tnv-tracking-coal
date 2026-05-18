@@ -149,7 +149,10 @@ export default function App() {
 
   const [selectedTimeline, setSelectedTimeline] =
     useState([])
-
+const [
+  selectedTimelineMap,
+  setSelectedTimelineMap
+] = useState({})
   const [showTimeline, setShowTimeline] =
     useState(false)
 
@@ -169,12 +172,48 @@ export default function App() {
       nextAction: '',
       nextFollowupDate: ''
     })
+useEffect(() => {
 
-  useEffect(() => {
+  fetchApplications()
 
-    fetchApplications()
+}, [])
 
-  }, [])
+useEffect(() => {
+
+  async function loadAllTimelines() {
+
+    const map = {}
+
+    for (const app of applications) {
+
+      const { data } =
+        await supabase
+          .from('application_timeline')
+          .select()
+          .eq(
+            'application_id',
+            app.id
+          )
+          .order(
+            'created_at',
+            {
+              ascending: false
+            }
+          )
+
+      map[app.id] =
+        data || []
+    }
+
+    setSelectedTimelineMap(map)
+  }
+
+  if (applications.length) {
+
+    loadAllTimelines()
+  }
+
+}, [applications])
 
   async function fetchApplications() {
 
@@ -256,7 +295,13 @@ export default function App() {
         })
 
     setSelectedTimeline(data || [])
+setSelectedTimelineMap(prev => ({
 
+  ...prev,
+
+  [id]: data || []
+
+}))
     setSelectedApplicationId(id)
 
     setShowTimeline(true)
@@ -332,7 +377,16 @@ export default function App() {
       'vi-VN'
     )
   }
+function getLatestTimeline(id) {
 
+  const timelines =
+    selectedTimelineMap[id] || []
+
+  if (!timelines.length)
+    return '-'
+
+  return timelines[0].action
+}
   function formatInputCurrency(value) {
 
     const number =
@@ -1085,41 +1139,6 @@ async function updateNextAction(
 
                      <td className="px-6 py-5">
 
-  <input
-  type="text"
-
-  value={
-    item.next_action || ''
-  }
-
-  onChange={(e) => {
-
-    const updated =
-      applications.map(app =>
-
-        app.id === item.id
-          ? {
-              ...app,
-              next_action:
-                e.target.value
-            }
-          : app
-      )
-
-    setApplications(updated)
-  }}
-
-  onBlur={(e) =>
-    updateNextAction(
-      item.id,
-      e.target.value
-    )
-  }
-
-  placeholder="Nhập next action..."
-
-  className="w-[220px] px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-800"
-/>
 </td>
 
                       <td className="px-6 py-5">
