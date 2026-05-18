@@ -1718,7 +1718,89 @@ async function updateNextAction(
         </div>
 
       </div>
+<div className="bg-slate-50 rounded-3xl p-6">
 
+  <h3 className="text-xl font-bold text-slate-800 mb-4">
+
+    PDF History
+
+  </h3>
+
+  <div className="space-y-3">
+
+    {selectedTimeline
+      .filter(item => item.file_url)
+      .map(item => (
+
+        <div
+          key={item.id}
+
+          className="
+            bg-white
+            rounded-2xl
+            p-4
+            flex
+            items-center
+            justify-between
+          "
+        >
+
+          <div>
+
+            <p className="font-semibold text-slate-800">
+
+              📄 {item.file_name}
+
+            </p>
+
+            <p className="text-sm text-slate-400 mt-1">
+
+              {new Date(
+                item.created_at
+              ).toLocaleString()}
+
+            </p>
+
+          </div>
+
+          <a
+            href={item.file_url}
+            target="_blank"
+            rel="noreferrer"
+
+            className="
+              bg-slate-800
+              text-white
+              px-4
+              py-2
+              rounded-xl
+              text-sm
+            "
+          >
+
+            Xem PDF
+
+          </a>
+
+        </div>
+
+      ))}
+
+    {!selectedTimeline.some(
+      item => item.file_url
+    ) && (
+
+      <p className="text-slate-400">
+
+        Chưa có lịch sử PDF
+
+      </p>
+
+    )}
+
+  </div>
+
+</div>
     </div>
 
   </div>
