@@ -12,6 +12,7 @@ import bidvLogo from './assets/banks/bidv.png'
 import techcomLogo from './assets/banks/tcb.svg'
 import abbankLogo from './assets/banks/abb.png'
 import gpbankLogo from './assets/banks/gpb.svg'
+import companyLogo from './assets/logotnv.png'
 import {
   PieChart,
   Pie,
@@ -891,17 +892,53 @@ async function updateNextAction(
 
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 
-          <div>
+        <div className="flex items-center gap-5">
 
-            <h1 className="text-4xl font-bold text-slate-800">
-              Banking LOS Dashboard
-            </h1>
+  <div
+    className="
+      bg-white
+      rounded-3xl
+      shadow-sm
+      border
+      border-slate-200
+      p-4
+      h-[88px]
+      w-[88px]
+      flex
+      items-center
+      justify-center
+    "
+  >
 
-            <p className="text-slate-500 mt-2">
-              Credit Workflow Management System
-            </p>
+    <img
+      src={companyLogo}
+      alt="Company Logo"
 
-          </div>
+      className="
+        max-h-[60px]
+        object-contain
+      "
+    />
+
+  </div>
+
+  <div>
+
+    <h1 className="text-4xl font-bold text-slate-800">
+
+      Banking LOS Dashboard
+
+    </h1>
+
+    <p className="text-slate-500 mt-2">
+
+      Credit Workflow Management System
+
+    </p>
+
+  </div>
+
+</div>
 
           <div className="flex gap-3">
 
