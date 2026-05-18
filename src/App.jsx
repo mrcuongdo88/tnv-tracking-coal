@@ -395,11 +395,26 @@ function getLatestTimeline(id) {
 
   return timelines[0].action
 }
-function openCaseDetail(item) {
+async function openCaseDetail(item) {
 
   setSelectedCase(item)
 
-  fetchTimeline(item.id)
+  const { data } =
+    await supabase
+      .from('application_timeline')
+      .select()
+      .eq(
+        'application_id',
+        item.id
+      )
+      .order(
+        'created_at',
+        {
+          ascending: false
+        }
+      )
+
+  setSelectedTimeline(data || [])
 
   setShowCaseDetail(true)
 }
