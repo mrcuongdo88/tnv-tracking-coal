@@ -358,6 +358,7 @@ export default function App() {
 
       const fileExt =
         selectedFile.name
+        document_name:documentName
           .split('.')
           .pop()
 
