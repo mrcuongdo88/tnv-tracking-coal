@@ -167,6 +167,25 @@ const [
   showCaseDetail,
   setShowCaseDetail
 ] = useState(false)
+const [
+  editCreditStructure,
+  setEditCreditStructure
+] = useState(false)
+
+const [
+  creditLimit,
+  setCreditLimit
+] = useState('')
+
+const [
+  lcValue,
+  setLcValue
+] = useState('')
+
+const [
+  unsecuredValue,
+  setUnsecuredValue
+] = useState('')
   const [timelineNote, setTimelineNote] =
     useState('')
 const [
@@ -569,6 +588,66 @@ async function openCaseDetail(item) {
   setSelectedTimeline(data || [])
 
   setShowCaseDetail(true)
+}
+async function saveCreditStructure() {
+
+  if (!selectedCase)
+    return
+
+  await supabase
+    .from('applications')
+    .update({
+
+      credit_limit:
+        Number(
+          creditLimit
+            .replaceAll(',', '')
+        ) || 0,
+
+      lc_value:
+        Number(
+          lcValue
+            .replaceAll(',', '')
+        ) || 0,
+
+      unsecured_value:
+        Number(
+          unsecuredValue
+            .replaceAll(',', '')
+        ) || 0
+    })
+
+    .eq(
+      'id',
+      selectedCase.id
+    )
+
+  fetchApplications()
+
+  setSelectedCase({
+
+    ...selectedCase,
+
+    credit_limit:
+      Number(
+        creditLimit
+          .replaceAll(',', '')
+      ),
+
+    lc_value:
+      Number(
+        lcValue
+          .replaceAll(',', '')
+      ),
+
+    unsecured_value:
+      Number(
+        unsecuredValue
+          .replaceAll(',', '')
+      )
+  })
+
+  setEditCreditStructure(false)
 }
   function formatInputCurrency(value) {
 
@@ -1774,7 +1853,97 @@ async function updateNextAction(
               <h3 className="text-xl font-bold text-slate-800 mt-2">
                 {formatCurrency(selectedCase.amount)} VNĐ
               </h3>
+<div className="mt-5 space-y-3">
 
+  <div className="flex items-center justify-between">
+
+    <span className="text-slate-500">
+      HMTD
+    </span>
+
+    <span className="font-semibold text-slate-800">
+
+      {formatCurrency(
+        selectedCase.credit_limit || 0
+      )}
+
+    </span>
+
+  </div>
+
+  <div className="flex items-center justify-between">
+
+    <span className="text-slate-500">
+      LC
+    </span>
+
+    <span className="font-semibold text-slate-800">
+
+      {formatCurrency(
+        selectedCase.lc_value || 0
+      )}
+
+    </span>
+
+  </div>
+
+  <div className="flex items-center justify-between">
+
+    <span className="text-slate-500">
+      Tín chấp
+    </span>
+
+    <span className="font-semibold text-slate-800">
+
+      {formatCurrency(
+        selectedCase.unsecured_value || 0
+      )}
+
+    </span>
+
+  </div>
+
+  <button
+
+    onClick={() => {
+
+      setCreditLimit(
+        formatCurrency(
+          selectedCase.credit_limit || 0
+        )
+      )
+
+      setLcValue(
+        formatCurrency(
+          selectedCase.lc_value || 0
+        )
+      )
+
+      setUnsecuredValue(
+        formatCurrency(
+          selectedCase.unsecured_value || 0
+        )
+      )
+
+      setEditCreditStructure(true)
+    }}
+
+    className="
+      mt-4
+      bg-slate-800
+      text-white
+      px-4
+      py-2
+      rounded-xl
+      text-sm
+    "
+  >
+
+    Edit
+
+  </button>
+
+</div>
             </div>
 
             <div className="bg-white rounded-2xl p-4">
@@ -1949,7 +2118,140 @@ async function updateNextAction(
 
   </div>
 
-</div>
+</div>{editCreditStructure && (
+
+  <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[100]">
+
+    <div className="bg-white rounded-3xl p-8 w-full max-w-lg">
+
+      <h2 className="text-2xl font-bold text-slate-800 mb-6">
+
+        Edit Credit Structure
+
+      </h2>
+
+      <div className="space-y-4">
+
+        <input
+          type="text"
+
+          placeholder="HMTD"
+
+          value={creditLimit}
+
+          onChange={(e) =>
+            setCreditLimit(
+              formatInputCurrency(
+                e.target.value
+              )
+            )
+          }
+
+          className="
+            w-full
+            border
+            border-slate-200
+            rounded-2xl
+            p-4
+          "
+        />
+
+        <input
+          type="text"
+
+          placeholder="LC"
+
+          value={lcValue}
+
+          onChange={(e) =>
+            setLcValue(
+              formatInputCurrency(
+                e.target.value
+              )
+            )
+          }
+
+          className="
+            w-full
+            border
+            border-slate-200
+            rounded-2xl
+            p-4
+          "
+        />
+
+        <input
+          type="text"
+
+          placeholder="Tín chấp"
+
+          value={unsecuredValue}
+
+          onChange={(e) =>
+            setUnsecuredValue(
+              formatInputCurrency(
+                e.target.value
+              )
+            )
+          }
+
+          className="
+            w-full
+            border
+            border-slate-200
+            rounded-2xl
+            p-4
+          "
+        />
+
+      </div>
+
+      <div className="flex justify-end gap-3 mt-6">
+
+        <button
+
+          onClick={() =>
+            setEditCreditStructure(false)
+          }
+
+          className="
+            bg-slate-200
+            px-5
+            py-3
+            rounded-2xl
+          "
+        >
+
+          Hủy
+
+        </button>
+
+        <button
+
+          onClick={
+            saveCreditStructure
+          }
+
+          className="
+            bg-slate-800
+            text-white
+            px-5
+            py-3
+            rounded-2xl
+          "
+        >
+
+          Lưu
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+)}
     </div>
 
   </div>
