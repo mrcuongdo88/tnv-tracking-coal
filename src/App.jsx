@@ -134,8 +134,77 @@ const bankDirectory = [
     logo:
       gpbankLogo
   }
+  
 ]
+const masterChecklist = [
 
+  {
+    group: 'Pháp lý doanh nghiệp',
+
+    items: [
+
+      'GPKD',
+
+      'Điều lệ',
+
+      'CCCD người đại diện',
+
+      'Báo cáo thuế'
+    ]
+  },
+
+  {
+    group: 'Financial',
+
+    items: [
+
+      'BCTC kiểm toán',
+
+      'BCTC nội bộ quý gần nhất',
+
+      'VAT',
+
+      'Bảng kê chi tiết tài khoản kế toán, doanh thu 2 năm gần nhất, quý gần nhất'
+    ]
+  },
+
+  {
+    group: 'Existing Debt',
+
+    items: [
+
+      'Hợp đồng tín dụng TCTD',
+
+      'Khế ước nhận nợ',
+
+      'Sao kê dư nợ,Dòng tiền về tài khoản'
+    ]
+  },
+
+  {
+    group: 'Business Flow',
+
+    items: [
+
+      'Phương án kinh doanh',
+
+      'Hợp đồng đầu ra',
+
+      'Hợp đồng đầu vào',
+
+      'Invoice / PO'
+    ]
+  },
+
+  {
+    group: 'Collateral',
+
+    items: [
+
+      'Hồ sơ TSĐB'
+    ]
+  }
+]
 export default function App() {
 
   const [applications, setApplications] =
@@ -204,7 +273,10 @@ const [
   const [selectedApplicationId,
     setSelectedApplicationId] =
     useState(null)
-
+const [
+  selectedChecklist,
+  setSelectedChecklist
+] = useState([])
   const [newApplication, setNewApplication] =
     useState({
       bank: '',
@@ -764,7 +836,9 @@ async function saveCreditStructure() {
               documentUrl,
 
             document_name:
-              documentName
+              documentName,
+              checklist:
+  selectedChecklist,
           }
         ])
         .select()
@@ -788,7 +862,7 @@ async function saveCreditStructure() {
       })
 
       setSelectedFile(null)
-
+setSelectedChecklist([])
       setShowModal(false)
     }
   }
@@ -1966,7 +2040,121 @@ async function updateNextAction(
           </div>
 
         </div>
+<div className="bg-slate-50 rounded-3xl p-6">
 
+  <div className="
+    flex
+    items-center
+    justify-between
+    mb-5
+  ">
+
+    <h3 className="
+      text-xl
+      font-bold
+      text-slate-800
+    ">
+
+      Document Checklist
+
+    </h3>
+
+    <div className="
+      bg-amber-100
+      text-amber-700
+      px-4
+      py-2
+      rounded-full
+      text-sm
+      font-semibold
+    ">
+
+      {
+        masterChecklist
+          .flatMap(g => g.items)
+          .length
+        -
+        (
+          selectedCase.checklist
+            ?.length || 0
+        )
+      }
+      hồ sơ thiếu
+
+    </div>
+
+  </div>
+
+  <div className="space-y-5">
+
+    {masterChecklist.map(group => (
+
+      <div key={group.group}>
+
+        <h4 className="
+          font-bold
+          text-slate-700
+          mb-3
+        ">
+
+          {group.group}
+
+        </h4>
+
+        <div className="space-y-2">
+
+          {group.items.map(item => {
+
+            const checked =
+              selectedCase.checklist
+                ?.includes(item)
+
+            return (
+
+              <div
+                key={item}
+
+                className="
+                  flex
+                  items-center
+                  gap-3
+                  text-sm
+                "
+              >
+
+                <span>
+
+                  {checked
+                    ? '☑'
+                    : '☐'}
+
+                </span>
+
+                <span
+                  className={
+                    checked
+                      ? 'text-slate-800'
+                      : 'text-slate-400'
+                  }
+                >
+
+                  {item}
+
+                </span>
+
+              </div>
+            )
+          })}
+
+        </div>
+
+      </div>
+
+    ))}
+
+  </div>
+
+</div>
         <div className="bg-slate-50 rounded-3xl p-6">
 
           <h3 className="text-xl font-bold text-slate-800 mb-4">
