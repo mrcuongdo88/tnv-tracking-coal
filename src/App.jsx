@@ -586,13 +586,11 @@ function getLastUpdateInfo(
   }
 function getLatestTimeline(id) {
 
-  const timelines =
-    selectedTimelineMap[id] || []
+  function getNextAction(item) {
 
-  if (!timelines.length)
-    return '-'
-
-  return timelines[0].action
+  return (
+    item.next_action || '-'
+  )
 }
 async function openCaseDetail(item) {
 
