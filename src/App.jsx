@@ -1125,7 +1125,12 @@ async function updateNextAction(
 
         <div className="grid grid-cols-1 md:grid-cols-6 gap-5">
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
+          <div className="
+  bg-white
+  rounded-3xl
+  p-4
+  shadow-sm
+">
 
             <p className="text-slate-500 text-sm">
               Tổng hồ sơ
@@ -1137,7 +1142,12 @@ async function updateNextAction(
 
           </div>
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
+          <div className="
+  bg-white
+  rounded-3xl
+  p-4
+  shadow-sm
+">
 
             <p className="text-slate-500 text-sm">
               Đang xử lý
@@ -1149,7 +1159,12 @@ async function updateNextAction(
 
           </div>
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
+          <div className="
+  bg-white
+  rounded-3xl
+  p-4
+  shadow-sm
+">
 
             <p className="text-slate-500 text-sm">
               Hoàn thành
@@ -1161,7 +1176,12 @@ async function updateNextAction(
 
           </div>
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
+          <div className="
+  bg-white
+  rounded-3xl
+  p-4
+  shadow-sm
+">
 
             <p className="text-slate-500 text-sm">
               Hồ sơ overdue
@@ -1173,7 +1193,12 @@ async function updateNextAction(
 
           </div>
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
+          <div className="
+  bg-white
+  rounded-3xl
+  p-4
+  shadow-sm
+">
 
             <p className="text-slate-500 text-sm">
               Follow-up overdue
@@ -1185,7 +1210,12 @@ async function updateNextAction(
 
           </div>
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
+          <div className="
+  bg-white
+  rounded-3xl
+  p-4
+  shadow-sm
+">
 
             <p className="text-slate-500 text-sm">
               Tổng pipeline
@@ -1201,13 +1231,18 @@ async function updateNextAction(
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
+          <div className="
+  bg-white
+  rounded-3xl
+  p-4
+  shadow-sm
+">
 
             <h2 className="text-xl font-bold text-slate-800 mb-6">
               Trạng thái hồ sơ
             </h2>
 
-            <div className="h-[320px]">
+            <div className="h-[160px]">
 
               <ResponsiveContainer
                 width="100%"
@@ -1252,13 +1287,18 @@ async function updateNextAction(
 
           </div>
 
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
+          <div className="
+  bg-white
+  rounded-3xl
+  p-4
+  shadow-sm
+">
 
             <h2 className="text-xl font-bold text-slate-800 mb-6">
               Tiến độ theo ngân hàng
             </h2>
 
-            <div className="h-[320px]">
+            <div className="h-[160px]">
 
               <ResponsiveContainer
                 width="100%"
@@ -1293,7 +1333,12 @@ async function updateNextAction(
 
         </div>
 
-        <div className="bg-white rounded-3xl p-6 shadow-sm">
+        <div className="
+  bg-white
+  rounded-3xl
+  p-4
+  shadow-sm
+">
 
           <input
             type="text"
