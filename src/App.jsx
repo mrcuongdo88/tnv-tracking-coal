@@ -267,6 +267,10 @@ const [
   setTimelineNextAction
 ] = useState('')    
 const [
+  timelineChecklist,
+  setTimelineChecklist
+] = useState([])
+const [
   timelineFile,
   setTimelineFile
 ] = useState(null)
@@ -489,6 +493,28 @@ async function addNote() {
     fileUrl,
     fileName
   )
+const currentApplication =
+  applications.find(
+
+    app =>
+      app.id ===
+      selectedApplicationId
+  )
+
+const existingChecklist =
+  currentApplication
+    ?.checklist || []
+
+const mergedChecklist = [
+
+  ...new Set([
+
+    ...existingChecklist,
+
+    ...timelineChecklist
+  ])
+]
+
 await supabase
   .from('applications')
 
@@ -500,7 +526,10 @@ await supabase
 
     next_action:
       timelineNextAction
-        || null
+        || null,
+
+    checklist:
+      mergedChecklist
   })
 
   .eq(
@@ -513,6 +542,7 @@ await supabase
 setTimelineFollowupDate('')
 
 setTimelineNextAction('')
+setTimelineChecklist([])
   fetchTimeline(
     selectedApplicationId
   )
@@ -2111,38 +2141,84 @@ async function updateNextAction(
 
             return (
 
-              <div
-                key={item}
+              <button
 
-                className="
-                  flex
-                  items-center
-                  gap-3
-                  text-sm
-                "
-              >
+  key={item}
 
-                <span>
+  onClick={async () => {
 
-                  {checked
-                    ? '☑'
-                    : '☐'}
+    let updatedChecklist =
+      selectedCase.checklist || []
 
-                </span>
+    if (checked) {
 
-                <span
-                  className={
-                    checked
-                      ? 'text-slate-800'
-                      : 'text-slate-400'
-                  }
-                >
+      updatedChecklist =
+        updatedChecklist.filter(
+          value => value !== item
+        )
 
-                  {item}
+    } else {
 
-                </span>
+      updatedChecklist = [
 
-              </div>
+        ...updatedChecklist,
+        item
+      ]
+    }
+
+    await supabase
+      .from('applications')
+      .update({
+
+        checklist:
+          updatedChecklist
+      })
+
+      .eq(
+        'id',
+        selectedCase.id
+      )
+
+    setSelectedCase({
+
+      ...selectedCase,
+
+      checklist:
+        updatedChecklist
+    })
+
+    fetchApplications()
+  }}
+
+  className="
+    flex
+    items-center
+    gap-3
+    text-sm
+  "
+>
+
+  <span>
+
+    {checked
+      ? '☑'
+      : '☐'}
+
+  </span>
+
+  <span
+    className={
+      checked
+        ? 'text-slate-800'
+        : 'text-slate-400'
+    }
+  >
+
+    {item}
+
+  </span>
+
+</button>
             )
           })}
 
@@ -2511,6 +2587,97 @@ async function updateNextAction(
     mt-3
   "
 />
+<div className="space-y-4">
+
+  <h3 className="
+    text-sm
+    font-semibold
+    text-slate-700
+  ">
+
+    Hồ sơ bổ sung lần này
+
+  </h3>
+
+  {masterChecklist.map(group => (
+
+    <div
+      key={group.group}
+
+      className="
+        bg-slate-50
+        rounded-2xl
+        p-4
+      "
+    >
+
+      <h4 className="
+        font-bold
+        text-slate-700
+        mb-3
+      ">
+
+        {group.group}
+
+      </h4>
+
+      <div className="space-y-2">
+
+        {group.items.map(item => (
+
+          <label
+            key={item}
+
+            className="
+              flex
+              items-center
+              gap-3
+              text-sm
+            "
+          >
+
+            <input
+              type="checkbox"
+
+              checked={
+                timelineChecklist.includes(item)
+              }
+
+              onChange={(e) => {
+
+                if (e.target.checked) {
+
+                  setTimelineChecklist(prev => [
+
+                    ...prev,
+                    item
+                  ])
+
+                } else {
+
+                  setTimelineChecklist(prev =>
+
+                    prev.filter(
+                      value => value !== item
+                    )
+                  )
+                }
+              }}
+            />
+
+            {item}
+
+          </label>
+
+        ))}
+
+      </div>
+
+    </div>
+
+  ))}
+
+</div>
 <input
   type="file"
   accept=".pdf"
