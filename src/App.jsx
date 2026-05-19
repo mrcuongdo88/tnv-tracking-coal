@@ -592,6 +592,7 @@ function getLatestTimeline(id) {
     item.next_action || '-'
   )
 }
+}
 async function openCaseDetail(item) {
 
   setSelectedCase(item)
