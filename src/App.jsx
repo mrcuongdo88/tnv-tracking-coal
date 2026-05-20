@@ -1927,7 +1927,15 @@ async function updateStatus(id, value) {
 
   <div className="fixed inset-0 bg-black/40 flex items-center justify-end z-50">
 
-    <div className="bg-white h-full w-full max-w-2xl p-6 overflow-y-auto shadow-2xl">
+    <div className="
+  bg-white
+  h-full
+  w-full
+  max-w-5xl
+  p-6
+  overflow-y-auto
+  shadow-2xl
+">
 
       <div className="flex items-center justify-between mb-6">
 
@@ -1978,7 +1986,7 @@ async function updateStatus(id, value) {
 
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid lg:grid-cols-3 gap-4">
 
             <div className="bg-white rounded-2xl p-4">
 
