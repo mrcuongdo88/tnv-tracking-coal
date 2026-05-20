@@ -207,42 +207,42 @@ const masterChecklist = [
 ]
 const checklistKeywordMap = {
 
-  vat: 'VAT',
+  'vat': 'VAT',
 
-  bctc:
+  'bctc':
     'BCTC kiểm toán',
 
-  kiểm toán:
+  'kiểm toán':
     'BCTC kiểm toán',
 
-  tài sản:
+  'tài sản':
     'Hồ sơ TSĐB',
 
-  tsđb:
+  'tsđb':
     'Hồ sơ TSĐB',
 
-  sao kê:
+  'sao kê':
     'Sao kê dư nợ,Dòng tiền về tài khoản',
 
-  dòng tiền:
+  'dòng tiền':
     'Sao kê dư nợ,Dòng tiền về tài khoản',
 
-  khế ước:
+  'khế ước':
     'Khế ước nhận nợ',
 
-  hợp đồng:
+  'hợp đồng':
     'Hợp đồng đầu ra',
 
-  invoice:
+  'invoice':
     'Invoice / PO',
 
-  po:
+  'po':
     'Invoice / PO',
 
-  cccd:
+  'cccd':
     'CCCD người đại diện',
 
-  điều lệ:
+  'điều lệ':
     'Điều lệ'
 }
 export default function App() {
@@ -297,6 +297,30 @@ const [
 ] = useState('')
   const [timelineNote, setTimelineNote] =
     useState('')
+    const suggestedChecklist =
+useEffect(() => {
+
+  setTimelineChecklist(
+    suggestedChecklist
+  )
+
+}, [timelineNote])
+  Object.entries(
+    checklistKeywordMap
+  )
+
+  .filter(([keyword]) =>
+
+    timelineNote
+      .toLowerCase()
+      .includes(
+        keyword.toLowerCase()
+      )
+  )
+
+  .map(([, checklist]) =>
+    checklist
+  )
 const [
   timelineFollowupDate,
   setTimelineFollowupDate
@@ -2626,97 +2650,110 @@ async function updateStatus(id, value) {
     mt-3
   "
 />
-<div className="space-y-4">
+{
+  suggestedChecklist.length > 0 && (
 
-  <h3 className="
-    text-sm
-    font-semibold
-    text-slate-700
-  ">
+    <div className="
+      bg-amber-50
+      border
+      border-amber-200
+      rounded-2xl
+      p-4
+      mt-4
+    ">
 
-    Hồ sơ bổ sung lần này
-
-  </h3>
-
-  {masterChecklist.map(group => (
-
-    <div
-      key={group.group}
-
-      className="
-        bg-slate-50
-        rounded-2xl
-        p-4
-      "
-    >
-
-      <h4 className="
-        font-bold
-        text-slate-700
+      <p className="
+        text-sm
+        font-semibold
+        text-amber-700
         mb-3
       ">
 
-        {group.group}
+        Hồ sơ được đề xuất
 
-      </h4>
+      </p>
 
-      <div className="space-y-2">
+      <div className="
+        flex
+        flex-wrap
+        gap-2
+      ">
 
-        {group.items.map(item => (
+        {suggestedChecklist.map(item => {
 
-          <label
-            key={item}
+          const checked =
+            timelineChecklist.includes(item)
 
-            className="
-              flex
-              items-center
-              gap-3
-              text-sm
-            "
-          >
+          return (
 
-            <input
-              type="checkbox"
+            <button
 
-              checked={
-                timelineChecklist.includes(item)
-              }
+              key={item}
 
-              onChange={(e) => {
+              type="button"
 
-                if (e.target.checked) {
+              onClick={() => {
 
-                  setTimelineChecklist(prev => [
+                if (checked) {
 
-                    ...prev,
-                    item
-                  ])
+                  setTimelineChecklist(
+
+                    timelineChecklist.filter(
+                      value =>
+                        value !== item
+                    )
+                  )
 
                 } else {
 
-                  setTimelineChecklist(prev =>
+                  setTimelineChecklist([
 
-                    prev.filter(
-                      value => value !== item
-                    )
-                  )
+                    ...timelineChecklist,
+                    item
+                  ])
                 }
               }}
-            />
 
-            {item}
+              className={`
+                px-3
+                py-2
+                rounded-full
+                text-sm
+                transition
 
-          </label>
+                ${
+                  checked
 
-        ))}
+                  ? `
+                    bg-green-500
+                    text-white
+                  `
+
+                  : `
+                    bg-white
+                    border
+                    border-slate-200
+                    text-slate-700
+                  `
+                }
+              `}
+            >
+
+              {checked ? '☑' : '☐'}
+
+              {' '}
+
+              {item}
+
+            </button>
+          )
+        })}
 
       </div>
 
     </div>
-
-  ))}
-
-</div>
+  )
+}
 <input
   type="file"
   accept=".pdf"
