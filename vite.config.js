@@ -1,8 +1,10 @@
-import { defineConfig }
-  from 'vite'
+import { defineConfig } from 'vite'
 
 import react
   from '@vitejs/plugin-react'
+
+import tailwindcss
+  from '@tailwindcss/vite'
 
 import { VitePWA }
   from 'vite-plugin-pwa'
@@ -12,6 +14,8 @@ export default defineConfig({
   plugins: [
 
     react(),
+
+    tailwindcss(),
 
     VitePWA({
 
@@ -26,6 +30,9 @@ export default defineConfig({
         short_name:
           'TNV Report',
 
+        description:
+          'Credit Workflow Management',
+
         theme_color:
           '#0f172a',
 
@@ -34,6 +41,9 @@ export default defineConfig({
 
         display:
           'standalone',
+
+        orientation:
+          'portrait',
 
         start_url: '/',
 
