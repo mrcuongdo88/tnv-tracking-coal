@@ -252,7 +252,10 @@ export default function App() {
 
   const [search, setSearch] =
     useState('')
-
+const [
+  showFabMenu,
+  setShowFabMenu
+] = useState(false)
   const [showModal, setShowModal] =
     useState(false)
 
@@ -3078,9 +3081,15 @@ async function updateStatus(id, value) {
   z-50
 ">
 
-  <div className="relative group">
+  <div className="relative">
 
     <button
+    onClick={() =>
+
+  setShowFabMenu(
+    !showFabMenu
+  )
+}
       className="
         w-16
         h-16
@@ -3096,17 +3105,27 @@ async function updateStatus(id, value) {
 
     </button>
 
-    <div className="
-      absolute
-      bottom-20
-      right-0
+    <div className={`
+  absolute
+  bottom-20
+  right-0
+  transition
+  space-y-3
+
+  ${
+    showFabMenu
+
+    ? `
+      opacity-100
+      pointer-events-auto
+    `
+
+    : `
       opacity-0
       pointer-events-none
-      group-hover:opacity-100
-      group-hover:pointer-events-auto
-      transition
-      space-y-3
-    ">
+    `
+  }
+`}>
 
       <button
 
