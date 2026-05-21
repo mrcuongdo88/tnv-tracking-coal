@@ -1,5 +1,8 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig }
+  from 'vite'
+
+import react
+  from '@vitejs/plugin-react'
 
 import { VitePWA }
   from 'vite-plugin-pwa'
@@ -15,11 +18,6 @@ export default defineConfig({
       registerType:
         'autoUpdate',
 
-      includeAssets: [
-
-        'favicon.svg'
-      ],
-
       manifest: {
 
         name:
@@ -27,9 +25,6 @@ export default defineConfig({
 
         short_name:
           'TNV Report',
-
-        description:
-          'Credit Workflow Management',
 
         theme_color:
           '#0f172a',
@@ -39,11 +34,6 @@ export default defineConfig({
 
         display:
           'standalone',
-
-        orientation:
-          'portrait',
-
-        scope: '/',
 
         start_url: '/',
 
