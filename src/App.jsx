@@ -1148,7 +1148,17 @@ if (
   activeMobileTab ===
   'followup'
 ) {
+const mobileTabTitle = {
 
+  home:
+    'Dashboard Overview',
+
+  cases:
+    'All Cases',
+
+  followup:
+    'Cases Need Follow-up'
+}
   mobileApplications =
     filteredApplications.filter(
 
@@ -1552,7 +1562,39 @@ if (
               </thead>
 
               <tbody>
+<div className="
+  flex
+  items-center
+  justify-between
+  mb-2
+">
 
+  <h2 className="
+    text-lg
+    font-bold
+    text-slate-800
+  ">
+
+    {
+      mobileTabTitle[
+        activeMobileTab
+      ]
+    }
+
+  </h2>
+
+  <div className="
+    text-sm
+    text-slate-500
+  ">
+
+    {mobileApplications.length}
+
+    hồ sơ
+
+  </div>
+
+</div>
                 {mobileApplications.map(item => {
 
                   const aging =
