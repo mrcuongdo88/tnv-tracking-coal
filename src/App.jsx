@@ -3068,7 +3068,103 @@ async function updateStatus(id, value) {
         </div>
 
       )}
+{/* MOBILE FAB */}
 
+<div className="
+  fixed
+  bottom-6
+  right-6
+  lg:hidden
+  z-50
+">
+
+  <div className="relative group">
+
+    <button
+      className="
+        w-16
+        h-16
+        rounded-full
+        bg-indigo-600
+        text-white
+        text-3xl
+        shadow-2xl
+      "
+    >
+
+      +
+
+    </button>
+
+    <div className="
+      absolute
+      bottom-20
+      right-0
+      opacity-0
+      pointer-events-none
+      group-hover:opacity-100
+      group-hover:pointer-events-auto
+      transition
+      space-y-3
+    ">
+
+      <button
+
+        onClick={() =>
+          setShowAddModal(true)
+        }
+
+        className="
+          bg-white
+          shadow-lg
+          rounded-2xl
+          px-4
+          py-3
+          text-sm
+          whitespace-nowrap
+          w-full
+        "
+      >
+
+        📄 Tạo hồ sơ
+
+      </button>
+
+      <button
+
+        onClick={() => {
+
+          if (
+            applications.length
+          ) {
+
+            fetchTimeline(
+              applications[0].id
+            )
+          }
+        }}
+
+        className="
+          bg-white
+          shadow-lg
+          rounded-2xl
+          px-4
+          py-3
+          text-sm
+          whitespace-nowrap
+          w-full
+        "
+      >
+
+        📝 Timeline
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
     </div>
   )
 }
