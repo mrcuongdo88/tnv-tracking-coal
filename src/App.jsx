@@ -1,5 +1,7 @@
 import { useState, useEffect,useRef } from 'react'
 import * as XLSX from 'xlsx'
+import PullToRefresh
+  from 'react-simple-pull-to-refresh'
 import { saveAs } from 'file-saver'
 import { supabase } from './lib/supabase'
 import { v4 as uuidv4 } from 'uuid'
@@ -1303,7 +1305,13 @@ if (
   )
 
   return (
+<PullToRefresh
 
+    onRefresh={
+      fetchApplications
+    }
+
+  >
     <div className="min-h-screen bg-slate-100 p-6">
 
       <div className="max-w-7xl mx-auto space-y-6">
@@ -3534,6 +3542,6 @@ if (
   </div>
 
 </div>
-    </div>
+    </div></PullToRefresh>
   )
   }
