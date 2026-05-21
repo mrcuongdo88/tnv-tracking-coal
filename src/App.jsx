@@ -1134,34 +1134,46 @@ async function updateStatus(id, value) {
           search.toLowerCase()
         )
     })
-const mobileApplications =
+let mobileApplications =
+  filteredApplications
 
+if (
   activeMobileTab ===
   'followup'
+) {
 
-    ? filteredApplications.filter(
+  mobileApplications =
+    filteredApplications.filter(
 
-        item => {
+      item => {
 
-          if (
-            !item.next_followup_date
-          ) return false
+        if (
+          !item.next_followup_date
+        ) return false
 
-          const today =
-            new Date()
+        const today =
+          new Date()
 
-          const followup =
-            new Date(
-              item.next_followup_date
-            )
-
-          return (
-            followup <= today
+        const followup =
+          new Date(
+            item.next_followup_date
           )
-        }
-      )
 
-    : filteredApplications
+        return (
+          followup <= today
+        )
+      }
+    )
+}
+
+if (
+  activeMobileTab ===
+  'home'
+) {
+
+  mobileApplications =
+    filteredApplications.slice(0, 5)
+}
   const processingCount =
     applications.filter(item => {
 
@@ -3105,7 +3117,7 @@ const mobileApplications =
 
 <div className="
   fixed
-  bottom-6
+  bottom-24
   right-6
   lg:hidden
   z-50
