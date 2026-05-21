@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect,useRef } from 'react'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
 import { supabase } from './lib/supabase'
@@ -249,7 +249,14 @@ export default function App() {
 
   const [applications, setApplications] =
     useState([])
+const dashboardRef =
+  useRef(null)
 
+const casesRef =
+  useRef(null)
+
+const followupRef =
+  useRef(null)
   const [search, setSearch] =
     useState('')
 const [
@@ -1364,7 +1371,7 @@ if (
 
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-5">
+        <div ref={dashboardRef} className="grid grid-cols-1 md:grid-cols-6 gap-5">
 
           <div className="
   bg-white
@@ -1772,10 +1779,22 @@ if (
 
           </div>
 
-        </div>
-<div className="
-  lg:hidden
-  space-y-4
+        </div>{
+  activeMobileTab ===
+  'followup' && (
+
+    <div
+      ref={followupRef}
+    />
+  )
+}
+<div
+
+  ref={casesRef}
+
+  className="
+    lg:hidden
+    space-y-4
 ">
 
   {filteredApplications.map(item => {
@@ -3247,11 +3266,19 @@ if (
 
     <button
 
-      onClick={() =>
-        setActiveMobileTab(
-          'home'
-        )
-      }
+      onClick={() => {
+
+  setActiveMobileTab(
+    'home'
+  )
+
+  dashboardRef.current
+    ?.scrollIntoView({
+
+      behavior:
+        'smooth'
+    })
+}}
 
       className={`
         py-4
@@ -3281,11 +3308,19 @@ if (
 
     <button
 
-      onClick={() =>
-        setActiveMobileTab(
-          'cases'
-        )
-      }
+      onClick={() => {
+
+  setActiveMobileTab(
+    'cases'
+  )
+
+  casesRef.current
+    ?.scrollIntoView({
+
+      behavior:
+        'smooth'
+    })
+}}
 
       className={`
         py-4
@@ -3315,11 +3350,23 @@ if (
 
     <button
 
-      onClick={() =>
-        setActiveMobileTab(
-          'followup'
-        )
-      }
+      onClick={() => {
+
+  setActiveMobileTab(
+    'followup'
+  )
+
+  setTimeout(() => {
+
+    followupRef.current
+      ?.scrollIntoView({
+
+        behavior:
+          'smooth'
+      })
+
+  }, 100)
+}}
 
       className={`
         py-4
