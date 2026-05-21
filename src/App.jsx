@@ -1154,7 +1154,6 @@ async function updateStatus(id, value) {
 }
 let mobileApplications =
   filteredApplications
-
 if (
   activeMobileTab ===
   'followup'
@@ -1183,7 +1182,6 @@ if (
       }
     )
 }
-
 if (
   activeMobileTab ===
   'home'
@@ -1191,7 +1189,6 @@ if (
 
   mobileApplications =
     filteredApplications.slice(0, 5)
-}
 }
   const processingCount =
     applications.filter(item => {
