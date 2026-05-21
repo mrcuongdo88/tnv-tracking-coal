@@ -1486,6 +1486,75 @@ if (
 
         </div>
         <div className="
+  bg-amber-50
+  border
+  border-amber-200
+  rounded-3xl
+  p-5
+  space-y-3
+">
+
+  <h3 className="
+    font-bold
+    text-amber-800
+  ">
+
+    Smart Insights
+
+  </h3>
+
+  <div className="
+    space-y-2
+    text-sm
+    text-slate-700
+  ">
+
+    <div>
+      🔥 {overdueCount}
+      hồ sơ overdue
+    </div>
+
+    <div>
+      📅 {
+        applications.filter(
+          item => {
+
+            if (
+              !item.next_followup_date
+            ) return false
+
+            return (
+              new Date(
+                item.next_followup_date
+              ).toDateString()
+
+              ===
+
+              new Date()
+                .toDateString()
+            )
+          }
+        ).length
+      }
+      follow-up hôm nay
+    </div>
+
+    <div>
+      ⚠️ {
+        applications.filter(
+          item =>
+
+            !item.checklist
+              ?.includes('VAT')
+        ).length
+      }
+      hồ sơ thiếu VAT
+    </div>
+
+  </div>
+
+</div>
+        <div className="
   bg-white
   rounded-3xl
   p-4
