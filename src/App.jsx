@@ -2431,8 +2431,6 @@ if (
 
           </div>
 
-        </div>
-
       )}
 {showCaseDetail && selectedCase && (
 
