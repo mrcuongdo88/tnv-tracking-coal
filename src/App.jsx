@@ -2407,7 +2407,6 @@ if (
   "
 />
 
-            </div>
 
             <div className="flex justify-end gap-3 pt-3">
 
@@ -2430,7 +2429,7 @@ if (
             </div>
 
           </div>
-
+</div>
       )}
 {showCaseDetail && selectedCase && (
 
