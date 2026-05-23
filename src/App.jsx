@@ -362,15 +362,63 @@ const [
   selectedChecklist,
   setSelectedChecklist
 ] = useState([])
-  const [newApplication, setNewApplication] =
-    useState({
-      bank: '',
-      fileType: '',
-      amount: '',
-      submissionDate: '',
-      nextAction: '',
-      nextFollowupDate: ''
-    })
+
+ const [
+  newShipment,
+  setNewShipment
+] = useState({
+
+  orderNo: '',
+
+  supplier: '',
+
+  vesselName: '',
+
+  cargoQty: '',
+
+  gcv: '',
+
+  cifPrice: '',
+
+  fxRate: '26150',
+
+  estimatedValueVnd: '',
+
+  laycanStart: '',
+
+  laycanEnd: '',
+
+  etaDischarge: '',
+
+  loadPort: '',
+
+  dischargePort: '',
+
+  paymentTerm: '',
+
+  shipmentNotes: '',
+
+  status: 'Kế hoạch',
+
+  riskLevel: 'Bình thường'
+})
+const estimatedValueVnd =
+
+  Number(
+    newShipment.cargoQty || 0
+  )
+
+  *
+
+  Number(
+    newShipment.cifPrice || 0
+  )
+
+  *
+
+  Number(
+    newShipment.fxRate || 0
+  )
 useEffect(() => {
 
   fetchApplications()
@@ -455,7 +503,7 @@ function detectBank(bankName = '') {
         bank.name
           .toLowerCase()
           .includes(
-            newApplication.bank
+            newShipment.supplier
               .toLowerCase()
           )
     )
@@ -873,9 +921,8 @@ async function saveCreditStructure() {
   async function addApplication() {
 
     if (
-      !newApplication.bank ||
-      !newApplication.fileType
-    ) return
+  !newShipment.orderNo
+) return
 
     let documentUrl = ''
     let documentName = ''
@@ -918,23 +965,22 @@ async function saveCreditStructure() {
         .insert([
           {
             bank:
-              newApplication.bank,
+              newShipment.supplier,
 
             file_type:
-              newApplication.fileType,
+  'Shipment Than',
 
             amount:
-              newApplication.amount
-                .replace(/[^\d]/g, ''),
+  estimatedValueVnd,
 
             submission_date:
-              newApplication.submissionDate,
+  new Date(),
 
             next_action:
-              newApplication.nextAction,
+  newShipment.shipmentNotes,
 
             next_followup_date:
-              newApplication.nextFollowupDate,
+  newShipment.etaDischarge,
 
             progress: 10,
 
@@ -961,7 +1007,7 @@ async function saveCreditStructure() {
 
       fetchApplications()
 
-      setNewApplication({
+      setNewShipment({
         bank: '',
         fileType: '',
         amount: '',
@@ -1352,13 +1398,13 @@ if (
 
     <h1 className="text-4xl font-bold text-slate-800">
 
-      TNV Tracking Coal
+      Banking LOS Dashboard
 
     </h1>
 
     <p className="text-slate-500 mt-2">
 
-      Coal Shipment Planning & Tracking
+      Credit Workflow Management System
 
     </p>
 
@@ -2126,169 +2172,240 @@ if (
           <div className="bg-white rounded-3xl p-6 w-full max-w-md space-y-4 shadow-2xl">
 
             <h2 className="text-2xl font-bold text-slate-800">
-              Thêm hồ sơ mới
+              Tạo Shipment Than
             </h2>
 
-            <div className="space-y-2">
-
-              <input
-                type="text"
-                placeholder="Tên ngân hàng"
-                value={newApplication.bank}
-                onChange={(e) =>
-                  setNewApplication({
-                    ...newApplication,
-                    bank: e.target.value
-                  })
-                }
-                className="w-full px-4 py-3 rounded-2xl border border-slate-200"
-              />
-
-              {newApplication.bank && (
-
-                <div className="bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden">
-
-                  {bankSuggestions.map(
-                    bank => (
-
-                      <button
-                        key={bank.name}
-                        type="button"
-                        onClick={() =>
-                          setNewApplication({
-                            ...newApplication,
-                            bank: bank.name
-                          })
-                        }
-                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-100 text-left"
-                      >
-
-                        <img
-                          src={bank.logo}
-                          alt={bank.name}
-                          className="h-8 w-auto object-contain"
-                        />
-
-                        <span className="font-medium">
-                          {bank.name}
-                        </span>
-
-                      </button>
-
-                    )
-                  )}
-
-                </div>
-
-              )}
-
-            </div>
-
             <input
-              type="text"
-              placeholder="Loại hồ sơ"
-              value={newApplication.fileType}
-              onChange={(e) =>
-                setNewApplication({
-                  ...newApplication,
-                  fileType: e.target.value
-                })
-              }
-              className="w-full px-4 py-3 rounded-2xl border border-slate-200"
-            />
+  type="text"
+  placeholder="Số đơn hàng"
+  value={newShipment.orderNo}
+  onChange={(e) =>
+    setNewShipment({
+      ...newShipment,
+      orderNo: e.target.value
+    })
+  }
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+/>
 
-            <input
-              type="text"
-              placeholder="Giá trị khoản vay"
-              value={newApplication.amount}
-              onChange={(e) =>
-                setNewApplication({
-                  ...newApplication,
-                  amount:
-                    formatInputCurrency(
-                      e.target.value
-                    )
-                })
-              }
-              className="w-full px-4 py-3 rounded-2xl border border-slate-200"
-            />
+<input
+  type="text"
+  placeholder="Nhà cung cấp"
+  value={newShipment.supplier}
+  onChange={(e) =>
+    setNewShipment({
+      ...newShipment,
+      supplier: e.target.value
+    })
+  }
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+/>
 
-            <input
-              type="text"
-              placeholder="Next Action"
-              value={newApplication.nextAction}
-              onChange={(e) =>
-                setNewApplication({
-                  ...newApplication,
-                  nextAction:
-                    e.target.value
-                })
-              }
-              className="w-full px-4 py-3 rounded-2xl border border-slate-200"
-            />
+<input
+  type="text"
+  placeholder="Tên tàu"
+  value={newShipment.vesselName}
+  onChange={(e) =>
+    setNewShipment({
+      ...newShipment,
+      vesselName: e.target.value
+    })
+  }
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+/>
 
-            <div className="space-y-2">
+<div className="grid grid-cols-2 gap-3">
 
-              <label className="text-sm font-medium text-slate-600">
-                Ngày follow-up tiếp theo
-              </label>
+  <input
+    type="date"
+    value={newShipment.laycanStart}
+    onChange={(e) =>
+      setNewShipment({
+        ...newShipment,
+        laycanStart: e.target.value
+      })
+    }
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+  />
 
-              <input
-                type="date"
-                value={
-                  newApplication.nextFollowupDate
-                }
-                onChange={(e) =>
-                  setNewApplication({
-                    ...newApplication,
-                    nextFollowupDate:
-                      e.target.value
-                  })
-                }
-                className="w-full px-4 py-3 rounded-2xl border border-slate-200"
-              />
+  <input
+    type="date"
+    value={newShipment.laycanEnd}
+    onChange={(e) =>
+      setNewShipment({
+        ...newShipment,
+        laycanEnd: e.target.value
+      })
+    }
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+  />
 
-            </div>
+</div>
 
-            <div className="space-y-2">
+<input
+  type="text"
+  placeholder="Cảng xếp"
+  value={newShipment.loadPort}
+  onChange={(e) =>
+    setNewShipment({
+      ...newShipment,
+      loadPort: e.target.value
+    })
+  }
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+/>
 
-              <label className="text-sm font-medium text-slate-600">
-                Ngày gửi hồ sơ ngân hàng
-              </label>
+<input
+  type="text"
+  placeholder="Cảng dỡ"
+  value={newShipment.dischargePort}
+  onChange={(e) =>
+    setNewShipment({
+      ...newShipment,
+      dischargePort: e.target.value
+    })
+  }
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+/>
 
-              <input
-                type="date"
-                value={
-                  newApplication.submissionDate
-                }
-                onChange={(e) =>
-                  setNewApplication({
-                    ...newApplication,
-                    submissionDate:
-                      e.target.value
-                  })
-                }
-                className="w-full px-4 py-3 rounded-2xl border border-slate-200"
-              />
+<div className="grid grid-cols-2 gap-3">
 
-            </div>
+  <input
+    type="text"
+    placeholder="Khối lượng"
+    value={newShipment.cargoQty}
+    onChange={(e) =>
+      setNewShipment({
+        ...newShipment,
+        cargoQty: e.target.value
+      })
+    }
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+  />
 
-            <div className="space-y-2">
+  <input
+    type="text"
+    placeholder="Nhiệt trị GCV"
+    value={newShipment.gcv}
+    onChange={(e) =>
+      setNewShipment({
+        ...newShipment,
+        gcv: e.target.value
+      })
+    }
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+  />
 
-              <label className="text-sm font-medium text-slate-600">
-                Upload hồ sơ PDF
-              </label>
+</div>
 
-              <input
-                type="file"
-                accept=".pdf"
-                onChange={(e) =>
-                  setSelectedFile(
-                    e.target.files[0]
-                  )
-                }
-                className="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-white"
-              />
+<div className="grid grid-cols-2 gap-3">
+
+  <input
+    type="text"
+    placeholder="Giá CIF USD"
+    value={newShipment.cifPrice}
+    onChange={(e) =>
+      setNewShipment({
+        ...newShipment,
+        cifPrice: e.target.value
+      })
+    }
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+  />
+
+  <input
+    type="text"
+    placeholder="Tỷ giá VCB"
+    value={newShipment.fxRate}
+    onChange={(e) =>
+      setNewShipment({
+        ...newShipment,
+        fxRate: e.target.value
+      })
+    }
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+  />
+
+</div>
+
+<div className="
+  bg-emerald-50
+  border
+  border-emerald-200
+  rounded-2xl
+  p-4
+">
+
+  <p className="
+    text-sm
+    text-emerald-700
+  ">
+
+    Giá trị tạm tính
+
+  </p>
+
+  <h3 className="
+    text-xl
+    font-bold
+    text-emerald-800
+    mt-2
+  ">
+
+    {
+      estimatedValueVnd.toLocaleString('vi-VN')
+    }
+
+    VND
+
+  </h3>
+
+</div>
+
+<input
+  type="date"
+  value={newShipment.etaDischarge}
+  onChange={(e) =>
+    setNewShipment({
+      ...newShipment,
+      etaDischarge: e.target.value
+    })
+  }
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+/>
+
+<input
+  type="text"
+  placeholder="Điều kiện thanh toán"
+  value={newShipment.paymentTerm}
+  onChange={(e) =>
+    setNewShipment({
+      ...newShipment,
+      paymentTerm: e.target.value
+    })
+  }
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+/>
+
+<textarea
+  placeholder="Ghi chú shipment..."
+  value={newShipment.shipmentNotes}
+  onChange={(e) =>
+    setNewShipment({
+      ...newShipment,
+      shipmentNotes: e.target.value
+    })
+  }
+  className="
+    w-full
+    px-4
+    py-3
+    rounded-2xl
+    border
+    border-slate-200
+    min-h-[120px]
+  "
+/>
 
             </div>
 
@@ -2304,7 +2421,7 @@ if (
               </button>
 
               <button
-                onClick={addApplication}
+                onClick={() => console.log(newShipment)}
                 className="px-5 py-3 rounded-2xl bg-slate-800 text-white"
               >
                 Lưu hồ sơ
