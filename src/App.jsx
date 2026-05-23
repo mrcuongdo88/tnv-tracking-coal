@@ -1674,43 +1674,47 @@ if (
 
                 <tr>
 
-                  <th className="text-left px-6 py-4">
-                    Ngân hàng
-                  </th>
+  <th className="text-left px-6 py-4">
+    Đơn hàng
+  </th>
 
-                  <th className="text-left px-6 py-4">
-                    Hồ sơ
-                  </th>
+  <th className="text-left px-6 py-4">
+    Supplier
+  </th>
 
-                  <th className="text-left px-6 py-4">
-                    Giá trị
-                  </th>
+  <th className="text-left px-6 py-4">
+    Tàu
+  </th>
 
-                  <th className="text-left px-6 py-4">
-                    Ngày gửi
-                  </th>
+  <th className="text-left px-6 py-4">
+    Laycan
+  </th>
 
-                  <th className="text-left px-6 py-4">
-                    Aging
-                  </th>
+  <th className="text-left px-6 py-4">
+    ETA
+  </th>
 
-                  <th className="text-left px-6 py-4">
-                    Next Action
-                  </th>
+  <th className="text-left px-6 py-4">
+    Khối lượng
+  </th>
 
-                  <th className="text-left px-6 py-4">
-                    Follow-up
-                  </th>
+  <th className="text-left px-6 py-4">
+    CIF USD
+  </th>
 
-                  <th className="text-left px-6 py-4">
-                    PDF
-                  </th>
+  <th className="text-left px-6 py-4">
+    Giá trị tạm tính
+  </th>
 
-                  <th className="text-left px-6 py-4">
-                    Timeline
-                  </th>
+  <th className="text-left px-6 py-4">
+    Risk
+  </th>
 
-                </tr>
+  <th className="text-left px-6 py-4">
+    Timeline
+  </th>
+
+</tr>
 
               </thead>
 
@@ -1718,194 +1722,122 @@ if (
 
                 {mobileshipments.map(item => {
 
-                  const aging =
-                    calculateAging(
-                      item.submission_date
-                    )
+  return (
 
-                  const bankInfo =
-                    detectBank(
-                      item.bank
-                    )
+    <tr
+      key={item.id}
+    >
 
-                  return (
-
-                    <tr
-  key={item.id}
-
-  onClick={() =>
-    openCaseDetail(item)
-  }
-
-  className="
-    border-t
-    border-slate-100
-    hover:bg-slate-50
-    cursor-pointer
-  "
->
-<td className="px-6 py-5">
-<div
-  className="
-    flex
-    flex-col
-    items-center
-    justify-center
-    cursor-pointer
-  "
-
-  onClick={() =>
-    openCaseDetail(item)
-  }
->
-
-  <img
-    src={bankInfo.logo}
-    alt={item.bank}
-
-    className="
-      max-h-[38px]
-      object-contain
-    "
-  />
-
-  <p
-    className={`
-      text-[11px]
-      mt-2
-      font-medium
-      text-center
-      ${
-        getLastUpdateInfo(
-          item.id
-        ).color
-      }
-    `}
-  >
-
-    {
-      getLastUpdateInfo(
-        item.id
-      ).label
-    }
-
-  </p>
-
-</div>
-
+                  <td className="px-6 py-5 font-semibold">
+  {item.order_no}
 </td>
 
-                      <td className="px-6 py-5">
-                        {item.file_type}
-                      </td>
-
-                      <td className="px-6 py-5 font-semibold text-slate-800">
-                        {formatCurrency(item.amount)}
-                      </td>
-
-                      <td className="px-6 py-5">
-
-                        {item.submission_date
-                          ? new Date(
-                              item.submission_date
-                            ).toLocaleDateString()
-                          : '-'}
-
-                      </td>
-
-                      <td className="px-6 py-5">
-
-                        <span
-                          className={`px-3 py-2 rounded-full text-sm font-semibold ${getAgingColor(aging)}`}
-                        >
-                          {aging} ngày
-                        </span>
-
-                      </td>
-
-                     <td className="px-6 py-5">
-
-  <div
-    className="
-      bg-green-100
-      text-green-700
-      px-4
-      py-3
-      rounded-2xl
-      text-sm
-      font-semibold
-      max-w-[260px]
-      whitespace-pre-wrap
-    "
-  >
-
-    {getNextAction(item)}
-
-  </div>
-
+<td className="px-6 py-5">
+  {item.supplier}
 </td>
 
-                      <td className="px-6 py-5">
-
-                        {item.next_followup_date ? (
-
-                          <span
-                            className={`px-3 py-2 rounded-full text-sm font-semibold ${
-                              isFollowupOverdue(
-                                item.next_followup_date
-                              )
-                                ? 'bg-red-100 text-red-700'
-                                : 'bg-green-100 text-green-700'
-                            }`}
-                          >
-
-                            {new Date(
-                              item.next_followup_date
-                            ).toLocaleDateString()}
-
-                          </span>
-
-                        ) : (
-
-                          '-'
-
-                        )}
-
-                      </td>
 <td className="px-6 py-5">
+  {item.vessel_name}
+</td>
 
-  {item.document_url ? (
+<td className="px-6 py-5">
+  <div className="text-sm">
 
-    <div className="flex flex-col gap-2">
-<p className="text-xs text-slate-400 truncate max-w-[160px]">
-  {item.document_name}
-</p>
-      <a
-        href={item.document_url}
-        target="_blank"
-        rel="noreferrer"
-        className="bg-slate-800 text-white px-4 py-2 rounded-xl text-sm text-center hover:bg-slate-700"
-      >
-        👁 Xem PDF
-      </a>
-
-      <a
-        href={item.document_url}
-        download
-        className="bg-slate-100 text-slate-700 px-4 py-2 rounded-xl text-sm text-center hover:bg-slate-200"
-      >
-        ⬇ Download
-      </a>
-
+    <div>
+      {item.laycan_start || '-'}
     </div>
 
-  ) : (
+    <div className="text-slate-400">
+      →
+    </div>
 
-    <span className="text-slate-400">
-      Không có file
-    </span>
+    <div>
+      {item.laycan_end || '-'}
+    </div>
 
-  )}
+  </div>
+</td>
+
+<td className="px-6 py-5">
+  {item.eta_discharge || '-'}
+</td>
+
+<td className="px-6 py-5">
+  {Number(
+    item.cargo_qty || 0
+  ).toLocaleString('vi-VN')}
+</td>
+
+<td className="px-6 py-5">
+  ${Number(
+    item.cif_price || 0
+  ).toLocaleString('en-US')}
+</td>
+
+<td className="px-6 py-5 font-bold text-emerald-700">
+
+  {
+    Number(
+      item.estimated_value_vnd || 0
+    ).toLocaleString('vi-VN')
+  }
+
+</td>
+
+<td className="px-6 py-5">
+
+  <span className={`
+    px-3
+    py-2
+    rounded-full
+    text-sm
+    font-semibold
+
+    ${
+      item.risk_level === 'Cao'
+
+      ? `
+        bg-red-100
+        text-red-700
+      `
+
+      : `
+        bg-green-100
+        text-green-700
+      `
+    }
+  `}>
+
+    {item.risk_level}
+
+  </span>
+
+</td>
+
+<td className="px-6 py-5">
+
+  <button
+    onClick={(e) => {
+
+      e.stopPropagation()
+
+      fetchTimeline(item.id)
+
+      setShowTimeline(true)
+    }}
+
+    className="
+      bg-indigo-500
+      text-white
+      px-4
+      py-2
+      rounded-xl
+    "
+  >
+
+    Timeline
+
+  </button>
 
 </td>
 
