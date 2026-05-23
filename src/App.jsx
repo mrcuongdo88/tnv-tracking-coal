@@ -2406,7 +2406,7 @@ if (
 />
 
 
-            <div className="flex justify-end gap-3 pt-3">
+            <div className="flex justify-end  gap-3 pt-3 relative z-50">
 
               <button
                 onClick={() =>
@@ -2418,7 +2418,16 @@ if (
               </button>
 
               <button
-                onClick={() => console.log(newShipment)}
+                type="button"
+
+onClick={(e) => {
+
+  e.preventDefault()
+
+  e.stopPropagation()
+
+  addApplication()
+}}
                 className="px-5 py-3 rounded-2xl bg-slate-800 text-white"
               >
                 Lưu hồ sơ
