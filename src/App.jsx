@@ -466,73 +466,14 @@ useEffect(() => {
 
   const { data, error } =
     await supabase
-  .from('shipments')
-  .insert([{
-
-    order_no:
-      newShipment.orderNo,
-
-    supplier:
-      newShipment.supplier,
-
-    vessel_name:
-      newShipment.vesselName,
-
-    cargo_qty:
-      Number(
-        newShipment.cargoQty
-      ) || 0,
-
-    gcv:
-      newShipment.gcv,
-
-    cif_price:
-      Number(
-        newShipment.cifPrice
-      ) || 0,
-
-    fx_rate:
-      Number(
-        newShipment.fxRate
-      ) || 0,
-
-    estimated_value_vnd:
-      estimatedValueVnd,
-
-    laycan_start:
-      newShipment.laycanStart,
-
-    laycan_end:
-      newShipment.laycanEnd,
-
-    eta_discharge:
-      newShipment.etaDischarge,
-
-    load_port:
-      newShipment.loadPort,
-
-    discharge_port:
-      newShipment.dischargePort,
-
-    payment_term:
-      newShipment.paymentTerm,
-
-    shipment_notes:
-      newShipment.shipmentNotes,
-
-    risk_level:
-      newShipment.riskLevel,
-
-    status:
-      'Kế hoạch',
-
-    document_url:
-      documentUrl,
-
-    document_name:
-      documentName
-
-  }])
+      .from('shipments')
+      .select()
+      .order(
+        'created_at',
+        {
+          ascending: false
+        }
+      )
 
   if (!error) {
 
@@ -1444,8 +1385,8 @@ if (
 <PullToRefresh
 
     onRefresh={
-      fetchshipments
-    }
+  fetchShipments
+}
 
   >
     <div className="min-h-screen bg-slate-100 p-6">
