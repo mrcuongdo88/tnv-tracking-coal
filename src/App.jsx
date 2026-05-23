@@ -249,7 +249,7 @@ const checklistKeywordMap = {
 }
 export default function App() {
 
-  const [applications, setApplications] =
+  const [shipments, setshipments] =
     useState([])
 const dashboardRef =
   useRef(null)
@@ -431,7 +431,7 @@ useEffect(() => {
 
     const map = {}
 
-    for (const app of applications) {
+    for (const app of shipments) {
 
       const { data } =
         await supabase
@@ -455,12 +455,12 @@ useEffect(() => {
     setSelectedTimelineMap(map)
   }
 
-  if (applications.length) {
+  if (shipments.length) {
 
     loadAllTimelines()
   }
 
-}, [applications])
+}, [shipments])
 
   async function fetchShipments() {
 
@@ -536,7 +536,7 @@ useEffect(() => {
 
   if (!error) {
 
-    setApplications(data || [])
+    setshipments(data || [])
   }
 }
 function detectBank(bankName = '') {
@@ -661,7 +661,7 @@ async function addNote() {
         timelineFile.name
 
       await supabase
-        .from('applications')
+        .from('shipments')
         .update({
 
           document_url:
@@ -685,7 +685,7 @@ async function addNote() {
     fileName
   )
 const currentApplication =
-  applications.find(
+  shipments.find(
 
     app =>
       app.id ===
@@ -707,7 +707,7 @@ const mergedChecklist = [
 ]
 
 await supabase
-  .from('applications')
+  .from('shipments')
 
   .update({
 
@@ -915,7 +915,7 @@ async function saveCreditStructure() {
     return
 
   await supabase
-    .from('applications')
+    .from('shipments')
     .update({
 
       credit_limit:
@@ -1023,7 +1023,7 @@ async function saveCreditStructure() {
 
     const { data, error } =
       await supabase
-        .from('applications')
+        .from('shipments')
         .insert([
           {
             bank:
@@ -1116,7 +1116,7 @@ setSelectedChecklist([])
 
     const { error } =
       await supabase
-        .from('applications')
+        .from('shipments')
         .delete()
         .eq('id', Number(id))
 
@@ -1130,7 +1130,7 @@ setSelectedChecklist([])
 
     const { error } =
       await supabase
-        .from('applications')
+        .from('shipments')
         .update({
           progress: parseInt(value)
         })
@@ -1154,7 +1154,7 @@ setSelectedChecklist([])
 
   const { error } =
     await supabase
-      .from('applications')
+      .from('shipments')
       .update({
         next_action: value
       })
@@ -1167,7 +1167,7 @@ setSelectedChecklist([])
     return
   }
 
-  setApplications(prev =>
+  setshipments(prev =>
 
     prev.map(app =>
 
@@ -1184,7 +1184,7 @@ setSelectedChecklist([])
 async function updateStatus(id, value) {
     const { error } =
       await supabase
-        .from('applications')
+        .from('shipments')
         .update({
           status: value
         })
@@ -1204,7 +1204,7 @@ async function updateStatus(id, value) {
   function exportToExcel() {
 
     const worksheet =
-      XLSX.utils.json_to_sheet(applications)
+      XLSX.utils.json_to_sheet(shipments)
 
     const workbook =
       XLSX.utils.book_new()
@@ -1212,7 +1212,7 @@ async function updateStatus(id, value) {
     XLSX.utils.book_append_sheet(
       workbook,
       worksheet,
-      'Applications'
+      'shipments'
     )
 
     const excelBuffer =
@@ -1267,8 +1267,8 @@ async function updateStatus(id, value) {
     )
   }
 
-  const filteredApplications =
-    applications.filter(item => {
+  const filteredshipments =
+    shipments.filter(item => {
 
       const bank =
         item.bank || ''
@@ -1290,15 +1290,15 @@ async function updateStatus(id, value) {
   followup:
     'Cases Need Follow-up'
 }
-let mobileApplications =
-  filteredApplications
+let mobileshipments =
+  filteredshipments
 if (
   activeMobileTab ===
   'followup'
 ) {
 
-  mobileApplications =
-    filteredApplications.filter(
+  mobileshipments =
+    filteredshipments.filter(
 
       item => {
 
@@ -1325,11 +1325,11 @@ if (
   'home'
 ) {
 
-  mobileApplications =
-    filteredApplications.slice(0, 5)
+  mobileshipments =
+    filteredshipments.slice(0, 5)
 }
   const processingCount =
-    applications.filter(item => {
+    shipments.filter(item => {
 
       const progress =
         item.progress || 0
@@ -1339,7 +1339,7 @@ if (
     }).length
 
   const completedCount =
-    applications.filter(item => {
+    shipments.filter(item => {
 
       const progress =
         item.progress || 0
@@ -1349,7 +1349,7 @@ if (
     }).length
 
   const overdueCount =
-    applications.filter(item => {
+    shipments.filter(item => {
 
       return (
         calculateAging(
@@ -1360,7 +1360,7 @@ if (
     }).length
 
   const followupOverdueCount =
-    applications.filter(item =>
+    shipments.filter(item =>
 
       isFollowupOverdue(
         item.next_followup_date
@@ -1368,7 +1368,7 @@ if (
     ).length
 
   const totalAmount =
-    applications.reduce(
+    shipments.reduce(
       (sum, item) => {
 
         const value =
@@ -1387,7 +1387,7 @@ if (
     {
       name: 'Đã tiếp nhận',
       value:
-        applications.filter(
+        shipments.filter(
           item =>
             item.status ===
             'Đã tiếp nhận'
@@ -1397,7 +1397,7 @@ if (
     {
       name: 'Đang thẩm định',
       value:
-        applications.filter(
+        shipments.filter(
           item =>
             item.status ===
             'Đang thẩm định'
@@ -1407,7 +1407,7 @@ if (
     {
       name: 'Chờ bổ sung',
       value:
-        applications.filter(
+        shipments.filter(
           item =>
             item.status ===
             'Chờ bổ sung'
@@ -1417,7 +1417,7 @@ if (
     {
       name: 'Hoàn thành',
       value:
-        applications.filter(
+        shipments.filter(
           item =>
             item.status ===
             'Hoàn thành'
@@ -1432,7 +1432,7 @@ if (
     '#22c55e'
   ]
 
-  const bankData = applications.map(
+  const bankData = shipments.map(
     item => ({
       bank: item.bank,
       progress:
@@ -1444,7 +1444,7 @@ if (
 <PullToRefresh
 
     onRefresh={
-      fetchApplications
+      fetchshipments
     }
 
   >
@@ -1538,7 +1538,7 @@ if (
             </p>
 
             <h2 className="text-4xl font-bold mt-3 text-slate-800">
-              {applications.length}
+              {shipments.length}
             </h2>
 
           </div>
@@ -1660,7 +1660,7 @@ if (
 
     <div>
       📅 {
-        applications.filter(
+        shipments.filter(
           item => {
 
             if (
@@ -1685,7 +1685,7 @@ if (
 
     <div>
       ⚠️ {
-        applications.filter(
+        shipments.filter(
           item =>
 
             !item.checklist
@@ -1775,7 +1775,7 @@ if (
 
               <tbody>
 
-                {mobileApplications.map(item => {
+                {mobileshipments.map(item => {
 
                   const aging =
                     calculateAging(
@@ -2044,14 +2044,14 @@ if (
     text-slate-500
   ">
 
-    {mobileApplications.length}
+    {mobileshipments.length}
 
     hồ sơ
 
   </div>
 
 </div>
-  {mobileApplications.map(item => {
+  {mobileshipments.map(item => {
 
     const aging =
       calculateAging(
@@ -2838,7 +2838,7 @@ if (
     }
 
     await supabase
-      .from('applications')
+      .from('shipments')
       .update({
 
         checklist:
@@ -3537,11 +3537,11 @@ if (
         onClick={() => {
 
           if (
-            applications.length
+            shipments.length
           ) {
 
             fetchTimeline(
-              applications[0].id
+              shipments[0].id
             )
           }
         }}
