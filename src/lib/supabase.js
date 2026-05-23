@@ -2,10 +2,10 @@ import { createClient }
 from '@supabase/supabase-js'
 
 const supabaseUrl =
-  'https://gitmguffqshjfifldkew.supabase.co'
+  'https://qcedjunifvjhcnuyumph.supabase.co'
 
 const supabaseKey =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdpdG1ndWZmcXNoamZpZmxka2V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4MDk1MTcsImV4cCI6MjA5NDM4NTUxN30.CtAtrRAkvgf5dScvL-FVgC0T--U6bw0UudTZekxjv0Y'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFjZWRqdW5pZnZqaGNudXl1bXBoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1MTM4OTEsImV4cCI6MjA5NTA4OTg5MX0.2PmBGR4J7D6YwjUbkjue42lYCFWT8aq-WKWotcVfLic'
 
 export const supabase =
   createClient(
