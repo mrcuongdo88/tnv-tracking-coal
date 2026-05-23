@@ -967,37 +967,72 @@ async function saveCreditStructure() {
         .from('shipments')
         .insert([
           {
-            bank:
-              newShipment.supplier,
 
-            file_type:
-  'Shipment Than',
+  order_no:
+    newShipment.orderNo,
 
-            amount:
-  estimatedValueVnd,
+  supplier:
+    newShipment.supplier,
 
-            submission_date:
-  new Date(),
+  vessel_name:
+    newShipment.vesselName,
 
-            next_action:
-  newShipment.shipmentNotes,
+  cargo_qty:
+    Number(
+      newShipment.cargoQty
+    ) || 0,
 
-            next_followup_date:
-  newShipment.etaDischarge,
+  gcv:
+    newShipment.gcv,
 
-            progress: 10,
+  cif_price:
+    Number(
+      newShipment.cifPrice
+    ) || 0,
 
-            status:
-              'Đã tiếp nhận',
+  fx_rate:
+    Number(
+      newShipment.fxRate
+    ) || 0,
 
-            document_url:
-              documentUrl,
+  estimated_value_vnd:
+    estimatedValueVnd,
 
-            document_name:
-              documentName,
-              checklist:
-  selectedChecklist,
-          }
+  laycan_start:
+    newShipment.laycanStart,
+
+  laycan_end:
+    newShipment.laycanEnd,
+
+  eta_discharge:
+    newShipment.etaDischarge,
+
+  load_port:
+    newShipment.loadPort,
+
+  discharge_port:
+    newShipment.dischargePort,
+
+  payment_term:
+    newShipment.paymentTerm,
+
+  shipment_notes:
+    newShipment.shipmentNotes,
+
+  risk_level:
+    newShipment.riskLevel,
+
+  progress: 10,
+
+  status:
+    'Kế hoạch',
+
+  document_url:
+    documentUrl,
+
+  document_name:
+    documentName
+}
         ])
         .select()
 
