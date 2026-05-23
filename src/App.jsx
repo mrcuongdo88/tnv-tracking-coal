@@ -1035,7 +1035,7 @@ async function saveCreditStructure() {
 }
         ])
         .select()
-
+console.log(error)
     if (!error) {
 
       await addTimeline(
