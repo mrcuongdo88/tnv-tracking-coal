@@ -421,7 +421,7 @@ const estimatedValueVnd =
   )
 useEffect(() => {
 
-  fetchApplications()
+  fetchShipments()
 
 }, [])
 
@@ -435,10 +435,10 @@ useEffect(() => {
 
       const { data } =
         await supabase
-          .from('application_timeline')
+          .from('shipment_timeline')
           .select()
           .eq(
-            'application_id',
+            'shipment_id',
             app.id
           )
           .order(
@@ -462,21 +462,83 @@ useEffect(() => {
 
 }, [applications])
 
-  async function fetchApplications() {
+  async function fetchShipments() {
 
-    const { data, error } =
-      await supabase
-        .from('applications')
-        .select()
-        .order('submission_date', {
-          ascending: false
-        })
+  const { data, error } =
+    await supabase
+  .from('shipments')
+  .insert([{
 
-    if (!error) {
+    order_no:
+      newShipment.orderNo,
 
-      setApplications(data || [])
-    }
+    supplier:
+      newShipment.supplier,
+
+    vessel_name:
+      newShipment.vesselName,
+
+    cargo_qty:
+      Number(
+        newShipment.cargoQty
+      ) || 0,
+
+    gcv:
+      newShipment.gcv,
+
+    cif_price:
+      Number(
+        newShipment.cifPrice
+      ) || 0,
+
+    fx_rate:
+      Number(
+        newShipment.fxRate
+      ) || 0,
+
+    estimated_value_vnd:
+      estimatedValueVnd,
+
+    laycan_start:
+      newShipment.laycanStart,
+
+    laycan_end:
+      newShipment.laycanEnd,
+
+    eta_discharge:
+      newShipment.etaDischarge,
+
+    load_port:
+      newShipment.loadPort,
+
+    discharge_port:
+      newShipment.dischargePort,
+
+    payment_term:
+      newShipment.paymentTerm,
+
+    shipment_notes:
+      newShipment.shipmentNotes,
+
+    risk_level:
+      newShipment.riskLevel,
+
+    status:
+      'Kế hoạch',
+
+    document_url:
+      documentUrl,
+
+    document_name:
+      documentName
+
+  }])
+
+  if (!error) {
+
+    setApplications(data || [])
   }
+}
 function detectBank(bankName = '') {
 
   const normalized =
@@ -515,10 +577,10 @@ async function addTimeline(
 ) {
 
   await supabase
-    .from('application_timeline')
+    .from('shipment_timeline')
     .insert([
       {
-        application_id:
+        shipment_id:
           applicationId,
 
         action,
@@ -536,9 +598,9 @@ async function addTimeline(
 
     const { data } =
       await supabase
-        .from('application_timeline')
+        .from('shipment_timeline')
         .select()
-        .eq('application_id', id)
+        .eq('shipment_id', id)
         .order('created_at', {
           ascending: false
         })
@@ -676,7 +738,7 @@ setTimelineChecklist([])
     selectedApplicationId
   )
 
-  fetchApplications()
+  fetchShipments()
 }
 
   function calculateAging(date) {
@@ -830,10 +892,10 @@ async function openCaseDetail(item) {
 
   const { data } =
     await supabase
-      .from('application_timeline')
+      .from('shipment_timeline')
       .select()
       .eq(
-        'application_id',
+        'shipment_id',
         item.id
       )
       .order(
@@ -880,7 +942,7 @@ async function saveCreditStructure() {
       selectedCase.id
     )
 
-  fetchApplications()
+  fetchShipments()
 
   setSelectedCase({
 
@@ -1005,16 +1067,44 @@ async function saveCreditStructure() {
         '📄 Hồ sơ được tạo'
       )
 
-      fetchApplications()
+      fetchShipments()
 
       setNewShipment({
-        bank: '',
-        fileType: '',
-        amount: '',
-        submissionDate: '',
-        nextAction: '',
-        nextFollowupDate: ''
-      })
+
+  orderNo: '',
+
+  supplier: '',
+
+  vesselName: '',
+
+  cargoQty: '',
+
+  gcv: '',
+
+  cifPrice: '',
+
+  fxRate: '26150',
+
+  estimatedValueVnd: '',
+
+  laycanStart: '',
+
+  laycanEnd: '',
+
+  etaDischarge: '',
+
+  loadPort: '',
+
+  dischargePort: '',
+
+  paymentTerm: '',
+
+  shipmentNotes: '',
+
+  status: 'Kế hoạch',
+
+  riskLevel: 'Bình thường'
+})
 
       setSelectedFile(null)
 setSelectedChecklist([])
@@ -1032,7 +1122,7 @@ setSelectedChecklist([])
 
     if (!error) {
 
-      fetchApplications()
+      fetchShipments()
     }
   }
 
@@ -1053,7 +1143,7 @@ setSelectedChecklist([])
         `📊 Tiến độ cập nhật ${value}%`
       )
 
-      fetchApplications()
+      fetchShipments()
     }
   }
 
@@ -1107,7 +1197,7 @@ async function updateStatus(id, value) {
         `🔄 Status chuyển sang ${value}`
       )
 
-      fetchApplications()
+      fetchShipments()
     }
   }
 
@@ -1398,13 +1488,13 @@ if (
 
     <h1 className="text-4xl font-bold text-slate-800">
 
-      Banking LOS Dashboard
+      Hệ thống theo dõi tiến độ tàu hàng
 
     </h1>
 
     <p className="text-slate-500 mt-2">
 
-      Credit Workflow Management System
+      Shipment Tracking System
 
     </p>
 
@@ -1427,7 +1517,7 @@ if (
               }
               className="bg-slate-800 text-white px-5 py-3 rounded-2xl shadow-lg hover:bg-slate-700"
             >
-              + Thêm hồ sơ
+              + Thêm shipment
             </button>
 
           </div>
@@ -2768,7 +2858,7 @@ if (
         updatedChecklist
     })
 
-    fetchApplications()
+    fetchShipments()
   }}
 
   className="
