@@ -1406,6 +1406,63 @@ function calculateRisk(
 
   return 'Bình thường'
 }
+function getDemurrageRisk(
+  item
+) {
+
+  if (
+    !item.eta_discharge
+  ) return null
+
+  if (
+    item.status ===
+    'Hoàn tất'
+  ) return null
+
+  const today =
+    new Date()
+
+  const eta =
+    new Date(
+      item.eta_discharge
+    )
+
+  const diffDays =
+    Math.ceil(
+      (
+        today - eta
+      ) /
+      (
+        1000 *
+        60 *
+        60 *
+        24
+      )
+    )
+
+  if (diffDays >= 5) {
+
+    return {
+      level: 'HIGH',
+      text: `
+        🚨 Nguy cơ
+        demurrage cao
+      `
+    }
+  }
+
+  if (diffDays >= 2) {
+
+    return {
+      level: 'WARNING',
+      text: `
+        ⚠ ETA overdue
+      `
+    }
+  }
+
+  return null
+}
   function isFollowupOverdue(date) {
 
     if (!date) return false
@@ -2072,152 +2129,6 @@ if (
   shadow-sm
   overflow-hidden
 ">
-  <div className="
-  bg-white
-  rounded-3xl
-  p-6
-  shadow-sm
-  mb-6
-">
-
-  <div className="
-    flex
-    items-center
-    justify-between
-    mb-5
-  ">
-
-    <div>
-
-      <h2 className="
-        text-xl
-        font-bold
-        text-slate-800
-      ">
-
-        👥 Operation Owners
-
-      </h2>
-
-      <p className="
-        text-slate-500
-        text-sm
-        mt-1
-      ">
-
-        Phân bổ & theo dõi workload shipment
-
-      </p>
-
-    </div>
-
-  </div>
-
-  <div className="
-    grid
-    md:grid-cols-3
-    gap-4
-  ">
-
-    {Object.entries(
-      ownerSummary
-    ).map(([owner, data]) => (
-
-      <div
-
-        key={owner}
-
-        className="
-          border
-          rounded-2xl
-          p-5
-          bg-slate-50
-        "
-      >
-
-        <div className="
-          text-lg
-          font-bold
-          text-slate-800
-        ">
-
-          {owner}
-
-        </div>
-
-        <div className="
-          mt-4
-          space-y-2
-          text-sm
-        ">
-
-          <div className="
-            flex
-            justify-between
-          ">
-
-            <span>
-              Shipment
-            </span>
-
-            <span className="
-              font-bold
-            ">
-
-              {data.total}
-
-            </span>
-
-          </div>
-
-          <div className="
-            flex
-            justify-between
-          ">
-
-            <span>
-              Risk cao
-            </span>
-
-            <span className="
-              font-bold
-              text-red-600
-            ">
-
-              {data.highRisk}
-
-            </span>
-
-          </div>
-
-          <div className="
-            flex
-            justify-between
-          ">
-
-            <span>
-              ETA overdue
-            </span>
-
-            <span className="
-              font-bold
-              text-amber-600
-            ">
-
-              {data.overdueEta}
-
-            </span>
-
-          </div>
-
-        </div>
-
-      </div>
-    ))}
-
-  </div>
-
-</div>
           <div className="overflow-x-auto">
 
             <table className="w-full">
@@ -2379,7 +2290,52 @@ if (
 </td>
 
 <td className="px-6 py-5">
-  {item.eta_discharge || '-'}
+
+  <div>
+
+    <div>
+
+      {item.eta_discharge || '-'}
+
+    </div>
+
+    {getDemurrageRisk(item) && (
+
+      <div className={`
+        mt-2
+        inline-flex
+        px-2
+        py-1
+        rounded-full
+        text-xs
+        font-semibold
+
+        ${
+          getDemurrageRisk(item)
+          .level === 'HIGH'
+
+          ? `
+            bg-red-100
+            text-red-700
+          `
+
+          : `
+            bg-amber-100
+            text-amber-700
+          `
+        }
+      `}>
+
+        {
+          getDemurrageRisk(item)
+          .text
+        }
+
+      </div>
+    )}
+
+  </div>
+
 </td>
 
 <td className="px-6 py-5">
