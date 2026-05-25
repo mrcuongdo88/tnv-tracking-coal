@@ -1346,7 +1346,63 @@ function getLaycanColor(
       new Date()
     )
   }
+const today =
+  new Date()
 
+const urgentLaycan =
+  shipments.filter(item => {
+
+    if (!item.laycan_start)
+      return false
+
+    const laycan =
+      new Date(
+        item.laycan_start
+      )
+
+    const diffDays =
+      Math.ceil(
+        (
+          laycan - today
+        ) /
+        (
+          1000 *
+          60 *
+          60 *
+          24
+        )
+      )
+
+    return diffDays <= 3
+  })
+
+const overdueEta =
+  shipments.filter(item => {
+
+    if (
+      !item.eta_discharge
+    ) return false
+
+    return (
+      new Date(
+        item.eta_discharge
+      ) < today
+      &&
+      item.status !==
+      'Hoàn tất'
+    )
+  })
+
+const highRisk =
+  shipments.filter(item =>
+    item.risk_level === 'Cao'
+  )
+
+const pendingLc =
+  shipments.filter(item =>
+    item.status ===
+    'Chờ mở LC'
+  )
   const filteredshipments =
     shipments.filter(item => {
 
@@ -1732,49 +1788,157 @@ if (
     text-sm
     text-slate-700
   ">
+<div className="
+  bg-gradient-to-r
+  from-slate-900
+  to-slate-800
+  text-white
+  rounded-3xl
+  p-6
+  mb-6
+">
+
+  <div className="
+    flex
+    items-center
+    justify-between
+    mb-4
+  ">
 
     <div>
-      🔥 {overdueCount}
-      hồ sơ overdue
+
+      <div className="
+        text-xl
+        font-bold
+      ">
+
+        Smart Insights
+
+      </div>
+
+      <div className="
+        text-slate-300
+        text-sm
+        mt-1
+      ">
+
+        Điều phối & cảnh báo vận hành shipment
+
+      </div>
+
     </div>
 
-    <div>
-      📅 {
-        shipments.filter(
-          item => {
-
-            if (
-              !item.next_followup_date
-            ) return false
-
-            return (
-              new Date(
-                item.next_followup_date
-              ).toDateString()
-
-              ===
-
-              new Date()
-                .toDateString()
-            )
-          }
-        ).length
-      }
-      follow-up hôm nay
+    <div className="text-3xl">
+      🚢
     </div>
 
-    <div>
-      ⚠️ {
-        shipments.filter(
-          item =>
+  </div>
 
-            !item.checklist
-              ?.includes('VAT')
-        ).length
-      }
-      hồ sơ thiếu VAT
+  <div className="
+    grid
+    md:grid-cols-2
+    gap-3
+  ">
+
+    <div className="
+      bg-white/10
+      rounded-2xl
+      p-4
+    ">
+
+      <div className="font-semibold">
+
+        ⚠ Shipment sắp Laycan
+
+      </div>
+
+      <div className="
+        text-2xl
+        font-bold
+        mt-2
+      ">
+
+        {urgentLaycan.length}
+
+      </div>
+
     </div>
 
+    <div className="
+      bg-white/10
+      rounded-2xl
+      p-4
+    ">
+
+      <div className="font-semibold">
+
+        🚨 ETA quá hạn
+
+      </div>
+
+      <div className="
+        text-2xl
+        font-bold
+        mt-2
+      ">
+
+        {overdueEta.length}
+
+      </div>
+
+    </div>
+
+    <div className="
+      bg-white/10
+      rounded-2xl
+      p-4
+    ">
+
+      <div className="font-semibold">
+
+        💳 Chờ mở LC
+
+      </div>
+
+      <div className="
+        text-2xl
+        font-bold
+        mt-2
+      ">
+
+        {pendingLc.length}
+
+      </div>
+
+    </div>
+
+    <div className="
+      bg-white/10
+      rounded-2xl
+      p-4
+    ">
+
+      <div className="font-semibold">
+
+        🔥 Shipment Risk Cao
+
+      </div>
+
+      <div className="
+        text-2xl
+        font-bold
+        mt-2
+      ">
+
+        {highRisk.length}
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
   </div>
 
 </div>
