@@ -1,6 +1,4 @@
-import ShipmentTable from './components/ShipmentTable'
-import 
-{ useState, useEffect,useRef } from 'react'
+import { useState, useEffect,useRef } from 'react'
 import * as XLSX from 'xlsx'
 import PullToRefresh
   from 'react-simple-pull-to-refresh'
@@ -2099,6 +2097,160 @@ if (
 
         </div>
         
+
+  <div className="
+    space-y-2
+    text-sm
+    text-slate-700
+  ">
+<div className="
+  bg-gradient-to-r
+  from-slate-900
+  to-slate-800
+  text-white
+  rounded-3xl
+  p-6
+  mb-6
+">
+
+  <div className="
+    flex
+    items-center
+    justify-between
+    mb-4
+  ">
+
+    <div>
+<div className="
+  bg-white
+  rounded-3xl
+  p-5
+  shadow-sm
+  mb-6
+">
+
+  <div className="
+    flex
+    justify-between
+    items-center
+    mb-4
+  ">
+
+    <div>
+
+      <div className="
+        text-xl
+        font-bold
+        text-slate-800
+      ">
+
+        🔔 Notification Center
+
+      </div>
+
+      <div className="
+        text-sm
+        text-slate-500
+        mt-1
+      ">
+
+        {notifications.length}
+        cảnh báo cần attention
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div className="
+    space-y-3
+    max-h-[240px]
+    overflow-y-auto
+  ">
+
+    {notifications.length === 0 && (
+
+      <div className="
+        text-slate-400
+        text-sm
+      ">
+
+        Không có cảnh báo nào 😄
+
+      </div>
+    )}
+
+    {notifications.map(
+      (
+        notification,
+        index
+      ) => (
+
+        <div
+
+          key={index}
+
+          className={`
+            rounded-2xl
+            px-4
+            py-3
+            text-sm
+            font-medium
+
+            ${
+              notification.type
+              === 'HIGH'
+
+              ? `
+                bg-red-100
+                text-red-700
+              `
+
+              : `
+                bg-amber-100
+                text-amber-700
+              `
+            }
+          `}
+        >
+
+          {notification.message}
+
+        </div>
+      )
+    )}
+
+  </div>
+
+</div>
+      <div className="
+        text-xl
+        font-bold
+      ">
+
+        Smart Insights
+
+      </div>
+
+      <div className="
+        text-slate-300
+        text-sm
+        mt-1
+      ">
+
+        Điều phối & cảnh báo vận hành shipment
+
+      </div>
+
+    </div>
+
+    <div className="text-3xl">
+      🚢
+    </div>
+
+  </div>
+
   <div className="
     grid
     md:grid-cols-2
@@ -2106,9 +2258,7 @@ if (
   ">
 
     <div className="
-      bg-white
-border border-slate-200
-shadow-sm
+      bg-white/10
       rounded-2xl
       p-4
     ">
@@ -2132,9 +2282,7 @@ shadow-sm
     </div>
 
     <div className="
-      bg-white
-border border-slate-200
-shadow-sm
+      bg-white/10
       rounded-2xl
       p-4
     ">
@@ -2158,9 +2306,7 @@ shadow-sm
     </div>
 
     <div className="
-      bg-white
-border border-slate-200
-shadow-sm
+      bg-white/10
       rounded-2xl
       p-4
     ">
@@ -2184,9 +2330,7 @@ shadow-sm
     </div>
 
     <div className="
-      bg-white
-border border-slate-200
-shadow-sm
+      bg-white/10
       rounded-2xl
       p-4
     ">
@@ -2210,22 +2354,527 @@ shadow-sm
     </div>
 </div>
   </div>
-        <ShipmentTable
-  shipments={mobileshipments}
-  searchTerm={search}
-  setSearchTerm={setSearch}
-  openTimeline={fetchTimeline}
-  openDetails={(item) => {
-    setSelectedShipment(item)
-    setShowDetails(true)
-  }}
-  calculateRisk={calculateRisk}
-  getLaycanColor={getLaycanColor}
-  formatCurrency={formatCurrency}
-/>
+
+</div>
+        <div className="
+  bg-white
+  rounded-3xl
+  p-4
+  shadow-sm
+">
+
+          <input
+            type="text"
+            placeholder="Tìm kiếm đơn tàu..."
+            value={search}
+            onChange={(e) =>
+              setSearch(e.target.value)
+            }
+            className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+          />
 
         </div>
 
+        <div className="
+  hidden
+  lg:block
+  bg-white
+  rounded-3xl
+  shadow-sm
+  overflow-hidden
+">
+  <div className="
+  bg-white
+  rounded-3xl
+  p-6
+  shadow-sm
+  mb-6
+">
+
+  <div className="
+    flex
+    justify-between
+    items-center
+    mb-5
+  ">
+
+    <div>
+
+      <h2 className="
+        text-xl
+        font-bold
+        text-slate-800
+      ">
+
+        🏢 Department Dashboard
+
+      </h2>
+
+      <p className="
+        text-slate-500
+        text-sm
+        mt-1
+      ">
+
+        Theo dõi workload theo phòng ban
+
+      </p>
+
+    </div>
+
+  </div>
+
+  <div className="
+    grid
+    md:grid-cols-4
+    gap-4
+  ">
+
+    {Object.entries(
+      departmentSummary
+    ).map(([dept, data]) => (
+
+      <div
+
+        key={dept}
+
+        className="
+          border
+          rounded-2xl
+          p-5
+          bg-slate-50
+        "
+      >
+
+        <div className="
+          text-lg
+          font-bold
+          text-slate-800
+        ">
+
+          {dept}
+
+        </div>
+
+        <div className="
+          mt-4
+          space-y-2
+          text-sm
+        ">
+
+          <div className="
+            flex
+            justify-between
+          ">
+
+            <span>
+              Shipment
+            </span>
+
+            <span className="
+              font-bold
+            ">
+
+              {data.total}
+
+            </span>
+
+          </div>
+
+          <div className="
+            flex
+            justify-between
+          ">
+
+            <span>
+              Risk cao
+            </span>
+
+            <span className="
+              font-bold
+              text-red-600
+            ">
+
+              {data.highRisk}
+
+            </span>
+
+          </div>
+
+          <div className="
+            flex
+            justify-between
+          ">
+
+            <span>
+              Chờ mở LC
+            </span>
+
+            <span className="
+              font-bold
+              text-amber-600
+            ">
+
+              {data.pendingLc}
+
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+    ))}
+
+  </div>
+
+</div>
+          <div className="overflow-x-auto">
+
+            <table className="w-full">
+
+              <thead className="bg-slate-50 text-slate-500 text-sm uppercase">
+
+                <tr>
+
+  <th className="text-left px-6 py-4">
+    Đơn hàng
+  </th>
+
+  <th className="text-left px-6 py-4">
+    Nhà cung cấp
+  </th>
+  <th className="text-left px-6 py-4">
+    Laycan
+  </th>
+
+  <th className="text-left px-6 py-4">
+    ETA
+  </th>
+
+  <th className="text-left px-6 py-4">
+    Khối lượng
+  </th>
+
+  <th className="text-left px-6 py-4">
+    CIF USD
+  </th>
+
+  <th className="text-left px-6 py-4">
+    Giá trị tạm tính
+  </th>
+<th className="text-left px-6 py-4">
+  Status
+</th>
+  <th className="text-left px-6 py-4">
+    Risk
+  </th>
+
+  <th className="text-left px-6 py-4">
+    Timeline
+  </th>
+
+</tr>
+
+              </thead>
+
+              <tbody>
+
+                {mobileshipments.map(item => {
+
+  return (
+
+    <tr
+
+  key={item.id}
+
+  className={`
+
+    border-b
+
+    ${
+      calculateRisk(item) === 'Cao'
+
+      ? `
+        bg-red-50
+        hover:bg-red-100
+      `
+
+      : calculateRisk(item)
+      === 'Trung bình'
+
+      ? `
+        bg-amber-50
+        hover:bg-amber-100
+      `
+
+      : `
+        bg-white
+        hover:bg-slate-50
+      `
+    }
+  `}
+>
+
+                  <td className="px-6 py-5 font-semibold">
+
+  <div>
+
+    <div className="font-bold text-slate-800">
+
+      {item.order_no}
+
+    </div>
+
+    <button
+
+      onClick={(e) => {
+
+        e.stopPropagation()
+
+        setSelectedShipment(item)
+
+        setShowDetails(true)
+      }}
+
+      className="
+        mt-2
+        text-sm
+        text-indigo-600
+        hover:text-indigo-800
+        font-semibold
+      "
+    >
+
+      📄 Chi tiết
+
+    </button>
+
+  </div>
+
+</td>
+
+<td className="px-6 py-5">
+  {item.supplier}
+</td>
+
+<td className="px-6 py-5">
+  <div>
+
+  <span className={`
+  inline-flex
+  items-center
+  gap-2
+  px-3
+  py-2
+  rounded-full
+  text-sm
+  font-semibold
+
+  ${getLaycanColor(
+    item.laycan_start
+  )}
+`}>
+
+    {item.laycan_start || '-'}
+
+    <span className="text-cyan-400">
+      →
+    </span>
+
+    {item.laycan_end || '-'}
+
+  </span>
+
+</div>
+</td>
+
+<td className="px-6 py-5">
+
+  <div>
+
+    <div>
+
+      {item.eta_discharge || '-'}
+
+    </div>
+
+    {getDemurrageRisk(item) && (
+
+      <div className={`
+        mt-2
+        inline-flex
+        px-2
+        py-1
+        rounded-full
+        text-xs
+        font-semibold
+
+        ${
+          getDemurrageRisk(item)
+          .level === 'HIGH'
+
+          ? `
+            bg-red-100
+            text-red-700
+          `
+
+          : `
+            bg-amber-100
+            text-amber-700
+          `
+        }
+      `}>
+
+        {
+          getDemurrageRisk(item)
+          .text
+        }
+
+      </div>
+    )}
+
+  </div>
+
+</td>
+
+<td className="px-6 py-5">
+  {Number(
+    item.cargo_qty || 0
+  ).toLocaleString('vi-VN')}
+</td>
+
+<td className="px-6 py-5">
+  ${Number(
+    item.cif_price || 0
+  ).toLocaleString('en-US')}
+</td>
+
+<td className="px-6 py-5 font-bold text-emerald-700">
+
+  {
+    Number(
+      item.estimated_value_vnd || 0
+    ).toLocaleString('vi-VN')
+  }
+
+</td>
+<td className="px-6 py-5">
+
+  <select
+
+    value={item.status || 'Kế hoạch'}
+
+    onChange={(e) =>
+
+      updateStatus(
+        item.id,
+        e.target.value
+      )
+    }
+
+    className={`
+      px-3
+      py-2
+      rounded-xl
+      text-sm
+      font-semibold
+      border-0
+      ${getStatusColor(item.status)}
+    `}
+  >
+
+    <option>Kế hoạch</option>
+
+    <option>Đang đàm phán</option>
+
+    <option>Chờ mở LC</option>
+
+    <option>Đã mở LC</option>
+
+    <option>Tàu đang xếp hàng</option>
+
+    <option>Đang hành trình</option>
+
+    <option>Sắp cập cảng</option>
+
+    <option>Đang dỡ hàng</option>
+
+    <option>Hoàn tất</option>
+
+  </select>
+
+</td>
+<td className="px-6 py-5">
+
+  <span className={`
+    px-3
+    py-2
+    rounded-full
+    text-sm
+    font-semibold
+
+    ${
+      calculateRisk(item) === 'Cao'
+
+      ? `
+        bg-red-100
+        text-red-700
+      `
+
+      : `
+        bg-green-100
+        text-green-700
+      `
+    }
+  `}>
+
+    {calculateRisk(item)}
+
+  </span>
+
+</td>
+                      <td className="px-6 py-5">
+                        <button
+                          onClick={(e) => {
+
+  e.stopPropagation()
+
+  setSelectedApplicationId(
+    item.id
+  )
+
+  fetchTimeline(item.id)
+
+  setShowTimeline(true)
+}}
+                          className="bg-indigo-500 text-white px-4 py-2 rounded-xl hover:bg-indigo-600"
+                        >
+                          Xem
+                        </button>
+
+                      </td>
+
+                    </tr>
+
+                  )
+                })}
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>{
+  activeMobileTab ===
+  'followup' && (
+
+    <div
+      ref={followupRef}
+    />
+  )
+}
 <div
 
   ref={casesRef}
@@ -3448,9 +4097,7 @@ onClick={(e) => {
 
   </div>
 
-</div>
-
-{editCreditStructure && (
+</div>{editCreditStructure && (
 
   <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[100]">
 
@@ -4426,7 +5073,7 @@ onClick={(e) => {
 
   </div>
 </div>
-
-</PullToRefresh>
+</div>
+    </div></PullToRefresh>
   )
   }
