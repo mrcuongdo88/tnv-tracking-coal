@@ -2103,45 +2103,7 @@ if (
     text-sm
     text-slate-700
   ">
-<div className="
-  bg-white
-  rounded-3xl
-  p-5
-  shadow-sm
-  mb-6
-">
 
-  <div className="
-    flex
-    justify-between
-    items-center
-    mb-4
-  ">
-
-    <div>
-
-      <div className="
-        text-xl
-        font-bold
-        text-slate-800
-      ">
-
-        🔔 Notification Center
-
-      </div>
-
-      <div className="
-        text-sm
-        text-slate-500
-        mt-1
-      ">
-
-        {notifications.length}
-        cảnh báo cần attention
-
-      </div>
-
-    </div>
 
   </div>
 
@@ -2230,7 +2192,7 @@ if (
         font-bold
       ">
 
-        Smart Insights
+        🚀 Operation Command Center
 
       </div>
 
@@ -2240,7 +2202,131 @@ if (
         mt-1
       ">
 
-        Điều phối & cảnh báo vận hành shipment
+        Notification • KPI • Department Overview
+  <div className="
+    grid
+    md:grid-cols-3
+    gap-4
+    mt-6
+  ">
+
+    <div className="
+      bg-black/20
+      rounded-2xl
+      p-4
+    ">
+
+      <div className="
+        font-bold
+        mb-3
+      ">
+        🔔 Notifications
+      </div>
+
+      <div className="space-y-2 text-sm">
+
+        {notifications.slice(0,4).map((n,idx)=>(
+          <div
+            key={idx}
+            className="
+              bg-white/10
+              rounded-xl
+              px-3
+              py-2
+            "
+          >
+            {n.message}
+          </div>
+        ))}
+
+      </div>
+
+    </div>
+
+    <div className="
+      bg-black/20
+      rounded-2xl
+      p-4
+    ">
+
+      <div className="
+        font-bold
+        mb-3
+      ">
+        📊 KPIs
+      </div>
+
+      <div className="
+        grid
+        grid-cols-2
+        gap-3
+        text-sm
+      ">
+
+        <div className="bg-white/10 rounded-xl p-3">
+          🚨 {shipments.filter(s=>calculateRisk(s)==='Cao').length} Risk cao
+        </div>
+
+        <div className="bg-white/10 rounded-xl p-3">
+          ⚠ {shipments.filter(s=>s.status==='Chờ mở LC').length} LC pending
+        </div>
+
+        <div className="bg-white/10 rounded-xl p-3">
+          🚢 {shipments.filter(s=>s.status==='Đang hành trình').length} Transit
+        </div>
+
+        <div className="bg-white/10 rounded-xl p-3">
+          ✅ {shipments.filter(s=>s.status==='Hoàn tất').length} Done
+        </div>
+
+      </div>
+
+    </div>
+
+    <div className="
+      bg-black/20
+      rounded-2xl
+      p-4
+    ">
+
+      <div className="
+        font-bold
+        mb-3
+      ">
+        🏢 Departments
+      </div>
+
+      <div className="space-y-2 text-sm">
+
+        {Object.entries(departmentSummary || {}).slice(0,4).map(([dept,data])=>(
+
+          <div
+            key={dept}
+            className="
+              flex
+              justify-between
+              bg-white/10
+              rounded-xl
+              px-3
+              py-2
+            "
+          >
+
+            <span>{dept}</span>
+
+            <span>
+              {data.total}
+            </span>
+
+          </div>
+        ))}
+
+      </div>
+
+    </div>
+
+  </div>
+
 
       </div>
 
@@ -2384,46 +2470,7 @@ if (
   shadow-sm
   overflow-hidden
 ">
-  <div className="
-  bg-white
-  rounded-3xl
-  p-6
-  shadow-sm
-  mb-6
-">
-
-  <div className="
-    flex
-    justify-between
-    items-center
-    mb-5
-  ">
-
-    <div>
-
-      <h2 className="
-        text-xl
-        font-bold
-        text-slate-800
-      ">
-
-        🏢 Department Dashboard
-
-      </h2>
-
-      <p className="
-        text-slate-500
-        text-sm
-        mt-1
-      ">
-
-        Theo dõi workload theo phòng ban
-
-      </p>
-
-    </div>
-
-  </div>
+  
 
   <div className="
     grid
