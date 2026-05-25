@@ -2181,8 +2181,6 @@ if (
           />
 
         </div>
-
-</div>
           <div className="overflow-x-auto">
 
             <table className="w-full">
@@ -3204,7 +3202,9 @@ if (
     border
     border-slate-200
     min-h-[80px]
-   text-slate-800 placeholder:text-slate-600"
+    text-slate-800
+    placeholder:text-slate-600
+"
 />
 
 
@@ -4732,7 +4732,7 @@ onClick={(e) => {
     </button>
 
   </div>
-</div>
+</div></div>
 </PullToRefresh>
   )
   }
