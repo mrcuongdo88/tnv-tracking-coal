@@ -751,7 +751,7 @@ function getLastUpdateInfo(
         '⚪ Chưa cập nhật',
 
       color:
-        'text-slate-400'
+        'text-slate-500'
     }
   }
 
@@ -2169,7 +2169,7 @@ if (
   border
   border-slate-200
   text-slate-800
-  placeholder:text-slate-400
+  placeholder:text-slate-500
 "
           />
 
@@ -2815,7 +2815,7 @@ if (
       orderNo: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-500"
 />
 
 <input
@@ -2828,7 +2828,7 @@ if (
       supplier: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-500"
 />
 
 <input
@@ -2841,7 +2841,7 @@ if (
       vesselName: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-500"
 />
 
 <div className="grid grid-cols-2 gap-3">
@@ -2855,7 +2855,7 @@ if (
         laycanStart: e.target.value
       })
     }
-    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-500"
   />
 
   <input
@@ -2867,7 +2867,7 @@ if (
         laycanEnd: e.target.value
       })
     }
-    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-500"
   />
 
 </div>
@@ -2882,7 +2882,7 @@ if (
       loadPort: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-500"
 />
 
 <input
@@ -2895,7 +2895,7 @@ if (
       dischargePort: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-500"
 />
 
 <div className="grid grid-cols-2 gap-3">
@@ -2910,7 +2910,7 @@ if (
         cargoQty: e.target.value
       })
     }
-    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-500"
   />
 
   <input
@@ -2923,7 +2923,7 @@ if (
         gcv: e.target.value
       })
     }
-    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-500"
   />
 
 </div>
@@ -2940,7 +2940,7 @@ if (
         cifPrice: e.target.value
       })
     }
-    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-500"
   />
 
   <input
@@ -2953,7 +2953,7 @@ if (
         fxRate: e.target.value
       })
     }
-    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-500"
   />
 
 </div>
@@ -3011,7 +3011,7 @@ if (
       etaDischarge: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-500"
 />
 
 <input
@@ -3024,7 +3024,7 @@ if (
       paymentTerm: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-500"
 />
 <div>
 
@@ -3620,7 +3620,7 @@ onClick={(e) => {
     className={
       checked
         ? 'text-slate-800'
-        : 'text-slate-400'
+        : 'text-slate-500'
     }
   >
 
@@ -3680,7 +3680,7 @@ onClick={(e) => {
 
           ) : (
 
-            <p className="text-slate-400">
+            <p className="text-slate-500">
               Không có file
             </p>
 
@@ -3724,7 +3724,7 @@ onClick={(e) => {
 
             </p>
 
-            <p className="text-sm text-slate-400 mt-1">
+            <p className="text-sm text-slate-500 mt-1">
 
               {new Date(
                 item.created_at
@@ -3761,7 +3761,7 @@ onClick={(e) => {
       item => item.file_url
     ) && (
 
-      <p className="text-slate-400">
+      <p className="text-slate-500">
 
         Chưa có lịch sử PDF
 
@@ -4215,7 +4215,7 @@ onClick={(e) => {
   px-4
   py-3
   text-slate-800
-  placeholder:text-slate-400
+  placeholder:text-slate-500
 "
               />
               <input
@@ -4240,7 +4240,7 @@ onClick={(e) => {
     bg-white
     mt-3
     text-slate-800
-placeholder:text-slate-400
+placeholder:text-slate-500
   "
 />
 
@@ -4270,7 +4270,7 @@ placeholder:text-slate-400
     bg-white
     mt-3
     text-slate-800
-placeholder:text-slate-400
+placeholder:text-slate-500
   "
 />
 {
@@ -4631,7 +4631,7 @@ placeholder:text-slate-400
           `
 
           : `
-            text-slate-400
+            text-slate-500
           `
         }
       `}
@@ -4673,7 +4673,7 @@ placeholder:text-slate-400
           `
 
           : `
-            text-slate-400
+            text-slate-500
           `
         }
       `}
@@ -4719,7 +4719,7 @@ placeholder:text-slate-400
           `
 
           : `
-            text-slate-400
+            text-slate-500
           `
         }
       `}
@@ -4748,7 +4748,7 @@ placeholder:text-slate-400
         py-4
         text-sm
         font-medium
-        text-slate-400
+        text-slate-500
       "
     >
 
