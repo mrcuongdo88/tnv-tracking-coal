@@ -1048,7 +1048,6 @@ internal_due_date:
 }
         ])
         .select()
-console.error('Application error')
     if (!error) {
 
       if (data?.[0]?.id) {
@@ -2060,9 +2059,6 @@ if (
     🚢
   </div>
 
-</div>
-
-  </div>
 
   <div className="
     grid
@@ -2167,8 +2163,6 @@ if (
     </div>
 </div>
   </div>
-
-</div>
         <div className="
   bg-white
   rounded-3xl
@@ -3041,7 +3035,9 @@ if (
       border-slate-200
       px-4
       py-3
-     text-slate-800 placeholder:text-slate-600"
+      text-slate-800
+      placeholder:text-slate-600
+    "
 
     placeholder="VD: Nguyễn Văn A"
   />
@@ -3079,7 +3075,9 @@ if (
       border-slate-200
       px-4
       py-3
-     text-slate-800 placeholder:text-slate-600"
+      text-slate-800
+      placeholder:text-slate-600
+    "
   >
 
     <option value="">
@@ -3141,7 +3139,9 @@ if (
       border-slate-200
       px-4
       py-3
-     text-slate-800 placeholder:text-slate-600"
+      text-slate-800
+      placeholder:text-slate-600
+    "
 
     placeholder="VD: Mở LC trước ngày..."
   />
@@ -3181,7 +3181,9 @@ if (
       border-slate-200
       px-4
       py-3
-     text-slate-800 placeholder:text-slate-600"
+      text-slate-800
+      placeholder:text-slate-600
+    "
   />
 
 </div>
@@ -3316,7 +3318,7 @@ onClick={(e) => {
               </p>
 
               <h3 className="text-xl font-bold text-slate-800 mt-2">
-                {formatCurrency(selectedCase.amount)} VNĐ
+                {formatCurrency(selectedCase.estimated_value_vnd)} VNĐ
               </h3>
 <div className="mt-5 space-y-3">
 
@@ -3433,12 +3435,12 @@ onClick={(e) => {
 
                 <span
                   className={`px-3 py-2 rounded-full text-sm font-semibold ${getAgingColor(
-                    calculateAging(selectedCase.submission_date)
+                    calculateAging(selectedCase.created_at)
                   )}`}
                 >
 
                   {calculateAging(
-                    selectedCase.submission_date
+                    selectedCase.created_at
                   )} ngày
 
                 </span>
