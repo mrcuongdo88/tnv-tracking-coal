@@ -1220,21 +1220,39 @@ async function updateStatus(id, value) {
 
   function getStatusColor(status) {
 
-    switch (status) {
+  switch (status) {
 
-      case 'Đang thẩm định':
-        return 'bg-amber-100 text-amber-700'
+    case 'Kế hoạch':
+      return 'bg-slate-100 text-slate-700'
 
-      case 'Chờ bổ sung':
-        return 'bg-red-100 text-red-700'
+    case 'Đang đàm phán':
+      return 'bg-amber-100 text-amber-700'
 
-      case 'Hoàn thành':
-        return 'bg-green-100 text-green-700'
+    case 'Chờ mở LC':
+      return 'bg-orange-100 text-orange-700'
 
-      default:
-        return 'bg-blue-100 text-blue-700'
-    }
+    case 'Đã mở LC':
+      return 'bg-cyan-100 text-cyan-700'
+
+    case 'Tàu đang xếp hàng':
+      return 'bg-indigo-100 text-indigo-700'
+
+    case 'Đang hành trình':
+      return 'bg-blue-100 text-blue-700'
+
+    case 'Sắp cập cảng':
+      return 'bg-purple-100 text-purple-700'
+
+    case 'Đang dỡ hàng':
+      return 'bg-yellow-100 text-yellow-700'
+
+    case 'Hoàn tất':
+      return 'bg-green-100 text-green-700'
+
+    default:
+      return 'bg-slate-100 text-slate-700'
   }
+}
 
   function isFollowupOverdue(date) {
 
@@ -1743,7 +1761,9 @@ if (
   <th className="text-left px-6 py-4">
     Giá trị tạm tính
   </th>
-
+<th className="text-left px-6 py-4">
+  Status
+</th>
   <th className="text-left px-6 py-4">
     Risk
   </th>
@@ -1821,7 +1841,52 @@ if (
   }
 
 </td>
+<td className="px-6 py-5">
 
+  <select
+
+    value={item.status || 'Kế hoạch'}
+
+    onChange={(e) =>
+
+      updateStatus(
+        item.id,
+        e.target.value
+      )
+    }
+
+    className={`
+      px-3
+      py-2
+      rounded-xl
+      text-sm
+      font-semibold
+      border-0
+      ${getStatusColor(item.status)}
+    `}
+  >
+
+    <option>Kế hoạch</option>
+
+    <option>Đang đàm phán</option>
+
+    <option>Chờ mở LC</option>
+
+    <option>Đã mở LC</option>
+
+    <option>Tàu đang xếp hàng</option>
+
+    <option>Đang hành trình</option>
+
+    <option>Sắp cập cảng</option>
+
+    <option>Đang dỡ hàng</option>
+
+    <option>Hoàn tất</option>
+
+  </select>
+
+</td>
 <td className="px-6 py-5">
 
   <span className={`
