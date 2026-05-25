@@ -4172,7 +4172,10 @@ onClick={(e) => {
           <div>
             <span className="text-slate-600">             Load Port:
             </span>
-
+<span className="
+  font-semibold
+  text-slate-800
+"></span>
             {' '}
 
             {selectedShipment.load_port || '-'}
@@ -4182,7 +4185,10 @@ onClick={(e) => {
             <span className="text-slate-600">
               Discharge Port:
             </span>
-
+<span className="
+  font-semibold
+  text-slate-800
+"></span>
             {' '}
 
             {selectedShipment.discharge_port || '-'}
@@ -4192,7 +4198,10 @@ onClick={(e) => {
             <span className="text-slate-600">
               Laycan:
             </span>
-
+<span className="
+  font-semibold
+  text-slate-800
+"></span>
             {' '}
 
             {selectedShipment.laycan_start}
@@ -4206,7 +4215,10 @@ onClick={(e) => {
             <span className="text-slate-600">
               Dự kiến cập cảng:
             </span>
-
+<span className="
+  font-semibold
+  text-slate-800
+"></span>
             {' '}
 
             {selectedShipment.eta_discharge || '-'}
