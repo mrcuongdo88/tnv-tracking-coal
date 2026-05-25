@@ -1463,6 +1463,62 @@ function getDemurrageRisk(
 
   return null
 }
+function getPredictiveEta(
+  item
+) {
+
+  if (
+    !item.eta_discharge
+  ) return null
+
+  if (
+    item.status !==
+    'Đang hành trình'
+  ) return null
+
+  const today =
+    new Date()
+
+  const eta =
+    new Date(
+      item.eta_discharge
+    )
+
+  const diffDays =
+    Math.ceil(
+      (
+        eta - today
+      ) /
+      (
+        1000 *
+        60 *
+        60 *
+        24
+      )
+    )
+
+  if (diffDays <= 1) {
+
+    return {
+      level: 'HIGH',
+      text: `
+        🚨 ETA rất sát
+      `
+    }
+  }
+
+  if (diffDays <= 3) {
+
+    return {
+      level: 'WARNING',
+      text: `
+        ⚠ Nguy cơ delay ETA
+      `
+    }
+  }
+
+  return null
+}
   function isFollowupOverdue(date) {
 
     if (!date) return false
@@ -2048,24 +2104,6 @@ if (
     text-slate-700
   ">
 <div className="
-  bg-gradient-to-r
-  from-slate-900
-  to-slate-800
-  text-white
-  rounded-3xl
-  p-6
-  mb-6
-">
-
-  <div className="
-    flex
-    items-center
-    justify-between
-    mb-4
-  ">
-
-    <div>
-<div className="
   bg-white
   rounded-3xl
   p-5
@@ -2168,6 +2206,25 @@ if (
   </div>
 
 </div>
+<div className="
+  bg-gradient-to-r
+  from-slate-900
+  to-slate-800
+  text-white
+  rounded-3xl
+  p-6
+  mb-6
+">
+
+  <div className="
+    flex
+    items-center
+    justify-between
+    mb-4
+  ">
+
+    <div>
+
       <div className="
         text-xl
         font-bold
