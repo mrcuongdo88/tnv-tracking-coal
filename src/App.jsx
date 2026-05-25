@@ -5126,6 +5126,8 @@ onClick={(e) => {
   </div>
 </div>
 </div>
-    </div></PullToRefresh>
+    </div>
+
+</PullToRefresh>
   )
   }
