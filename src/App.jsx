@@ -1996,8 +1996,8 @@ if (
           <div className="
   bg-white
   rounded-3xl
-  p-4
   shadow-sm
+  overflow-hidden
 ">
 
             <p className="text-slate-500 text-sm">
@@ -2222,12 +2222,20 @@ shadow-sm
             onChange={(e) =>
               setSearch(e.target.value)
             }
-            className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+            className="w-full
+  px-4
+  py-3
+  rounded-2xl
+  border
+  border-slate-200"
           />
 
-          <div className="overflow-x-auto">
+          <div className="w-full overflow-x-auto">
 
-            <table className="min-w-[1400px] w-full">
+            <table className="
+  min-w-[1400px]
+  border-collapse
+">
 
               <thead className="bg-slate-50 text-slate-500 text-sm uppercase">
 
