@@ -2191,40 +2191,110 @@ if (
 
                 <tr>
 
-  <th className="text-left px-6 py-4">
+  <th className="
+  px-6
+  py-4
+  text-center
+  text-slate-700
+  font-semibold
+  whitespace-nowrap
+">
     Đơn hàng
   </th>
 
-  <th className="text-left px-6 py-4">
+  <th className="
+  px-6
+  py-4
+  text-center
+  text-slate-700
+  font-semibold
+  whitespace-nowrap
+">
     Nhà cung cấp
   </th>
-  <th className="text-left px-6 py-4">
+  <th className="
+  px-6
+  py-4
+  text-center
+  text-slate-700
+  font-semibold
+  whitespace-nowrap
+">
     Laycan
   </th>
 
-  <th className="text-left px-6 py-4">
+  <th className="
+  px-6
+  py-4
+  text-center
+  text-slate-700
+  font-semibold
+  whitespace-nowrap
+">
     ETA
   </th>
 
-  <th className="text-left px-6 py-4">
+  <th className="
+  px-6
+  py-4
+  text-center
+  text-slate-700
+  font-semibold
+  whitespace-nowrap
+">
     Khối lượng
   </th>
 
-  <th className="text-left px-6 py-4">
+  <th className="
+  px-6
+  py-4
+  text-center
+  text-slate-700
+  font-semibold
+  whitespace-nowrap
+">
     CIF USD
   </th>
 
-  <th className="text-left px-6 py-4">
+  <th className="
+  px-6
+  py-4
+  text-center
+  text-slate-700
+  font-semibold
+  whitespace-nowrap
+">
     Giá trị tạm tính
   </th>
-<th className="text-left px-6 py-4">
+<th className="
+  px-6
+  py-4
+  text-center
+  text-slate-700
+  font-semibold
+  whitespace-nowrap
+">
   Status
 </th>
-  <th className="text-left px-6 py-4">
+  <th className="
+  px-6
+  py-4
+  text-center
+  text-slate-700
+  font-semibold
+  whitespace-nowrap
+">
     Risk
   </th>
 
-  <th className="text-left px-6 py-4">
+  <th className="
+  px-6
+  py-4
+  text-center
+  text-slate-700
+  font-semibold
+  whitespace-nowrap
+">
     Timeline
   </th>
 
@@ -2270,7 +2340,8 @@ if (
   `}
 >
 
-                  <td className="px-6 py-5 font-semibold">
+                  <td className="px-6 py-5 text-center
+align-middle font-semibold tracking-wide">
 
   <div>
 
@@ -2312,6 +2383,8 @@ if (
   px-6
   py-5
   text-slate-700
+  text-center
+align-middle
 ">
   {item.supplier}
 </td>
@@ -2321,6 +2394,8 @@ if (
 
   <span className={`
   inline-flex
+  justify-center
+mx-auto
   items-center
   gap-2
   px-3
@@ -2351,6 +2426,8 @@ if (
   px-6
   py-5
   text-slate-700
+  text-center
+align-middle
 ">
 
   <div>
@@ -2366,6 +2443,8 @@ if (
       <div className={`
         mt-2
         inline-flex
+        justify-center
+mx-auto
         px-2
         py-1
         rounded-full
@@ -2433,7 +2512,8 @@ if (
   }
 
 </td>
-<td className="px-6 py-5">
+<td className="px-6 py-5 text-center
+align-middle">
 
   <select
 
