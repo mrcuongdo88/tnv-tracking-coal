@@ -2198,6 +2198,7 @@ if (
   text-slate-700
   font-semibold
   whitespace-nowrap
+  w-[90px]
 ">
     Đơn hàng
   </th>
@@ -2209,6 +2210,7 @@ if (
   text-slate-700
   font-semibold
   whitespace-nowrap
+  w-[120px]
 ">
     Nhà cung cấp
   </th>
@@ -2219,6 +2221,7 @@ if (
   text-slate-700
   font-semibold
   whitespace-nowrap
+  w-[110px]
 ">
     Laycan
   </th>
@@ -2288,8 +2291,7 @@ if (
   </th>
 
   <th className="
-  px-6
-  py-4
+  px-2 py-1
   text-center
   text-slate-700
   font-semibold
