@@ -1279,7 +1279,64 @@ async function updateStatus(id, value) {
       return 'bg-slate-100 text-slate-700'
   }
 }
+function getLaycanColor(
+  laycanStart
+) {
 
+  if (!laycanStart)
+    return `
+      bg-slate-100
+      text-slate-600
+    `
+
+  const today =
+    new Date()
+
+  const laycan =
+    new Date(laycanStart)
+
+  const diffDays =
+    Math.ceil(
+      (
+        laycan - today
+      ) /
+      (
+        1000 *
+        60 *
+        60 *
+        24
+      )
+    )
+
+  if (diffDays < 0) {
+
+    return `
+      bg-red-200
+      text-red-800
+    `
+  }
+
+  if (diffDays <= 2) {
+
+    return `
+      bg-red-100
+      text-red-700
+    `
+  }
+
+  if (diffDays <= 7) {
+
+    return `
+      bg-amber-100
+      text-amber-700
+    `
+  }
+
+  return `
+    bg-cyan-100
+    text-cyan-700
+  `
+}
   function isFollowupOverdue(date) {
 
     if (!date) return false
@@ -1859,25 +1916,34 @@ if (
 </td>
 
 <td className="px-6 py-5">
-  <div className="
+  <div>
+
+  <span className={`
+  inline-flex
+  items-center
+  gap-2
+  px-3
+  py-2
+  rounded-full
   text-sm
-  text-cyan-700
   font-semibold
-">
 
-    <div>
-      {item.laycan_start || '-'}
-    </div>
+  ${getLaycanColor(
+    item.laycan_start
+  )}
+`}>
 
-    <div className="text-slate-400">
+    {item.laycan_start || '-'}
+
+    <span className="text-cyan-400">
       →
-    </div>
+    </span>
 
-    <div>
-      {item.laycan_end || '-'}
-    </div>
+    {item.laycan_end || '-'}
 
-  </div>
+  </span>
+
+</div>
 </td>
 
 <td className="px-6 py-5">
