@@ -2161,7 +2161,16 @@ if (
             onChange={(e) =>
               setSearch(e.target.value)
             }
-            className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+            className="
+  w-full
+  px-4
+  py-3
+  rounded-2xl
+  border
+  border-slate-200
+  text-slate-800
+  placeholder:text-slate-400
+"
           />
 
         </div>
@@ -2178,7 +2187,7 @@ if (
 
             <table className="w-full">
 
-              <thead className="bg-slate-50 text-slate-500 text-sm uppercase">
+              <thead className="bg-slate-50 text-slate-700 text-sm uppercase">
 
                 <tr>
 
@@ -2299,7 +2308,11 @@ if (
 
 </td>
 
-<td className="px-6 py-5">
+<td className="
+  px-6
+  py-5
+  text-slate-700
+">
   {item.supplier}
 </td>
 
@@ -2334,7 +2347,11 @@ if (
 </div>
 </td>
 
-<td className="px-6 py-5">
+<td className="
+  px-6
+  py-5
+  text-slate-700
+">
 
   <div>
 
@@ -2383,19 +2400,31 @@ if (
 
 </td>
 
-<td className="px-6 py-5">
+<td className="
+  px-6
+  py-5
+  text-slate-700
+">
   {Number(
     item.cargo_qty || 0
   ).toLocaleString('vi-VN')}
 </td>
 
-<td className="px-6 py-5">
+<td className="
+  px-6
+  py-5
+  text-slate-700
+">
   ${Number(
     item.cif_price || 0
   ).toLocaleString('en-US')}
 </td>
 
-<td className="px-6 py-5 font-bold text-emerald-700">
+<td className="
+  px-6
+  py-5
+  text-slate-700
+">
 
   {
     Number(
@@ -2786,7 +2815,7 @@ if (
       orderNo: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
 />
 
 <input
@@ -2799,7 +2828,7 @@ if (
       supplier: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
 />
 
 <input
@@ -2812,7 +2841,7 @@ if (
       vesselName: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
 />
 
 <div className="grid grid-cols-2 gap-3">
@@ -2826,7 +2855,7 @@ if (
         laycanStart: e.target.value
       })
     }
-    className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
   />
 
   <input
@@ -2838,7 +2867,7 @@ if (
         laycanEnd: e.target.value
       })
     }
-    className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
   />
 
 </div>
@@ -2853,7 +2882,7 @@ if (
       loadPort: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
 />
 
 <input
@@ -2866,7 +2895,7 @@ if (
       dischargePort: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
 />
 
 <div className="grid grid-cols-2 gap-3">
@@ -2881,7 +2910,7 @@ if (
         cargoQty: e.target.value
       })
     }
-    className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
   />
 
   <input
@@ -2894,7 +2923,7 @@ if (
         gcv: e.target.value
       })
     }
-    className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
   />
 
 </div>
@@ -2911,7 +2940,7 @@ if (
         cifPrice: e.target.value
       })
     }
-    className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
   />
 
   <input
@@ -2924,7 +2953,7 @@ if (
         fxRate: e.target.value
       })
     }
-    className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
   />
 
 </div>
@@ -2982,7 +3011,7 @@ if (
       etaDischarge: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
 />
 
 <input
@@ -2995,7 +3024,7 @@ if (
       paymentTerm: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400"
 />
 <div>
 
@@ -4171,14 +4200,23 @@ onClick={(e) => {
 
               <textarea
               
-                placeholder="Nhập follow-up / ghi chú / trao đổi với ngân hàng..."
+                placeholder="Nhập follow-up / ghi chú / trao đổi với các bên liên quan..."
                 value={timelineNote}
                 onChange={(e) =>
                   setTimelineNote(
                     e.target.value
                   )
                 }
-                className="w-full border border-slate-200 rounded-2xl p-4 min-h-[100px]"
+                className="
+  w-full
+  rounded-2xl
+  border
+  border-slate-200
+  px-4
+  py-3
+  text-slate-800
+  placeholder:text-slate-400
+"
               />
               <input
   type="date"
@@ -4201,6 +4239,8 @@ onClick={(e) => {
     p-3
     bg-white
     mt-3
+    text-slate-800
+placeholder:text-slate-400
   "
 />
 
@@ -4229,6 +4269,8 @@ onClick={(e) => {
     p-3
     bg-white
     mt-3
+    text-slate-800
+placeholder:text-slate-400
   "
 />
 {
