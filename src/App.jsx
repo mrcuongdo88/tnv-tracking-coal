@@ -4075,15 +4075,11 @@ onClick={(e) => {
         p-5
       ">
 
-        <h3 className="
-          font-bold
-          text-lg
-          mb-4
-        ">
+        <h2 className="text-2xl font-bold text-slate-800">
 
           🚢 Hành trình
 
-        </h3>
+        </h2>
 
         <div className="space-y-3">
 
@@ -4151,15 +4147,11 @@ onClick={(e) => {
         p-5
       ">
 
-        <h3 className="
-          font-bold
-          text-lg
-          mb-4
-        ">
+        <h2 className="text-2xl font-bold text-slate-800">
 
           📝 Ghi chú
 
-        </h3>
+        </h2>
 
         <p className="text-slate-700 whitespace-pre-wrap">
 
@@ -4181,7 +4173,7 @@ onClick={(e) => {
 
             <div className="flex items-center justify-between mb-6">
 
-              <h2 className="text-2xl font-bold">
+              <h2 className="text-2xl font-bold text-slate-800">
                 CRM Follow-up Timeline
               </h2>
 
