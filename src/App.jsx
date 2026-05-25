@@ -2225,7 +2225,7 @@ shadow-sm
             className="w-full px-4 py-3 rounded-2xl border border-slate-200"
           />
 
-        </div>
+        <input />
 
           <div className="overflow-x-auto">
 
@@ -2561,7 +2561,7 @@ shadow-sm
               </tbody>
 
             </table>
-
+</div>
           </div>
 
         </div>
