@@ -4173,8 +4173,7 @@ onClick={(e) => {
             <span className="text-slate-600">             Load Port:
             </span>
 <span className="
-  font-semibold
-  text-slate-800
+  font-bold text-lg
 "></span>
             {' '}
 
@@ -4186,8 +4185,7 @@ onClick={(e) => {
               Discharge Port:
             </span>
 <span className="
-  font-semibold
-  text-slate-800
+  font-bold text-lg
 "></span>
             {' '}
 
@@ -4199,8 +4197,7 @@ onClick={(e) => {
               Laycan:
             </span>
 <span className="
-  font-semibold
-  text-slate-800
+  font-bold text-lg
 "></span>
             {' '}
 
@@ -4216,8 +4213,8 @@ onClick={(e) => {
               Dự kiến cập cảng:
             </span>
 <span className="
-  font-semibold
-  text-slate-800
+  font-bold
+  text-lg
 "></span>
             {' '}
 
