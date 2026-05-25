@@ -1038,10 +1038,13 @@ async function saveCreditStructure() {
 console.log(error)
     if (!error) {
 
-      await addTimeline(
-        data[0].id,
-        '📄 Hồ sơ được tạo'
-      )
+      if (data?.[0]?.id) {
+
+  await addTimeline(
+    data[0].id,
+    '📄 Shipment được tạo'
+  )
+}
 
       fetchShipments()
 
@@ -2158,7 +2161,17 @@ if (
 
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
 
-          <div className="bg-white rounded-3xl p-6 w-full max-w-md space-y-4 shadow-2xl">
+          <div className="
+  bg-white
+  rounded-3xl
+  p-6
+  w-full
+  max-w-md
+  space-y-3
+  shadow-2xl
+  max-h-[90vh]
+  overflow-y-auto
+">
 
             <h2 className="text-2xl font-bold text-slate-800">
               Tạo Shipment Than
@@ -2392,7 +2405,7 @@ if (
     rounded-2xl
     border
     border-slate-200
-    min-h-[120px]
+    min-h-[80px]
   "
 />
 
