@@ -1713,7 +1713,7 @@ if (
 
           <input
             type="text"
-            placeholder="Tìm kiếm ngân hàng..."
+            placeholder="Tìm kiếm đơn tàu..."
             value={search}
             onChange={(e) =>
               setSearch(e.target.value)
@@ -1796,7 +1796,41 @@ if (
     >
 
                   <td className="px-6 py-5 font-semibold">
-  {item.order_no}
+
+  <div>
+
+    <div className="font-bold text-slate-800">
+
+      {item.order_no}
+
+    </div>
+
+    <button
+
+      onClick={(e) => {
+
+        e.stopPropagation()
+
+        setSelectedShipment(item)
+
+        setShowDetails(true)
+      }}
+
+      className="
+        mt-2
+        text-sm
+        text-indigo-600
+        hover:text-indigo-800
+        font-semibold
+      "
+    >
+
+      📄 Chi tiết
+
+    </button>
+
+  </div>
+
 </td>
 
 <td className="px-6 py-5">
@@ -1808,7 +1842,11 @@ if (
 </td>
 
 <td className="px-6 py-5">
-  <div className="text-sm">
+  <div className="
+  text-sm
+  text-cyan-700
+  font-semibold
+">
 
     <div>
       {item.laycan_start || '-'}
@@ -1926,30 +1964,6 @@ if (
 
 </td>
                       <td className="px-6 py-5">
-<button
-
-  onClick={(e) => {
-
-    e.stopPropagation()
-
-    setSelectedShipment(item)
-
-    setShowDetails(true)
-  }}
-
-  className="
-    bg-slate-700
-    text-white
-    px-4
-    py-2
-    rounded-xl
-    mr-2
-  "
->
-
-  📄 Chi tiết
-
-</button>
                         <button
                           onClick={(e) => {
 
@@ -2432,7 +2446,17 @@ if (
   </h3>
 
 </div>
+<div className="
+  text-xs
+  text-slate-500
+  leading-relaxed
+  mb-2
+">
 
+  Ngày dự kiến tàu cập cảng dỡ hàng tại Việt Nam
+  (ETA = Estimated Time of Arrival)
+
+</div>
 <input
   type="date"
   value={newShipment.etaDischarge}
@@ -3321,7 +3345,16 @@ onClick={(e) => {
             VND
 
           </div>
+<div className="
+  text-xs
+  text-amber-600
+  mt-1
+">
 
+  ETA giúp bộ phận Logistics, Kho vận và Tài chính
+  chủ động kế hoạch tiếp nhận hàng.
+
+</div>
         </div>
 
       </div>
@@ -3381,7 +3414,7 @@ onClick={(e) => {
 
           <div>
             <span className="text-slate-500">
-              ETA:
+              Dự kiến cập cảng:
             </span>
 
             {' '}
