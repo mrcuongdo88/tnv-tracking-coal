@@ -2192,7 +2192,7 @@ if (
                 <tr>
 
   <th className="
-  px-6
+  px-3
   py-4
   text-center
   text-slate-700
@@ -2204,7 +2204,7 @@ if (
   </th>
 
   <th className="
-  px-6
+  px-3
   py-4
   text-center
   text-slate-700
@@ -2215,7 +2215,7 @@ if (
     Nhà cung cấp
   </th>
   <th className="
-  px-6
+  px-3
   py-4
   text-center
   text-slate-700
@@ -2227,7 +2227,7 @@ if (
   </th>
 
   <th className="
-  px-6
+  px-3
   py-4
   text-center
   text-slate-700
@@ -2238,7 +2238,7 @@ if (
   </th>
 
   <th className="
-  px-6
+  px-3
   py-4
   text-center
   text-slate-700
@@ -2249,7 +2249,7 @@ if (
   </th>
 
   <th className="
-  px-6
+  px-3
   py-4
   text-center
   text-slate-700
@@ -2260,7 +2260,7 @@ if (
   </th>
 
   <th className="
-  px-6
+  px-3
   py-4
   text-center
   text-slate-700
@@ -2270,7 +2270,7 @@ if (
     Giá trị tạm tính
   </th>
 <th className="
-  px-6
+  px-3
   py-4
   text-center
   text-slate-700
@@ -2280,7 +2280,7 @@ if (
   Status
 </th>
   <th className="
-  px-6
+  px-3
   py-4
   text-center
   text-slate-700
