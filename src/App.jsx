@@ -1963,13 +1963,8 @@ if (
   </th>
 
   <th className="text-left px-6 py-4">
-    Supplier
+    Nhà cung cấp
   </th>
-
-  <th className="text-left px-6 py-4">
-    Tàu
-  </th>
-
   <th className="text-left px-6 py-4">
     Laycan
   </th>
@@ -2054,10 +2049,6 @@ if (
 
 <td className="px-6 py-5">
   {item.supplier}
-</td>
-
-<td className="px-6 py-5">
-  {item.vessel_name}
 </td>
 
 <td className="px-6 py-5">
