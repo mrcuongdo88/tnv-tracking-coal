@@ -261,7 +261,11 @@ const followupRef =
   useRef(null)
   const [search, setSearch] =
     useState('')
-const [showModal, setShowModal] =
+const [
+  showFabMenu,
+  setShowFabMenu
+] = useState(false)
+  const [showModal, setShowModal] =
     useState(false)
 
   const [selectedFile, setSelectedFile] =
@@ -364,6 +368,11 @@ const [
     setSelectedApplicationId] =
     useState(null)
 const [
+  selectedChecklist,
+  setSelectedChecklist
+] = useState([])
+
+ const [
   newShipment,
   setNewShipment
 ] = useState({
@@ -411,20 +420,20 @@ internalDueDate: '',
 })
 const estimatedValueVnd =
 
-  normalizeNumber(
-    newShipment.cargoQty
+  Number(
+    newShipment.cargoQty || 0
   )
 
   *
 
-  normalizeNumber(
-    newShipment.cifPrice
+  Number(
+    newShipment.cifPrice || 0
   )
 
   *
 
-  normalizeNumber(
-    newShipment.fxRate
+  Number(
+    newShipment.fxRate || 0
   )
 useEffect(() => {
 
@@ -487,16 +496,6 @@ useEffect(() => {
     setshipments(data || [])
   }
 }
-
-function normalizeNumber(value) {
-
-  return Number(
-    String(value || '')
-      .replaceAll(',', '')
-      .replace(/[^\d.-]/g, '')
-  ) || 0
-}
-
 function detectBank(bankName = '') {
 
   const normalized =
@@ -513,7 +512,21 @@ function detectBank(bankName = '') {
       )
     )
   )
-}async function addTimeline(
+}
+
+  const bankSuggestions =
+
+    bankDirectory.filter(
+      bank =>
+
+        bank.name
+          .toLowerCase()
+          .includes(
+            newShipment.supplier
+              .toLowerCase()
+          )
+    )
+async function addTimeline(
   applicationId,
   action,
   fileUrl = '',
@@ -738,7 +751,7 @@ function getLastUpdateInfo(
         '⚪ Chưa cập nhật',
 
       color:
-        'text-slate-600'
+        'text-slate-400'
     }
   }
 
@@ -1048,6 +1061,7 @@ internal_due_date:
 }
         ])
         .select()
+console.log(error)
     if (!error) {
 
       if (data?.[0]?.id) {
@@ -1098,10 +1112,46 @@ internal_due_date:
 })
 
       setSelectedFile(null)
-
+setSelectedChecklist([])
       setShowModal(false)
     }
   }
+
+  async function deleteApplication(id) {
+
+    const { error } =
+      await supabase
+        .from('shipments')
+        .delete()
+        .eq('id', Number(id))
+
+    if (!error) {
+
+      fetchShipments()
+    }
+  }
+
+  async function updateProgress(id, value) {
+
+    const { error } =
+      await supabase
+        .from('shipments')
+        .update({
+          progress: parseInt(value)
+        })
+        .eq('id', Number(id))
+
+    if (!error) {
+
+      await addTimeline(
+        id,
+        `📊 Tiến độ cập nhật ${value}%`
+      )
+
+      fetchShipments()
+    }
+  }
+
   async function updateNextAction(
   id,
   value
@@ -1117,7 +1167,7 @@ internal_due_date:
 
   if (error) {
 
-    console.error('Application error')
+    console.log(error)
 
     return
   }
@@ -1535,48 +1585,7 @@ const pendingLc =
     item.status ===
     'Chờ mở LC'
   )
-  const departmentSummary = {}
-
-shipments.forEach(item => {
-
-  const dept =
-    item.department ||
-    'Chưa phân bổ'
-
-  if (!departmentSummary[dept]) {
-
-    departmentSummary[dept] = {
-
-      total: 0,
-
-      highRisk: 0,
-
-      pendingLc: 0
-    }
-  }
-
-  departmentSummary[dept]
-    .total += 1
-
-  if (
-    calculateRisk(item)
-    === 'Cao'
-  ) {
-
-    departmentSummary[dept]
-      .highRisk += 1
-  }
-
-  if (
-    item.status ===
-    'Chờ mở LC'
-  ) {
-
-    departmentSummary[dept]
-      .pendingLc += 1
-  }
-})
-  const ownerSummary = {}
+const ownerSummary = {}
 
 shipments.forEach(item => {
 
@@ -1629,74 +1638,17 @@ shipments.forEach(item => {
     }
   }
 })
-const notifications = []
-
-shipments.forEach(item => {
-
-  const predictive =
-    getPredictiveEta(item)
-
-  const demurrage =
-    getDemurrageRisk(item)
-
-  if (predictive) {
-
-    notifications.push({
-
-      type: predictive.level,
-
-      message: `
-        ${item.order_no}
-        :
-        ${predictive.text}
-      `
-    })
-  }
-
-  if (demurrage) {
-
-    notifications.push({
-
-      type: demurrage.level,
-
-      message: `
-        ${item.order_no}
-        :
-        ${demurrage.text}
-      `
-    })
-  }
-
-  if (
-    item.status ===
-    'Chờ mở LC'
-  ) {
-
-    notifications.push({
-
-      type: 'WARNING',
-
-      message: `
-        ${item.order_no}
-        :
-        ⚠ Chưa mở LC
-      `
-    })
-  }
-})
-  const filteredshipments =
+const filteredshipments =
     shipments.filter(item => {
 
-      const keyword = `
-        ${item.supplier || ''}
-        ${item.order_no || ''}
-        ${item.vessel_name || ''}
-        ${item.owner_name || ''}
-      `.toLowerCase()
+      const bank =
+        item.supplier || ''
 
-      return keyword.includes(
-        search.toLowerCase()
-      )
+      return bank
+        .toLowerCase()
+        .includes(
+          search.toLowerCase()
+        )
     })
     const mobileTabTitle = {
 
@@ -1748,14 +1700,24 @@ if (
     filteredshipments.slice(0, 5)
 }
   const processingCount =
-    shipments.filter(item =>
-      item.status !== 'Hoàn tất'
-    ).length
+    shipments.filter(item => {
+
+      const progress =
+        item.progress || 0
+
+      return progress < 100
+
+    }).length
 
   const completedCount =
-    shipments.filter(item =>
-      item.status === 'Hoàn tất'
-    ).length
+    shipments.filter(item => {
+
+      const progress =
+        item.progress || 0
+
+      return progress === 100
+
+    }).length
 
   const overdueCount =
     shipments.filter(item => {
@@ -1782,7 +1744,7 @@ if (
 
         const value =
           parseFloat(
-            item.estimated_value_vnd
+            item.amount
           ) || 0
 
         return sum + value
@@ -1793,42 +1755,46 @@ if (
 
   const statusData = [
 
-  {
-    name: 'Kế hoạch',
-    value:
-      shipments.filter(
-        item =>
-          item.status === 'Kế hoạch'
-      ).length
-  },
+    {
+      name: 'Đã tiếp nhận',
+      value:
+        shipments.filter(
+          item =>
+            item.status ===
+            'Đã tiếp nhận'
+        ).length
+    },
 
-  {
-    name: 'Đang hành trình',
-    value:
-      shipments.filter(
-        item =>
-          item.status === 'Đang hành trình'
-      ).length
-  },
+    {
+      name: 'Đang thẩm định',
+      value:
+        shipments.filter(
+          item =>
+            item.status ===
+            'Đang thẩm định'
+        ).length
+    },
 
-  {
-    name: 'Chờ mở LC',
-    value:
-      shipments.filter(
-        item =>
-          item.status === 'Chờ mở LC'
-      ).length
-  },
+    {
+      name: 'Chờ bổ sung',
+      value:
+        shipments.filter(
+          item =>
+            item.status ===
+            'Chờ bổ sung'
+        ).length
+    },
 
-  {
-    name: 'Hoàn tất',
-    value:
-      shipments.filter(
-        item =>
-          item.status === 'Hoàn tất'
-      ).length
-  }
-]
+    {
+      name: 'Hoàn thành',
+      value:
+        shipments.filter(
+          item =>
+            item.status ===
+            'Hoàn thành'
+        ).length
+    }
+  ]
 
   const COLORS = [
     '#3b82f6',
@@ -1839,7 +1805,7 @@ if (
 
   const bankData = shipments.map(
     item => ({
-      bank: item.supplier,
+      bank: item.bank,
       progress:
         item.progress || 0
     })
@@ -2034,31 +2000,50 @@ if (
           </div>
 
         </div>
-      <div className="flex items-center justify-between">
+<div className="
+  bg-gradient-to-r
+  from-slate-900
+  to-slate-800
+  text-white
+  rounded-3xl
+  p-6
+  mb-6
+">
 
-  <div>
+  <div className="
+    flex
+    items-center
+    justify-between
+    mb-4
+  ">
 
-    <div className="
-      text-xl
-      font-bold
-    ">
-      Smart Insights
+    <div>
+<div className="
+        text-xl
+        font-bold
+      ">
+
+        Smart Insights
+
+      </div>
+
+      <div className="
+        text-slate-300
+        text-sm
+        mt-1
+      ">
+
+        Điều phối & cảnh báo vận hành shipment
+
+      </div>
+
     </div>
 
-    <div className="
-      text-slate-300
-      text-sm
-      mt-1
-    ">
-      Điều phối & cảnh báo vận hành shipment
+    <div className="text-3xl">
+      🚢
     </div>
 
   </div>
-
-  <div className="text-3xl">
-    🚢
-  </div>
-
 
   <div className="
     grid
@@ -2162,7 +2147,6 @@ if (
 
     </div>
 </div>
-  </div>
         <div className="
   bg-white
   rounded-3xl
@@ -2177,15 +2161,24 @@ if (
             onChange={(e) =>
               setSearch(e.target.value)
             }
-            className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-600"
+            className="w-full px-4 py-3 rounded-2xl border border-slate-200"
           />
 
         </div>
-          <div className="overflow-x-auto">
+
+        <div className="
+  hidden
+  lg:block
+  bg-white
+  rounded-3xl
+  shadow-sm
+  overflow-hidden
+">
+  <div className="overflow-x-auto">
 
             <table className="w-full">
 
-              <thead className="bg-slate-50 text-slate-700 text-sm uppercase">
+              <thead className="bg-slate-50 text-slate-500 text-sm uppercase">
 
                 <tr>
 
@@ -2268,7 +2261,7 @@ if (
   `}
 >
 
-                  <td className="px-6 py-5 font-semibold text-slate-800">
+                  <td className="px-6 py-5 font-semibold">
 
   <div>
 
@@ -2306,11 +2299,11 @@ if (
 
 </td>
 
-<td className="px-6 py-5 text-slate-700">
+<td className="px-6 py-5">
   {item.supplier}
 </td>
 
-<td className="px-6 py-5 text-slate-700">
+<td className="px-6 py-5">
   <div>
 
   <span className={`
@@ -2341,7 +2334,7 @@ if (
 </div>
 </td>
 
-<td className="px-6 py-5 text-slate-700">
+<td className="px-6 py-5">
 
   <div>
 
@@ -2390,13 +2383,13 @@ if (
 
 </td>
 
-<td className="px-6 py-5 text-slate-700">
+<td className="px-6 py-5">
   {Number(
     item.cargo_qty || 0
   ).toLocaleString('vi-VN')}
 </td>
 
-<td className="px-6 py-5 text-slate-700">
+<td className="px-6 py-5">
   ${Number(
     item.cif_price || 0
   ).toLocaleString('en-US')}
@@ -2411,7 +2404,7 @@ if (
   }
 
 </td>
-<td className="px-6 py-5 text-slate-700">
+<td className="px-6 py-5">
 
   <select
 
@@ -2457,7 +2450,7 @@ if (
   </select>
 
 </td>
-<td className="px-6 py-5 text-slate-700">
+<td className="px-6 py-5">
 
   <span className={`
     px-3
@@ -2486,7 +2479,7 @@ if (
   </span>
 
 </td>
-                      <td className="px-6 py-5 text-slate-700">
+                      <td className="px-6 py-5">
                         <button
                           onClick={(e) => {
 
@@ -2572,8 +2565,10 @@ if (
 
     const aging =
       calculateAging(
-        item.created_at
+        item.submission_date
       )
+
+    const bankInfo = null
 
     return (
 
@@ -2791,7 +2786,7 @@ if (
       orderNo: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-600"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
 />
 
 <input
@@ -2804,7 +2799,7 @@ if (
       supplier: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-600"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
 />
 
 <input
@@ -2817,7 +2812,7 @@ if (
       vesselName: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-600"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
 />
 
 <div className="grid grid-cols-2 gap-3">
@@ -2831,7 +2826,7 @@ if (
         laycanStart: e.target.value
       })
     }
-    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-600"
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200"
   />
 
   <input
@@ -2843,7 +2838,7 @@ if (
         laycanEnd: e.target.value
       })
     }
-    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-600"
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200"
   />
 
 </div>
@@ -2858,7 +2853,7 @@ if (
       loadPort: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-600"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
 />
 
 <input
@@ -2871,7 +2866,7 @@ if (
       dischargePort: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-600"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
 />
 
 <div className="grid grid-cols-2 gap-3">
@@ -2886,7 +2881,7 @@ if (
         cargoQty: e.target.value
       })
     }
-    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-600"
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200"
   />
 
   <input
@@ -2899,7 +2894,7 @@ if (
         gcv: e.target.value
       })
     }
-    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-600"
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200"
   />
 
 </div>
@@ -2916,7 +2911,7 @@ if (
         cifPrice: e.target.value
       })
     }
-    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-600"
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200"
   />
 
   <input
@@ -2929,7 +2924,7 @@ if (
         fxRate: e.target.value
       })
     }
-    className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-600"
+    className="w-full px-4 py-3 rounded-2xl border border-slate-200"
   />
 
 </div>
@@ -2987,7 +2982,7 @@ if (
       etaDischarge: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-600"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
 />
 
 <input
@@ -3000,7 +2995,7 @@ if (
       paymentTerm: e.target.value
     })
   }
-  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-600"
+  className="w-full px-4 py-3 rounded-2xl border border-slate-200"
 />
 <div>
 
@@ -3033,8 +3028,6 @@ if (
       border-slate-200
       px-4
       py-3
-      text-slate-800
-      placeholder:text-slate-600
     "
 
     placeholder="VD: Nguyễn Văn A"
@@ -3073,8 +3066,6 @@ if (
       border-slate-200
       px-4
       py-3
-      text-slate-800
-      placeholder:text-slate-600
     "
   >
 
@@ -3137,8 +3128,6 @@ if (
       border-slate-200
       px-4
       py-3
-      text-slate-800
-      placeholder:text-slate-600
     "
 
     placeholder="VD: Mở LC trước ngày..."
@@ -3179,8 +3168,6 @@ if (
       border-slate-200
       px-4
       py-3
-      text-slate-800
-      placeholder:text-slate-600
     "
   />
 
@@ -3202,9 +3189,7 @@ if (
     border
     border-slate-200
     min-h-[80px]
-    text-slate-800
-    placeholder:text-slate-600
-"
+  "
 />
 
 
@@ -3283,13 +3268,13 @@ onClick={(e) => {
 
           <div className="flex items-center gap-4 mb-6">
 
-            {detectBank(selectedCase.supplier)?.logo && (
+            {detectBank(selectedCase.bank)?.logo && (
 
               <img
                 src={
-                  detectBank(selectedCase.supplier).logo
+                  detectBank(selectedCase.bank).logo
                 }
-                alt={selectedCase.supplier}
+                alt={selectedCase.bank}
                 className="h-14 object-contain"
               />
 
@@ -3298,11 +3283,11 @@ onClick={(e) => {
             <div>
 
               <h3 className="text-2xl font-bold text-slate-800">
-                {selectedCase.supplier}
+                {selectedCase.bank}
               </h3>
 
               <p className="text-slate-500">
-                {selectedCase.vessel_name}
+                {selectedCase.file_type}
               </p>
 
             </div>
@@ -3318,7 +3303,7 @@ onClick={(e) => {
               </p>
 
               <h3 className="text-xl font-bold text-slate-800 mt-2">
-                {formatCurrency(selectedCase.estimated_value_vnd)} VNĐ
+                {formatCurrency(selectedCase.amount)} VNĐ
               </h3>
 <div className="mt-5 space-y-3">
 
@@ -3435,12 +3420,12 @@ onClick={(e) => {
 
                 <span
                   className={`px-3 py-2 rounded-full text-sm font-semibold ${getAgingColor(
-                    calculateAging(selectedCase.created_at)
+                    calculateAging(selectedCase.submission_date)
                   )}`}
                 >
 
                   {calculateAging(
-                    selectedCase.created_at
+                    selectedCase.submission_date
                   )} ngày
 
                 </span>
@@ -3606,7 +3591,7 @@ onClick={(e) => {
     className={
       checked
         ? 'text-slate-800'
-        : 'text-slate-600'
+        : 'text-slate-400'
     }
   >
 
@@ -3666,7 +3651,7 @@ onClick={(e) => {
 
           ) : (
 
-            <p className="text-slate-600">
+            <p className="text-slate-400">
               Không có file
             </p>
 
@@ -3710,7 +3695,7 @@ onClick={(e) => {
 
             </p>
 
-            <p className="text-sm text-slate-600 mt-1">
+            <p className="text-sm text-slate-400 mt-1">
 
               {new Date(
                 item.created_at
@@ -3747,7 +3732,7 @@ onClick={(e) => {
       item => item.file_url
     ) && (
 
-      <p className="text-slate-600">
+      <p className="text-slate-400">
 
         Chưa có lịch sử PDF
 
@@ -4604,7 +4589,7 @@ onClick={(e) => {
           `
 
           : `
-            text-slate-600
+            text-slate-400
           `
         }
       `}
@@ -4646,7 +4631,7 @@ onClick={(e) => {
           `
 
           : `
-            text-slate-600
+            text-slate-400
           `
         }
       `}
@@ -4692,7 +4677,7 @@ onClick={(e) => {
           `
 
           : `
-            text-slate-600
+            text-slate-400
           `
         }
       `}
@@ -4721,7 +4706,7 @@ onClick={(e) => {
         py-4
         text-sm
         font-medium
-        text-slate-600
+        text-slate-400
       "
     >
 
@@ -4732,7 +4717,8 @@ onClick={(e) => {
     </button>
 
   </div>
+</div>
 </div></div>
-</PullToRefresh>
+    </div></PullToRefresh>
   )
   }
