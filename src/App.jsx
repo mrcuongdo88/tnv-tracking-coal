@@ -2225,11 +2225,9 @@ shadow-sm
             className="w-full px-4 py-3 rounded-2xl border border-slate-200"
           />
 
-        <input />
-
           <div className="overflow-x-auto">
 
-            <table className="w-full">
+            <table className="min-w-[1400px] w-full">
 
               <thead className="bg-slate-50 text-slate-500 text-sm uppercase">
 
@@ -2352,7 +2350,11 @@ shadow-sm
 
 </td>
 
-<td className="px-6 py-5">
+<td className="
+  px-6
+  py-5
+  whitespace-nowrap
+">
   {item.supplier}
 </td>
 
