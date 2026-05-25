@@ -2166,8 +2166,6 @@ if (
     )}
 
   </div>
-
-</div>
 <div className="
   bg-gradient-to-r
   from-slate-900
@@ -2203,6 +2201,7 @@ if (
       ">
 
         Notification • KPI • Department Overview
+        </div></div>
   <div className="
     grid
     md:grid-cols-3
@@ -2326,11 +2325,6 @@ if (
     </div>
 
   </div>
-
-
-      </div>
-
-    </div>
 
     <div className="text-3xl">
       🚢
@@ -2916,15 +2910,6 @@ if (
 
         </div>
 
-{
-  activeMobileTab ===
-  'followup' && (
-
-    <div
-      ref={followupRef}
-    />
-  )
-}
 <div
 
   ref={casesRef}
@@ -5125,8 +5110,6 @@ onClick={(e) => {
 
   </div>
 </div>
-</div>
-    </div>
 
 </PullToRefresh>
   )
