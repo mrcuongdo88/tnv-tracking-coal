@@ -404,6 +404,13 @@ const [
   dischargePort: '',
 
   paymentTerm: '',
+  ownerName: '',
+
+department: '',
+
+nextStep: '',
+
+internalDueDate: '',
 
   shipmentNotes: '',
 
@@ -1024,7 +1031,17 @@ async function saveCreditStructure() {
 
   payment_term:
     newShipment.paymentTerm,
+owner_name:
+  newShipment.ownerName,
 
+department:
+  newShipment.department,
+
+next_step:
+  newShipment.nextStep,
+
+internal_due_date:
+  newShipment.internalDueDate,
   shipment_notes:
     newShipment.shipmentNotes,
 
@@ -2481,7 +2498,181 @@ if (
   }
   className="w-full px-4 py-3 rounded-2xl border border-slate-200"
 />
+<div>
 
+  <label className="
+    text-sm
+    font-semibold
+    text-slate-700
+  ">
+
+    Người phụ trách
+
+  </label>
+
+  <input
+
+    value={newShipment.ownerName}
+
+    onChange={(e) =>
+      setNewShipment({
+        ...newShipment,
+        ownerName: e.target.value
+      })
+    }
+
+    className="
+      w-full
+      mt-2
+      rounded-2xl
+      border
+      border-slate-200
+      px-4
+      py-3
+    "
+
+    placeholder="VD: Nguyễn Văn A"
+  />
+
+</div>
+
+<div>
+
+  <label className="
+    text-sm
+    font-semibold
+    text-slate-700
+  ">
+
+    Bộ phận phụ trách
+
+  </label>
+
+  <select
+
+    value={newShipment.department}
+
+    onChange={(e) =>
+      setNewShipment({
+        ...newShipment,
+        department: e.target.value
+      })
+    }
+
+    className="
+      w-full
+      mt-2
+      rounded-2xl
+      border
+      border-slate-200
+      px-4
+      py-3
+    "
+  >
+
+    <option value="">
+      Chọn bộ phận
+    </option>
+
+    <option>
+      Commercial
+    </option>
+
+    <option>
+      Logistics
+    </option>
+
+    <option>
+      Finance
+    </option>
+
+    <option>
+      Operations
+    </option>
+
+    <option>
+      Port
+    </option>
+
+  </select>
+
+</div>
+
+<div>
+
+  <label className="
+    text-sm
+    font-semibold
+    text-slate-700
+  ">
+
+    Việc cần thực hiện tiếp theo
+
+  </label>
+
+  <input
+
+    value={newShipment.nextStep}
+
+    onChange={(e) =>
+      setNewShipment({
+        ...newShipment,
+        nextStep: e.target.value
+      })
+    }
+
+    className="
+      w-full
+      mt-2
+      rounded-2xl
+      border
+      border-slate-200
+      px-4
+      py-3
+    "
+
+    placeholder="VD: Mở LC trước ngày..."
+  />
+
+</div>
+
+<div>
+
+  <label className="
+    text-sm
+    font-semibold
+    text-slate-700
+  ">
+
+    Deadline nội bộ
+
+  </label>
+
+  <input
+
+    type="date"
+
+    value={newShipment.internalDueDate}
+
+    onChange={(e) =>
+      setNewShipment({
+        ...newShipment,
+        internalDueDate: e.target.value
+      })
+    }
+
+    className="
+      w-full
+      mt-2
+      rounded-2xl
+      border
+      border-slate-200
+      px-4
+      py-3
+    "
+  />
+
+</div>
 <textarea
   placeholder="Ghi chú shipment..."
   value={newShipment.shipmentNotes}
@@ -3345,16 +3536,6 @@ onClick={(e) => {
             VND
 
           </div>
-<div className="
-  text-xs
-  text-amber-600
-  mt-1
-">
-
-  ETA giúp bộ phận Logistics, Kho vận và Tài chính
-  chủ động kế hoạch tiếp nhận hàng.
-
-</div>
         </div>
 
       </div>
@@ -3421,7 +3602,16 @@ onClick={(e) => {
 
             {selectedShipment.eta_discharge || '-'}
           </div>
+<div className="
+  text-xs
+  text-amber-600
+  mt-1
+">
 
+  ETA giúp bộ phận Logistics, Kho vận và Tài chính
+  chủ động kế hoạch tiếp nhận hàng.
+
+</div>
         </div>
 
       </div>
