@@ -1529,6 +1529,47 @@ const pendingLc =
     item.status ===
     'Chờ mở LC'
   )
+  const departmentSummary = {}
+
+shipments.forEach(item => {
+
+  const dept =
+    item.department ||
+    'Chưa phân bổ'
+
+  if (!departmentSummary[dept]) {
+
+    departmentSummary[dept] = {
+
+      total: 0,
+
+      highRisk: 0,
+
+      pendingLc: 0
+    }
+  }
+
+  departmentSummary[dept]
+    .total += 1
+
+  if (
+    calculateRisk(item)
+    === 'Cao'
+  ) {
+
+    departmentSummary[dept]
+      .highRisk += 1
+  }
+
+  if (
+    item.status ===
+    'Chờ mở LC'
+  ) {
+
+    departmentSummary[dept]
+      .pendingLc += 1
+  }
+})
   const ownerSummary = {}
 
 shipments.forEach(item => {
@@ -2129,6 +2170,152 @@ if (
   shadow-sm
   overflow-hidden
 ">
+  <div className="
+  bg-white
+  rounded-3xl
+  p-6
+  shadow-sm
+  mb-6
+">
+
+  <div className="
+    flex
+    justify-between
+    items-center
+    mb-5
+  ">
+
+    <div>
+
+      <h2 className="
+        text-xl
+        font-bold
+        text-slate-800
+      ">
+
+        🏢 Department Dashboard
+
+      </h2>
+
+      <p className="
+        text-slate-500
+        text-sm
+        mt-1
+      ">
+
+        Theo dõi workload theo phòng ban
+
+      </p>
+
+    </div>
+
+  </div>
+
+  <div className="
+    grid
+    md:grid-cols-4
+    gap-4
+  ">
+
+    {Object.entries(
+      departmentSummary
+    ).map(([dept, data]) => (
+
+      <div
+
+        key={dept}
+
+        className="
+          border
+          rounded-2xl
+          p-5
+          bg-slate-50
+        "
+      >
+
+        <div className="
+          text-lg
+          font-bold
+          text-slate-800
+        ">
+
+          {dept}
+
+        </div>
+
+        <div className="
+          mt-4
+          space-y-2
+          text-sm
+        ">
+
+          <div className="
+            flex
+            justify-between
+          ">
+
+            <span>
+              Shipment
+            </span>
+
+            <span className="
+              font-bold
+            ">
+
+              {data.total}
+
+            </span>
+
+          </div>
+
+          <div className="
+            flex
+            justify-between
+          ">
+
+            <span>
+              Risk cao
+            </span>
+
+            <span className="
+              font-bold
+              text-red-600
+            ">
+
+              {data.highRisk}
+
+            </span>
+
+          </div>
+
+          <div className="
+            flex
+            justify-between
+          ">
+
+            <span>
+              Chờ mở LC
+            </span>
+
+            <span className="
+              font-bold
+              text-amber-600
+            ">
+
+              {data.pendingLc}
+
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+    ))}
+
+  </div>
+
+</div>
           <div className="overflow-x-auto">
 
             <table className="w-full">
