@@ -282,6 +282,15 @@ const [
 ] = useState({})
   const [showTimeline, setShowTimeline] =
     useState(false)
+    const [
+  showDetails,
+  setShowDetails
+] = useState(false)
+
+const [
+  selectedShipment,
+  setSelectedShipment
+] = useState(null)
 const [
   selectedCase,
   setSelectedCase
@@ -1916,36 +1925,31 @@ if (
   </span>
 
 </td>
-
-<td className="px-6 py-5">
-
-  <button
-    onClick={(e) => {
-
-      e.stopPropagation()
-
-      fetchTimeline(item.id)
-
-      setShowTimeline(true)
-    }}
-
-    className="
-      bg-indigo-500
-      text-white
-      px-4
-      py-2
-      rounded-xl
-    "
-  >
-
-    Timeline
-
-  </button>
-
-</td>
-
                       <td className="px-6 py-5">
+<button
 
+  onClick={(e) => {
+
+    e.stopPropagation()
+
+    setSelectedShipment(item)
+
+    setShowDetails(true)
+  }}
+
+  className="
+    bg-slate-700
+    text-white
+    px-4
+    py-2
+    rounded-xl
+    mr-2
+  "
+>
+
+  📄 Chi tiết
+
+</button>
                         <button
                           onClick={(e) => {
 
@@ -3162,6 +3166,261 @@ onClick={(e) => {
 
   </div>
 
+)}
+{showDetails && selectedShipment && (
+
+  <div className="
+    fixed
+    inset-0
+    bg-black/40
+    z-50
+    flex
+    justify-end
+  ">
+
+    <div className="
+      bg-white
+      h-full
+      w-full
+      max-w-2xl
+      overflow-y-auto
+      shadow-2xl
+      p-6
+    ">
+
+      <div className="
+        flex
+        justify-between
+        items-center
+        mb-6
+      ">
+
+        <div>
+
+          <h2 className="
+            text-3xl
+            font-bold
+            text-slate-800
+          ">
+
+            {selectedShipment.order_no}
+
+          </h2>
+
+          <p className="text-slate-500">
+
+            {selectedShipment.supplier}
+
+          </p>
+
+        </div>
+
+        <button
+
+          onClick={() =>
+            setShowDetails(false)
+          }
+
+          className="
+            text-slate-500
+            text-2xl
+          "
+        >
+
+          ✕
+
+        </button>
+
+      </div>
+
+      <div className="
+        grid
+        grid-cols-2
+        gap-4
+      ">
+
+        <div className="
+          bg-slate-50
+          rounded-2xl
+          p-4
+        ">
+
+          <div className="text-sm text-slate-500">
+            Tàu
+          </div>
+
+          <div className="font-bold text-lg">
+            {selectedShipment.vessel_name || '-'}
+          </div>
+
+        </div>
+
+        <div className="
+          bg-slate-50
+          rounded-2xl
+          p-4
+        ">
+
+          <div className="text-sm text-slate-500">
+            Khối lượng
+          </div>
+
+          <div className="font-bold text-lg">
+
+            {Number(
+              selectedShipment.cargo_qty || 0
+            ).toLocaleString('vi-VN')}
+
+            MT
+
+          </div>
+
+        </div>
+
+        <div className="
+          bg-slate-50
+          rounded-2xl
+          p-4
+        ">
+
+          <div className="text-sm text-slate-500">
+            CIF USD
+          </div>
+
+          <div className="font-bold text-lg">
+
+            $
+            {Number(
+              selectedShipment.cif_price || 0
+            ).toLocaleString('en-US')}
+
+          </div>
+
+        </div>
+
+        <div className="
+          bg-slate-50
+          rounded-2xl
+          p-4
+        ">
+
+          <div className="text-sm text-slate-500">
+            Giá trị tạm tính
+          </div>
+
+          <div className="
+            font-bold
+            text-lg
+            text-emerald-700
+          ">
+
+            {Number(
+              selectedShipment.estimated_value_vnd || 0
+            ).toLocaleString('vi-VN')}
+
+            VND
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div className="
+        mt-6
+        bg-slate-50
+        rounded-2xl
+        p-5
+      ">
+
+        <h3 className="
+          font-bold
+          text-lg
+          mb-4
+        ">
+
+          🚢 Hành trình
+
+        </h3>
+
+        <div className="space-y-3">
+
+          <div>
+            <span className="text-slate-500">
+              Load Port:
+            </span>
+
+            {' '}
+
+            {selectedShipment.load_port || '-'}
+          </div>
+
+          <div>
+            <span className="text-slate-500">
+              Discharge Port:
+            </span>
+
+            {' '}
+
+            {selectedShipment.discharge_port || '-'}
+          </div>
+
+          <div>
+            <span className="text-slate-500">
+              Laycan:
+            </span>
+
+            {' '}
+
+            {selectedShipment.laycan_start}
+
+            {' → '}
+
+            {selectedShipment.laycan_end}
+          </div>
+
+          <div>
+            <span className="text-slate-500">
+              ETA:
+            </span>
+
+            {' '}
+
+            {selectedShipment.eta_discharge || '-'}
+          </div>
+
+        </div>
+
+      </div>
+
+      <div className="
+        mt-6
+        bg-slate-50
+        rounded-2xl
+        p-5
+      ">
+
+        <h3 className="
+          font-bold
+          text-lg
+          mb-4
+        ">
+
+          📝 Ghi chú
+
+        </h3>
+
+        <p className="text-slate-700 whitespace-pre-wrap">
+
+          {selectedShipment.shipment_notes || 'Không có ghi chú'}
+
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
 )}
       {showTimeline && (
 
