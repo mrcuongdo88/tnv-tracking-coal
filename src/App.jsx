@@ -2097,241 +2097,6 @@ if (
 
         </div>
         
-
-  <div className="
-    space-y-2
-    text-sm
-    text-slate-700
-  ">
-
-
-  </div>
-
-  <div className="
-    space-y-3
-    max-h-[240px]
-    overflow-y-auto
-  ">
-
-    {notifications.length === 0 && (
-
-      <div className="
-        text-slate-400
-        text-sm
-      ">
-
-        Không có cảnh báo nào 😄
-
-      </div>
-    )}
-
-    {notifications.map(
-      (
-        notification,
-        index
-      ) => (
-
-        <div
-
-          key={index}
-
-          className={`
-            rounded-2xl
-            px-4
-            py-3
-            text-sm
-            font-medium
-
-            ${
-              notification.type
-              === 'HIGH'
-
-              ? `
-                bg-red-100
-                text-red-700
-              `
-
-              : `
-                bg-amber-100
-                text-amber-700
-              `
-            }
-          `}
-        >
-
-          {notification.message}
-
-        </div>
-      )
-    )}
-
-  </div>
-<div className="
-  bg-gradient-to-r
-  from-slate-900
-  to-slate-800
-  text-white
-  rounded-3xl
-  p-6
-  mb-6
-">
-
-  <div className="
-    flex
-    items-center
-    justify-between
-    mb-4
-  ">
-
-    <div>
-
-      <div className="
-        text-xl
-        font-bold
-      ">
-
-        🚀 Operation Command Center
-
-      </div>
-
-      <div className="
-        text-slate-300
-        text-sm
-        mt-1
-      ">
-
-        Notification • KPI • Department Overview
-        </div></div>
-  <div className="
-    grid
-    md:grid-cols-3
-    gap-4
-    mt-6
-  ">
-
-    <div className="
-      bg-black/20
-      rounded-2xl
-      p-4
-    ">
-
-      <div className="
-        font-bold
-        mb-3
-      ">
-        🔔 Notifications
-      </div>
-
-      <div className="space-y-2 text-sm">
-
-        {notifications.slice(0,4).map((n,idx)=>(
-          <div
-            key={idx}
-            className="
-              bg-white/10
-              rounded-xl
-              px-3
-              py-2
-            "
-          >
-            {n.message}
-          </div>
-        ))}
-
-      </div>
-
-    </div>
-
-    <div className="
-      bg-black/20
-      rounded-2xl
-      p-4
-    ">
-
-      <div className="
-        font-bold
-        mb-3
-      ">
-        📊 KPIs
-      </div>
-
-      <div className="
-        grid
-        grid-cols-2
-        gap-3
-        text-sm
-      ">
-
-        <div className="bg-white/10 rounded-xl p-3">
-          🚨 {shipments.filter(s=>calculateRisk(s)==='Cao').length} Risk cao
-        </div>
-
-        <div className="bg-white/10 rounded-xl p-3">
-          ⚠ {shipments.filter(s=>s.status==='Chờ mở LC').length} LC pending
-        </div>
-
-        <div className="bg-white/10 rounded-xl p-3">
-          🚢 {shipments.filter(s=>s.status==='Đang hành trình').length} Transit
-        </div>
-
-        <div className="bg-white/10 rounded-xl p-3">
-          ✅ {shipments.filter(s=>s.status==='Hoàn tất').length} Done
-        </div>
-
-      </div>
-
-    </div>
-
-    <div className="
-      bg-black/20
-      rounded-2xl
-      p-4
-    ">
-
-      <div className="
-        font-bold
-        mb-3
-      ">
-        🏢 Departments
-      </div>
-
-      <div className="space-y-2 text-sm">
-
-        {Object.entries(departmentSummary || {}).slice(0,4).map(([dept,data])=>(
-
-          <div
-            key={dept}
-            className="
-              flex
-              justify-between
-              bg-white/10
-              rounded-xl
-              px-3
-              py-2
-            "
-          >
-
-            <span>{dept}</span>
-
-            <span>
-              {data.total}
-            </span>
-
-          </div>
-        ))}
-
-      </div>
-
-    </div>
-
-  </div>
-
-    <div className="text-3xl">
-      🚢
-    </div>
-
-  </div>
-
   <div className="
     grid
     md:grid-cols-2
@@ -2339,7 +2104,9 @@ if (
   ">
 
     <div className="
-      bg-white/10
+      bg-white
+border border-slate-200
+shadow-sm
       rounded-2xl
       p-4
     ">
@@ -2363,7 +2130,9 @@ if (
     </div>
 
     <div className="
-      bg-white/10
+      bg-white
+border border-slate-200
+shadow-sm
       rounded-2xl
       p-4
     ">
@@ -2387,7 +2156,9 @@ if (
     </div>
 
     <div className="
-      bg-white/10
+      bg-white
+border border-slate-200
+shadow-sm
       rounded-2xl
       p-4
     ">
@@ -2411,7 +2182,9 @@ if (
     </div>
 
     <div className="
-      bg-white/10
+      bg-white
+border border-slate-200
+shadow-sm
       rounded-2xl
       p-4
     ">
@@ -2435,8 +2208,6 @@ if (
     </div>
 </div>
   </div>
-
-</div>
         <div className="
   bg-white
   rounded-3xl
@@ -2456,121 +2227,6 @@ if (
 
         </div>
 
-        <div className="
-  hidden
-  lg:block
-  bg-white
-  rounded-3xl
-  shadow-sm
-  overflow-hidden
-">
-  
-
-  <div className="
-    grid
-    md:grid-cols-4
-    gap-4
-  ">
-
-    {Object.entries(
-      departmentSummary
-    ).map(([dept, data]) => (
-
-      <div
-
-        key={dept}
-
-        className="
-          border
-          rounded-2xl
-          p-5
-          bg-slate-50
-        "
-      >
-
-        <div className="
-          text-lg
-          font-bold
-          text-slate-800
-        ">
-
-          {dept}
-
-        </div>
-
-        <div className="
-          mt-4
-          space-y-2
-          text-sm
-        ">
-
-          <div className="
-            flex
-            justify-between
-          ">
-
-            <span>
-              Shipment
-            </span>
-
-            <span className="
-              font-bold
-            ">
-
-              {data.total}
-
-            </span>
-
-          </div>
-
-          <div className="
-            flex
-            justify-between
-          ">
-
-            <span>
-              Risk cao
-            </span>
-
-            <span className="
-              font-bold
-              text-red-600
-            ">
-
-              {data.highRisk}
-
-            </span>
-
-          </div>
-
-          <div className="
-            flex
-            justify-between
-          ">
-
-            <span>
-              Chờ mở LC
-            </span>
-
-            <span className="
-              font-bold
-              text-amber-600
-            ">
-
-              {data.pendingLc}
-
-            </span>
-
-          </div>
-
-        </div>
-
-      </div>
-    ))}
-
-  </div>
-
-</div>
           <div className="overflow-x-auto">
 
             <table className="w-full">
