@@ -1337,6 +1337,75 @@ function getLaycanColor(
     text-cyan-700
   `
 }
+function calculateRisk(
+  item
+) {
+
+  const today =
+    new Date()
+
+  if (
+    item.eta_discharge
+  ) {
+
+    const eta =
+      new Date(
+        item.eta_discharge
+      )
+
+    if (
+      eta < today &&
+      item.status !==
+      'Hoàn tất'
+    ) {
+
+      return 'Cao'
+    }
+  }
+
+  if (
+    item.laycan_start
+  ) {
+
+    const laycan =
+      new Date(
+        item.laycan_start
+      )
+
+    const diffDays =
+      Math.ceil(
+        (
+          laycan - today
+        ) /
+        (
+          1000 *
+          60 *
+          60 *
+          24
+        )
+      )
+
+    if (diffDays <= 2) {
+
+      return 'Cao'
+    }
+
+    if (diffDays <= 7) {
+
+      return 'Trung bình'
+    }
+  }
+
+  if (
+    item.status ===
+    'Chờ mở LC'
+  ) {
+
+    return 'Trung bình'
+  }
+
+  return 'Bình thường'
+}
   function isFollowupOverdue(date) {
 
     if (!date) return false
@@ -1395,7 +1464,7 @@ const overdueEta =
 
 const highRisk =
   shipments.filter(item =>
-    item.risk_level === 'Cao'
+    calculateRisk(item) === 'Cao'
   )
 
 const pendingLc =
@@ -1403,6 +1472,59 @@ const pendingLc =
     item.status ===
     'Chờ mở LC'
   )
+  const ownerSummary = {}
+
+shipments.forEach(item => {
+
+  const owner =
+    item.owner_name ||
+    'Chưa phân công'
+
+  if (!ownerSummary[owner]) {
+
+    ownerSummary[owner] = {
+
+      total: 0,
+
+      highRisk: 0,
+
+      overdueEta: 0
+    }
+  }
+
+  ownerSummary[owner]
+    .total += 1
+
+  if (
+    calculateRisk(item)
+    === 'Cao'
+  ) {
+
+    ownerSummary[owner]
+      .highRisk += 1
+  }
+
+  if (
+    item.eta_discharge
+  ) {
+
+    const eta =
+      new Date(
+        item.eta_discharge
+      )
+
+    if (
+      eta < new Date()
+      &&
+      item.status !==
+      'Hoàn tất'
+    ) {
+
+      ownerSummary[owner]
+        .overdueEta += 1
+    }
+  }
+})
   const filteredshipments =
     shipments.filter(item => {
 
@@ -1799,7 +1921,152 @@ if (
         Smart Insights
 
       </div>
+<div className="
+  bg-white
+  rounded-3xl
+  p-6
+  shadow-sm
+  mb-6
+">
 
+  <div className="
+    flex
+    items-center
+    justify-between
+    mb-5
+  ">
+
+    <div>
+
+      <h2 className="
+        text-xl
+        font-bold
+        text-slate-800
+      ">
+
+        👥 Operation Owners
+
+      </h2>
+
+      <p className="
+        text-slate-500
+        text-sm
+        mt-1
+      ">
+
+        Phân bổ & theo dõi workload shipment
+
+      </p>
+
+    </div>
+
+  </div>
+
+  <div className="
+    grid
+    md:grid-cols-3
+    gap-4
+  ">
+
+    {Object.entries(
+      ownerSummary
+    ).map(([owner, data]) => (
+
+      <div
+
+        key={owner}
+
+        className="
+          border
+          rounded-2xl
+          p-5
+          bg-slate-50
+        "
+      >
+
+        <div className="
+          text-lg
+          font-bold
+          text-slate-800
+        ">
+
+          {owner}
+
+        </div>
+
+        <div className="
+          mt-4
+          space-y-2
+          text-sm
+        ">
+
+          <div className="
+            flex
+            justify-between
+          ">
+
+            <span>
+              Shipment
+            </span>
+
+            <span className="
+              font-bold
+            ">
+
+              {data.total}
+
+            </span>
+
+          </div>
+
+          <div className="
+            flex
+            justify-between
+          ">
+
+            <span>
+              Risk cao
+            </span>
+
+            <span className="
+              font-bold
+              text-red-600
+            ">
+
+              {data.highRisk}
+
+            </span>
+
+          </div>
+
+          <div className="
+            flex
+            justify-between
+          ">
+
+            <span>
+              ETA overdue
+            </span>
+
+            <span className="
+              font-bold
+              text-amber-600
+            ">
+
+              {data.overdueEta}
+
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+    ))}
+
+  </div>
+
+</div>
       <div className="
         text-slate-300
         text-sm
@@ -2006,8 +2273,36 @@ if (
   return (
 
     <tr
-      key={item.id}
-    >
+
+  key={item.id}
+
+  className={`
+
+    border-b
+
+    ${
+      calculateRisk(item) === 'Cao'
+
+      ? `
+        bg-red-50
+        hover:bg-red-100
+      `
+
+      : calculateRisk(item)
+      === 'Trung bình'
+
+      ? `
+        bg-amber-50
+        hover:bg-amber-100
+      `
+
+      : `
+        bg-white
+        hover:bg-slate-50
+      `
+    }
+  `}
+>
 
                   <td className="px-6 py-5 font-semibold">
 
@@ -2163,7 +2458,7 @@ if (
     font-semibold
 
     ${
-      item.risk_level === 'Cao'
+      calculateRisk(item) === 'Cao'
 
       ? `
         bg-red-100
@@ -2177,7 +2472,7 @@ if (
     }
   `}>
 
-    {item.risk_level}
+    {calculateRisk(item)}
 
   </span>
 
