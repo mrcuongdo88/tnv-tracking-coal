@@ -2914,7 +2914,9 @@ if (
 
           </div>
 
-        </div>{
+        </div>
+
+{
   activeMobileTab ===
   'followup' && (
 
@@ -4145,7 +4147,9 @@ onClick={(e) => {
 
   </div>
 
-</div>{editCreditStructure && (
+</div>
+
+{editCreditStructure && (
 
   <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[100]">
 
