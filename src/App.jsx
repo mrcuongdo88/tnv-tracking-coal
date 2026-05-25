@@ -1774,15 +1774,6 @@ if (
   space-y-3
 ">
 
-  <h3 className="
-    font-bold
-    text-amber-800
-  ">
-
-    Smart Insights
-
-  </h3>
-
   <div className="
     space-y-2
     text-sm
