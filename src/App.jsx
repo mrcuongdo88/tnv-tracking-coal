@@ -2260,7 +2260,7 @@ if (
   </th>
 
   <th className="
-  px-3
+  px-2
   py-4
   text-center
   text-slate-700
@@ -2270,7 +2270,7 @@ if (
     Giá trị tạm tính
   </th>
 <th className="
-  px-3
+  px-2
   py-4
   text-center
   text-slate-700
@@ -2280,7 +2280,7 @@ if (
   Status
 </th>
   <th className="
-  px-3
+  px-2
   py-4
   text-center
   text-slate-700
