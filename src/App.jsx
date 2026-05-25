@@ -3983,10 +3983,11 @@ onClick={(e) => {
       ">
 
         <div className="
-          bg-slate-50
-          rounded-2xl
-          p-4
-        ">
+  bg-slate-50
+  rounded-2xl
+  p-4
+  text-slate-800
+">
 
           <div className="text-sm text-slate-500">
             Tàu
@@ -3999,10 +4000,11 @@ onClick={(e) => {
         </div>
 
         <div className="
-          bg-slate-50
-          rounded-2xl
-          p-4
-        ">
+  bg-slate-50
+  rounded-2xl
+  p-4
+  text-slate-800
+">
 
           <div className="text-sm text-slate-500">
             Khối lượng
@@ -4021,10 +4023,11 @@ onClick={(e) => {
         </div>
 
         <div className="
-          bg-slate-50
-          rounded-2xl
-          p-4
-        ">
+  bg-slate-50
+  rounded-2xl
+  p-4
+  text-slate-800
+">
 
           <div className="text-sm text-slate-500">
             CIF USD
@@ -4069,11 +4072,12 @@ onClick={(e) => {
       </div>
 
       <div className="
-        mt-6
-        bg-slate-50
-        rounded-2xl
-        p-5
-      ">
+  mt-6
+  bg-slate-50
+  rounded-2xl
+  p-5
+  text-slate-800
+">
 
         <h2 className="text-2xl font-bold text-slate-800">
 
@@ -4084,8 +4088,7 @@ onClick={(e) => {
         <div className="space-y-3">
 
           <div>
-            <span className="text-slate-500">
-              Load Port:
+            <span className="text-slate-600">             Load Port:
             </span>
 
             {' '}
@@ -4094,7 +4097,7 @@ onClick={(e) => {
           </div>
 
           <div>
-            <span className="text-slate-500">
+            <span className="text-slate-600">
               Discharge Port:
             </span>
 
@@ -4104,7 +4107,7 @@ onClick={(e) => {
           </div>
 
           <div>
-            <span className="text-slate-500">
+            <span className="text-slate-600">
               Laycan:
             </span>
 
@@ -4118,7 +4121,7 @@ onClick={(e) => {
           </div>
 
           <div>
-            <span className="text-slate-500">
+            <span className="text-slate-600">
               Dự kiến cập cảng:
             </span>
 
@@ -4380,13 +4383,24 @@ placeholder:text-slate-400
   }
 
   className="
-    w-full
-    border
-    border-slate-200
-    rounded-2xl
-    p-3
-    bg-white
-  "
+  w-full
+  rounded-2xl
+  border
+  border-slate-200
+  px-4
+  py-3
+  text-slate-700
+  bg-white
+  file:mr-4
+  file:px-4
+  file:py-2
+  file:rounded-xl
+  file:border-0
+  file:bg-slate-100
+  file:text-slate-700
+  file:font-semibold
+  hover:file:bg-slate-200
+"
 />
               <div className="flex justify-end">
 
