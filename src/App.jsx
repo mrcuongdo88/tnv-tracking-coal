@@ -1765,14 +1765,7 @@ if (
           </div>
 
         </div>
-        <div className="
-  bg-amber-50
-  border
-  border-amber-200
-  rounded-3xl
-  p-5
-  space-y-3
-">
+        
 
   <div className="
     space-y-2
@@ -1926,9 +1919,6 @@ if (
       </div>
 
     </div>
-
-  </div>
-
 </div>
   </div>
 
