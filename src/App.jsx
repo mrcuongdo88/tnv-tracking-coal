@@ -1247,7 +1247,7 @@ async function updateStatus(id, value) {
     shipments.filter(item => {
 
       const bank =
-        item.bank || ''
+        item.supplier || ''
 
       return bank
         .toLowerCase()
@@ -1329,7 +1329,7 @@ if (
 
       return (
         calculateAging(
-          item.submission_date
+          item.created_at
         ) > 7
       )
 
@@ -1966,8 +1966,7 @@ if (
         item.submission_date
       )
 
-    const bankInfo =
-      detectBank(item.bank)
+    const bankInfo = null
 
     return (
 
@@ -1999,16 +1998,6 @@ if (
             gap-3
           ">
 
-            <img
-              src={bankInfo.logo}
-              alt={item.bank}
-
-              className="
-                h-10
-                object-contain
-              "
-            />
-
             <div>
 
               <h3 className="
@@ -2016,7 +2005,7 @@ if (
                 text-slate-800
               ">
 
-                {item.bank}
+                {item.supplier}
 
               </h3>
 
@@ -2025,7 +2014,7 @@ if (
                 text-slate-500
               ">
 
-                {item.file_type}
+                {item.vessel_name}
 
               </p>
 
@@ -2085,7 +2074,9 @@ if (
               mt-1
             ">
 
-              {formatCurrency(item.amount)}
+              {Number(
+  item.estimated_value_vnd || 0
+).toLocaleString('vi-VN')}
 
             </p>
 
@@ -2428,7 +2419,13 @@ onClick={(e) => {
 
   addApplication()
 }}
-                className="px-5 py-3 rounded-2xl bg-slate-800 text-white"
+                className="
+    px-5
+    py-3
+    rounded-2xl
+    bg-slate-800
+    text-white
+  "
               >
                 Lưu hồ sơ
               </button>
