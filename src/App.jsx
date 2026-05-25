@@ -1623,6 +1623,61 @@ shipments.forEach(item => {
     }
   }
 })
+const notifications = []
+
+shipments.forEach(item => {
+
+  const predictive =
+    getPredictiveEta(item)
+
+  const demurrage =
+    getDemurrageRisk(item)
+
+  if (predictive) {
+
+    notifications.push({
+
+      type: predictive.level,
+
+      message: `
+        ${item.order_no}
+        :
+        ${predictive.text}
+      `
+    })
+  }
+
+  if (demurrage) {
+
+    notifications.push({
+
+      type: demurrage.level,
+
+      message: `
+        ${item.order_no}
+        :
+        ${demurrage.text}
+      `
+    })
+  }
+
+  if (
+    item.status ===
+    'Chờ mở LC'
+  ) {
+
+    notifications.push({
+
+      type: 'WARNING',
+
+      message: `
+        ${item.order_no}
+        :
+        ⚠ Chưa mở LC
+      `
+    })
+  }
+})
   const filteredshipments =
     shipments.filter(item => {
 
@@ -2010,7 +2065,109 @@ if (
   ">
 
     <div>
+<div className="
+  bg-white
+  rounded-3xl
+  p-5
+  shadow-sm
+  mb-6
+">
 
+  <div className="
+    flex
+    justify-between
+    items-center
+    mb-4
+  ">
+
+    <div>
+
+      <div className="
+        text-xl
+        font-bold
+        text-slate-800
+      ">
+
+        🔔 Notification Center
+
+      </div>
+
+      <div className="
+        text-sm
+        text-slate-500
+        mt-1
+      ">
+
+        {notifications.length}
+        cảnh báo cần attention
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div className="
+    space-y-3
+    max-h-[240px]
+    overflow-y-auto
+  ">
+
+    {notifications.length === 0 && (
+
+      <div className="
+        text-slate-400
+        text-sm
+      ">
+
+        Không có cảnh báo nào 😄
+
+      </div>
+    )}
+
+    {notifications.map(
+      (
+        notification,
+        index
+      ) => (
+
+        <div
+
+          key={index}
+
+          className={`
+            rounded-2xl
+            px-4
+            py-3
+            text-sm
+            font-medium
+
+            ${
+              notification.type
+              === 'HIGH'
+
+              ? `
+                bg-red-100
+                text-red-700
+              `
+
+              : `
+                bg-amber-100
+                text-amber-700
+              `
+            }
+          `}
+        >
+
+          {notification.message}
+
+        </div>
+      )
+    )}
+
+  </div>
+
+</div>
       <div className="
         text-xl
         font-bold
