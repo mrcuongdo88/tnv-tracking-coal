@@ -308,7 +308,16 @@ const shipmentStatusConfig = {
 
 }
 function getSlaStatus(shipment) {
+if (
+  item.is_historical
+) {
 
+  return {
+    overdue: false,
+    days: 0
+  }
+
+}
   const matchedPhase =
 
     shipmentPhases.find(
@@ -701,6 +710,8 @@ const [
   laycanEnd: '',
 
   etaDischarge: '',
+
+  is_historical: false,
 
   loadPort: '',
 
@@ -1443,7 +1454,12 @@ internal_due_date:
   progress: 10,
 
   status:
-    'NEGOTIATION',
+
+  newShipment.is_historical
+
+    ? 'COMPLETED'
+
+    : 'NEGOTIATION',
 
   document_url:
     documentUrl,
@@ -3057,6 +3073,21 @@ align-middle">
 }
 
   </select>
+  {
+  item.is_historical && (
+
+    <div className="
+      text-[10px]
+      text-slate-400
+      mt-1
+    ">
+
+      Historical
+
+    </div>
+
+  )
+}
 {
   nextAction && (
 
@@ -3839,7 +3870,36 @@ align-middle">
       w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400
     "
   />
+<label className="
+  flex
+  items-center
+  gap-3
+  mt-4
+">
 
+  <input
+    type="checkbox"
+
+    checked={
+      newShipment.is_historical
+    }
+
+    onChange={(e) =>
+
+      setNewShipment({
+        ...newShipment,
+
+        is_historical:
+          e.target.checked
+      })
+    }
+  />
+
+  <span className="text-slate-700">
+    Shipment lịch sử
+  </span>
+
+</label>
 </div>
 <textarea
   placeholder="Ghi chú shipment..."
