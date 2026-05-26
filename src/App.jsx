@@ -4856,49 +4856,48 @@ onClick={(e) => {
             </div>
 <select
   value={selectedEvent}
-  onChange={e =>
+
+  onChange={(e) =>
     setSelectedEvent(
       e.target.value
     )
   }
+
   className="
     w-full
+    px-4
+    py-3
     rounded-2xl
     border
     border-slate-200
-    px-4
-    py-3
-    text-slate-800
   "
 >
 
   <option value="">
-    Chọn Event
+    Chọn event
   </option>
 
-  {
-    shipmentEvents
+  {shipmentEvents
 
-  .filter(
-    event =>
+    .filter(event =>
 
       allowedEvents.includes(
         event.code
       )
-  )
-
-  .map(
-      event => (
-
-        <option
-          key={event.code}
-          value={event.code}
-        >
-          {event.label}
-        </option>
-
-      )
     )
+
+    .map(event => (
+
+      <option
+        key={event.code}
+        value={event.code}
+      >
+
+        {event.label}
+
+      </option>
+
+    ))
   }
 
 </select>
