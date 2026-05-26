@@ -2186,19 +2186,21 @@ const overdueShipments =
     ).length
 
   const totalAmount =
-    shipments.reduce(
-      (sum, item) => {
+  shipments.reduce(
+    (sum, item) => {
 
-        const value =
-          parseFloat(
-            item.amount
-          ) || 0
+      const value =
 
-        return sum + value
+        Number(
+          item.estimated_value_vnd
+        ) || 0
 
-      },
-      0
-    )
+      return sum + value
+
+    },
+
+    0
+  )
 
   const statusData = [
 
@@ -4677,7 +4679,7 @@ onClick={(e) => {
         <div className="space-y-3">
 
           <div>
-            <span className="font-bold text-lg text-slate-600">             Load Port:
+            <span className="font-bold text-lg text-slate-400">             Load Port:
             </span>
 <span className="
   font-bold text-lg
@@ -4688,11 +4690,11 @@ onClick={(e) => {
           </div>
 
           <div>
-            <span className="text-slate-600">
+            <span className="font-bold text-lg text-slate-400">
               Discharge Port:
             </span>
 <span className="
-  font-bold text-lg text-slate-600
+  font-bold text-lg
 "></span>
             {' '}
 
@@ -4700,11 +4702,11 @@ onClick={(e) => {
           </div>
 
           <div>
-            <span className="text-slate-600">
+            <span className="font-bold text-lg text-slate-400">
               Laycan:
             </span>
 <span className="
-  font-bold text-lg text-slate-600
+  font-bold text-lg
 "></span>
             {' '}
 
@@ -4716,11 +4718,11 @@ onClick={(e) => {
           </div>
 
           <div>
-            <span className="text-slate-600">
+            <span className="font-bold text-lg text-slate-400">
               Dự kiến cập cảng:
             </span>
 <span className="
-  font-bold text-lg text-slate-600
+  font-bold text-lg
 "></span>
             {' '}
 
