@@ -27,7 +27,14 @@ import {
   YAxis,
   CartesianGrid
 } from 'recharts'
+const currentUser = {
 
+  name: 'Minh',
+
+  department:
+    'Finance'
+
+}
 const bankDirectory = [
 
   {
@@ -207,6 +214,198 @@ const masterChecklist = [
     ]
   }
 ]
+const shipmentPhases = [
+
+  {
+    code: 'NEGOTIATION',
+    label: 'Đàm phán',
+    department: 'Trading',
+    slaDays: 5
+  },
+
+  {
+    code: 'CONTRACT',
+    label: 'Hợp đồng',
+    department: 'Trading',
+    slaDays: 3
+  },
+
+  {
+  code: 'LC',
+  label: 'Mở LC',
+  department: 'Finance',
+  slaDays: 2
+},
+
+  {
+    code: 'LOADING',
+    label: 'Xếp tàu',
+    department: 'Logistics',
+    slaDays: 3
+  },
+
+  {
+    code: 'IN_TRANSIT',
+    label: 'Đang hành trình',
+    department: 'Logistics',
+    slaDays: 15
+  },
+
+  {
+    code: 'ARRIVAL',
+    label: 'Cập cảng',
+    department: 'Operation',
+    slaDays: 2
+  },
+
+  {
+    code: 'CUSTOMS',
+    label: 'Hải quan',
+    department: 'Customs',
+    slaDays: 4
+  },
+
+  {
+    code: 'COMPLETED',
+    label: 'Hoàn tất',
+    department: 'Completed'
+  }
+
+]
+
+const shipmentEvents = [
+
+  {
+    code: 'CONTRACT_SIGNED',
+    label: 'Ký hợp đồng',
+    phase: 'CONTRACT'
+  },
+
+  {
+    code: 'LC_OPENED',
+    label: 'Đã mở LC',
+    phase: 'LC'
+  },
+
+  {
+    code: 'VESSEL_LOADING',
+    label: 'Đang xếp tàu',
+    phase: 'LOADING'
+  },
+
+  {
+    code: 'VESSEL_DEPARTED',
+    label: 'Tàu khởi hành',
+    phase: 'IN_TRANSIT'
+  },
+
+  {
+    code: 'ETA_UPDATED',
+    label: 'ETA cập nhật',
+    phase: 'IN_TRANSIT'
+  },
+
+  {
+    code: 'VESSEL_ARRIVED',
+    label: 'Tàu cập cảng',
+    phase: 'ARRIVAL'
+  },
+
+  {
+    code: 'CUSTOMS_CLEARANCE',
+    label: 'Thông quan',
+    phase: 'CUSTOMS'
+  },
+
+  {
+    code: 'SHIPMENT_COMPLETED',
+    label: 'Hoàn tất shipment',
+    phase: 'COMPLETED'
+  }
+
+]
+const checklistRules = {
+
+  LC_OPENED: [
+    'LC Opened'
+  ],
+
+  VESSEL_LOADING: [
+    'Loading Started'
+  ],
+
+  VESSEL_DEPARTED: [
+    'Vessel Departed'
+  ],
+
+  ETA_UPDATED: [
+    'ETA Confirmed'
+  ],
+
+  VESSEL_ARRIVED: [
+    'Cargo Arrived'
+  ],
+
+  CUSTOMS_CLEARANCE: [
+    'Customs Clearance'
+  ],
+
+  SHIPMENT_COMPLETED: [
+    'Shipment Completed'
+  ]
+
+}
+const shipmentEvents = [
+
+  {
+    code: 'CONTRACT_SIGNED',
+    label: 'Ký hợp đồng',
+    phase: 'CONTRACT'
+  },
+
+  {
+    code: 'LC_OPENED',
+    label: 'Đã mở LC',
+    phase: 'LC'
+  },
+
+  {
+    code: 'VESSEL_LOADING',
+    label: 'Đang xếp tàu',
+    phase: 'LOADING'
+  },
+
+  {
+    code: 'VESSEL_DEPARTED',
+    label: 'Tàu khởi hành',
+    phase: 'IN_TRANSIT'
+  },
+
+  {
+    code: 'ETA_UPDATED',
+    label: 'ETA cập nhật',
+    phase: 'IN_TRANSIT'
+  },
+
+  {
+    code: 'VESSEL_ARRIVED',
+    label: 'Tàu cập cảng',
+    phase: 'ARRIVAL'
+  },
+
+  {
+    code: 'CUSTOMS_CLEARANCE',
+    label: 'Thông quan',
+    phase: 'CUSTOMS'
+  },
+
+  {
+    code: 'SHIPMENT_COMPLETED',
+    label: 'Hoàn tất shipment',
+    phase: 'COMPLETED'
+  }
+
+]
 const checklistKeywordMap = {
 
   'vat': 'VAT',
@@ -347,6 +546,10 @@ useEffect(() => {
   )
 
 }, [timelineNote])
+const [
+  selectedEvent,
+  setSelectedEvent
+] = useState('')
 const [
   timelineFollowupDate,
   setTimelineFollowupDate
@@ -539,9 +742,15 @@ async function addTimeline(
       {
         shipment_id:
           applicationId,
+          event_type:
+  selectedEvent,
 
         action,
+created_by:
+  currentUser.name,
 
+department:
+  currentUser.department,
         file_url:
           fileUrl,
 
@@ -549,6 +758,67 @@ async function addTimeline(
           fileName
       }
     ])
+     // 😄🔥 TIMELINE → PHASE
+
+  const matchedEvent =
+    shipmentEvents.find(
+      event =>
+        event.code ===
+        selectedEvent
+    )
+
+
+  if (matchedEvent) {
+const matchedPhase =
+
+  shipmentPhases.find(
+    phase =>
+
+      phase.code ===
+      matchedEvent.phase
+  )
+    await supabase
+    .from('shipments')
+    .update({
+
+  status:
+    matchedEvent.phase,
+
+  current_department:
+
+    matchedPhase
+      ?.department || '',
+
+  current_owner:
+
+    currentUser.name,
+    phase_started_at:
+  new Date()
+
+})
+    .eq(
+      'id',
+      selectedCase.id
+    )
+
+}
+  const autoChecklist =
+
+  checklistRules[
+    selectedEvent
+  ] || []
+  setSelectedChecklist(
+  prev => [
+
+    ...new Set([
+
+      ...prev,
+      ...autoChecklist
+
+    ])
+
+  ]
+)
 }
 
   async function fetchTimeline(id) {
@@ -4281,7 +4551,44 @@ onClick={(e) => {
               </button>
 
             </div>
+<select
+  value={selectedEvent}
+  onChange={e =>
+    setSelectedEvent(
+      e.target.value
+    )
+  }
+  className="
+    w-full
+    rounded-2xl
+    border
+    border-slate-200
+    px-4
+    py-3
+    text-slate-800
+  "
+>
 
+  <option value="">
+    Chọn Event
+  </option>
+
+  {
+    shipmentEvents.map(
+      event => (
+
+        <option
+          key={event.code}
+          value={event.code}
+        >
+          {event.label}
+        </option>
+
+      )
+    )
+  }
+
+</select>
             <div className="bg-slate-50 p-4 rounded-2xl mb-6 space-y-3">
 
               <textarea
