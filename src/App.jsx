@@ -309,7 +309,7 @@ const shipmentStatusConfig = {
 }
 function getSlaStatus(shipment) {
 if (
-  item.is_historical
+  shipment.is_historical
 ) {
 
   return {
