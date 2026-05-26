@@ -225,7 +225,7 @@ const shipmentPhases = [
 
   {
     code: 'CONTRACT',
-    label: 'Hợp đồng',
+    label: 'CONTRACT',
     department: 'Trading',
     slaDays: 3
   },
@@ -246,7 +246,7 @@ const shipmentPhases = [
 
   {
     code: 'IN_TRANSIT',
-    label: 'Đang hành trình',
+    label: 'IN_TRANSIT',
     department: 'Logistics',
     slaDays: 15
   },
@@ -267,7 +267,7 @@ const shipmentPhases = [
 
   {
     code: 'COMPLETED',
-    label: 'Hoàn tất',
+    label: 'COMPLETED',
     department: 'Completed'
   }
 
@@ -275,35 +275,35 @@ const shipmentPhases = [
 const shipmentStatusConfig = {
 
   NEGOTIATION: {
-    label: 'Đang đàm phán'
+    label: 'NEGOTIATION'
   },
 
   CONTRACT: {
-    label: 'Hợp đồng'
+    label: 'CONTRACT'
   },
 
   LC: {
-    label: 'Đã mở LC'
+    label: 'LC'
   },
 
   LOADING: {
-    label: 'Tàu đang xếp hàng'
+    label: 'LOADING'
   },
 
   IN_TRANSIT: {
-    label: 'Đang hành trình'
+    label: 'IN_TRANSIT'
   },
 
   ARRIVAL: {
-    label: 'Sắp cập cảng'
+    label: 'ARRIVAL'
   },
 
   CUSTOMS: {
-    label: 'Thông quan'
+    label: 'CUSTOMS'
   },
 
   COMPLETED: {
-    label: 'Hoàn tất'
+    label: 'COMPLETED'
   }
 
 }
@@ -378,7 +378,7 @@ const shipmentEvents = [
 
   {
     code: 'LC_OPENED',
-    label: 'Đã mở LC',
+    label: 'LC',
     phase: 'LC'
   },
 
@@ -408,7 +408,7 @@ const shipmentEvents = [
 
   {
     code: 'CUSTOMS_CLEARANCE',
-    label: 'Thông quan',
+    label: 'CUSTOMS',
     phase: 'CUSTOMS'
   },
 
@@ -1856,7 +1856,7 @@ function getDemurrageRisk(
 
   if (
     item.status ===
-    'Hoàn tất'
+    'COMPLETED'
   ) return null
 
   const today =
@@ -1913,7 +1913,7 @@ function getPredictiveEta(
 
   if (
     item.status !==
-    'Đang hành trình'
+    'IN_TRANSIT'
   ) return null
 
   const today =
@@ -2011,7 +2011,7 @@ const overdueEta =
       ) < today
       &&
       item.status !==
-      'Hoàn tất'
+      'COMPLETED'
     )
   })
 
@@ -2022,7 +2022,7 @@ const highRisk =
 const pendingLc =
   shipments.filter(item =>
     item.status ===
-    'Chờ mở LC'
+    'CONTRACT'
   )
 const ownerSummary = {}
 
@@ -2069,7 +2069,7 @@ shipments.forEach(item => {
       eta < new Date()
       &&
       item.status !==
-      'Hoàn tất'
+      'COMPLETED'
     ) {
 
       ownerSummary[owner]
