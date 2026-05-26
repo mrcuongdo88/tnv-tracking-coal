@@ -3180,6 +3180,8 @@ align-middle">
     item.id
   )
 
+  setSelectedCase(item)
+
   fetchTimeline(item.id)
 
   setShowTimeline(true)
