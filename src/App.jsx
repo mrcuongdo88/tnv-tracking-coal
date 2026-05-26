@@ -272,6 +272,41 @@ const shipmentPhases = [
   }
 
 ]
+const shipmentStatusConfig = {
+
+  NEGOTIATION: {
+    label: 'Đang đàm phán'
+  },
+
+  CONTRACT: {
+    label: 'Hợp đồng'
+  },
+
+  LC: {
+    label: 'Đã mở LC'
+  },
+
+  LOADING: {
+    label: 'Tàu đang xếp hàng'
+  },
+
+  IN_TRANSIT: {
+    label: 'Đang hành trình'
+  },
+
+  ARRIVAL: {
+    label: 'Sắp cập cảng'
+  },
+
+  CUSTOMS: {
+    label: 'Thông quan'
+  },
+
+  COMPLETED: {
+    label: 'Hoàn tất'
+  }
+
+}
 function getSlaStatus(shipment) {
 
   const matchedPhase =
@@ -682,7 +717,7 @@ internalDueDate: '',
 
   shipmentNotes: '',
 
-  status: 'Kế hoạch',
+  status: 'NEGOTIATION',
 
   riskLevel: 'Bình thường'
 })
@@ -1408,7 +1443,7 @@ internal_due_date:
   progress: 10,
 
   status:
-    'Kế hoạch',
+    'NEGOTIATION',
 
   document_url:
     documentUrl,
@@ -1463,7 +1498,7 @@ console.log(error)
 
   shipmentNotes: '',
 
-  status: 'Kế hoạch',
+  status: 'NEGOTIATION',
 
   riskLevel: 'Bình thường'
 })
@@ -1605,7 +1640,7 @@ async function updateStatus(id, value) {
 
   switch (status) {
 
-    case 'Kế hoạch':
+    case 'NEGOTIATION':
       return 'bg-slate-100 text-slate-700'
 
     case 'Đang đàm phán':
@@ -2985,7 +3020,7 @@ align-middle">
 
   <select
 
-    value={item.status || 'Kế hoạch'}
+    value={item.status || 'NEGOTIATION'}
 
     onChange={(e) =>
 
@@ -3005,24 +3040,25 @@ align-middle">
       ${getStatusColor(item.status)}
     `}
   >
+{
+  Object.entries(
+    shipmentStatusConfig
+  ).map(
 
-    <option>Kế hoạch</option>
+    ([code, config]) => (
 
-    <option>Đang đàm phán</option>
+      <option
+        key={code}
+        value={code}
+      >
 
-    <option>Chờ mở LC</option>
+        {config.label}
 
-    <option>Đã mở LC</option>
+      </option>
 
-    <option>Tàu đang xếp hàng</option>
-
-    <option>Đang hành trình</option>
-
-    <option>Sắp cập cảng</option>
-
-    <option>Đang dỡ hàng</option>
-
-    <option>Hoàn tất</option>
+    )
+  )
+}
 
   </select>
 {
@@ -4783,12 +4819,31 @@ onClick={(e) => {
 
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
 
-          <div className="bg-white rounded-3xl p-6 w-full max-w-2xl shadow-2xl">
+          <div className="
+  bg-white
+  rounded-3xl
+  p-6
+  w-full
+  max-w-2xl
+  shadow-2xl
+  max-h-[90vh]
+  overflow-y-auto
+">
 
-            <div className="flex items-center justify-between mb-6">
+            <div className="
+  sticky
+  top-0
+  bg-white
+  z-10
+  flex
+  items-center
+  justify-between
+  mb-6
+  pb-4
+">
 
               <h2 className="text-2xl font-bold text-slate-800">
-                CRM Follow-up Timeline
+                TNV Tracking Follow-up Timeline
               </h2>
 
               <button
