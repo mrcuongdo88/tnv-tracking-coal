@@ -2259,7 +2259,11 @@ const overdueShipments =
         item.progress || 0
     })
   )
+const allowedEvents =
 
+  phaseEventValidation[
+    selectedCase?.status
+  ] || []
   return (
 <PullToRefresh
 
@@ -4797,11 +4801,6 @@ onClick={(e) => {
               </button>
 
             </div>
-            const allowedEvents =
-
-  phaseEventValidation[
-    selectedCase?.status
-  ] || []
 <select
   value={selectedEvent}
   onChange={e =>
