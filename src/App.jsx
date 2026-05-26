@@ -1988,7 +1988,45 @@ const highRisk =
   shipments.filter(item =>
     calculateRisk(item) === 'Cao'
   )
+const overdueShipments =
 
+  mobileshipments.filter(
+    shipment =>
+
+      getSlaStatus(
+        shipment
+      ).overdue
+  )
+  const departmentSummary =
+
+  overdueShipments.reduce(
+
+    (
+      acc,
+      shipment
+    ) => {
+
+      const dept =
+
+        shipment
+          .current_department
+
+        || 'Unknown'
+
+
+      acc[dept] =
+
+        (
+          acc[dept] || 0
+        ) + 1
+
+      return acc
+
+    },
+
+    {}
+
+  )
 const pendingLc =
   shipments.filter(item =>
     item.status ===
@@ -3631,13 +3669,7 @@ align-middle">
     }
 
     className="
-      w-full
-      mt-2
-      rounded-2xl
-      border
-      border-slate-200
-      px-4
-      py-3
+      w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400
     "
 
     placeholder="VD: Nguyễn Văn A"
@@ -3669,13 +3701,7 @@ align-middle">
     }
 
     className="
-      w-full
-      mt-2
-      rounded-2xl
-      border
-      border-slate-200
-      px-4
-      py-3
+     w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400
     "
   >
 
@@ -3731,13 +3757,7 @@ align-middle">
     }
 
     className="
-      w-full
-      mt-2
-      rounded-2xl
-      border
-      border-slate-200
-      px-4
-      py-3
+      w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400
     "
 
     placeholder="VD: Mở LC trước ngày..."
@@ -3771,13 +3791,7 @@ align-middle">
     }
 
     className="
-      w-full
-      mt-2
-      rounded-2xl
-      border
-      border-slate-200
-      px-4
-      py-3
+      w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400
     "
   />
 
@@ -3792,13 +3806,7 @@ align-middle">
     })
   }
   className="
-    w-full
-    px-4
-    py-3
-    rounded-2xl
-    border
-    border-slate-200
-    min-h-[80px]
+    w-full px-4 py-3 rounded-2xl border border-slate-200 text-slate-800 placeholder:text-slate-400
   "
 />
 
@@ -4669,7 +4677,7 @@ onClick={(e) => {
         <div className="space-y-3">
 
           <div>
-            <span className="text-slate-600">             Load Port:
+            <span className="font-bold text-lg text-slate-600">             Load Port:
             </span>
 <span className="
   font-bold text-lg
@@ -4684,7 +4692,7 @@ onClick={(e) => {
               Discharge Port:
             </span>
 <span className="
-  font-bold text-lg
+  font-bold text-lg text-slate-600
 "></span>
             {' '}
 
@@ -4696,7 +4704,7 @@ onClick={(e) => {
               Laycan:
             </span>
 <span className="
-  font-bold text-lg
+  font-bold text-lg text-slate-600
 "></span>
             {' '}
 
@@ -4712,8 +4720,7 @@ onClick={(e) => {
               Dự kiến cập cảng:
             </span>
 <span className="
-  font-bold
-  text-lg
+  font-bold text-lg text-slate-600
 "></span>
             {' '}
 
