@@ -275,35 +275,35 @@ const shipmentPhases = [
 const shipmentStatusConfig = {
 
   NEGOTIATION: {
-    label: 'NEGOTIATION'
+    label: 'Đàm phán'
   },
 
   CONTRACT: {
-    label: 'CONTRACT'
+    label: 'Hợp đồng'
   },
 
   LC: {
-    label: 'LC'
+    label: 'Mở LC'
   },
 
   LOADING: {
-    label: 'LOADING'
+    label: 'Xếp tàu'
   },
 
   IN_TRANSIT: {
-    label: 'IN_TRANSIT'
+    label: 'Đang hành trình'
   },
 
   ARRIVAL: {
-    label: 'ARRIVAL'
+    label: 'Cập cảng'
   },
 
   CUSTOMS: {
-    label: 'CUSTOMS'
+    label: 'Hải quan'
   },
 
   COMPLETED: {
-    label: 'COMPLETED'
+    label: 'Hoàn tất'
   }
 
 }
