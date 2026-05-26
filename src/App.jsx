@@ -272,7 +272,67 @@ const shipmentPhases = [
   }
 
 ]
+function getSlaStatus(shipment) {
 
+  const matchedPhase =
+
+    shipmentPhases.find(
+      phase =>
+
+        phase.code ===
+        shipment.status
+    )
+
+  if (
+    !matchedPhase ||
+    !shipment.phase_started_at
+  ) {
+
+    return {
+      overdue: false,
+      days: 0
+    }
+
+  }
+
+  const startedAt =
+    new Date(
+      shipment.phase_started_at
+    )
+
+  const now =
+    new Date()
+
+  const diffDays =
+    Math.floor(
+
+      (
+        now - startedAt
+      )
+
+      /
+
+      (
+        1000 * 60 * 60 * 24
+      )
+    )
+
+  return {
+
+    overdue:
+
+      diffDays >
+      matchedPhase.slaDays,
+
+    days:
+      diffDays,
+
+    sla:
+      matchedPhase.slaDays
+
+  }
+
+}
 const shipmentEvents = [
 
   {
@@ -2074,7 +2134,7 @@ if (
   ]
 
   const bankData = shipments.map(
-    item => ({
+    item =>  ({
       bank: item.bank,
       progress:
         item.progress || 0
@@ -2576,9 +2636,13 @@ if (
 
               <tbody>
 
-                {mobileshipments.map(item => {
+                {mobileshipments.map(item =>{
 
-  return (
+    const slaInfo =
+
+      getSlaStatus(item)
+
+    return (
 
     <tr
 
@@ -2831,33 +2895,57 @@ align-middle">
   </select>
 
 </td>
-<td className="px-6 py-5">
+<td className="px-6 py-5 text-center">
 
-  <span className={`
-    px-3
-    py-2
-    rounded-full
-    text-sm
-    font-semibold
+  <div className="space-y-2">
 
-    ${
-      calculateRisk(item) === 'Cao'
+    <span className={`
+      inline-flex
+      justify-center
+      px-3
+      py-2
+      rounded-full
+      text-sm
+      font-semibold
 
-      ? `
-        bg-red-100
-        text-red-700
-      `
+      ${
+        calculateRisk(item) === 'Cao'
 
-      : `
-        bg-green-100
-        text-green-700
-      `
+        ? `
+          bg-red-100
+          text-red-700
+        `
+
+        : `
+          bg-green-100
+          text-green-700
+        `
+      }
+    `}>
+
+      {calculateRisk(item)}
+
+    </span>
+
+
+    {
+      slaInfo.overdue && (
+
+        <div className="
+          text-red-500
+          text-xs
+          font-semibold
+        ">
+
+          ⚠ SLA Overdue
+          ({slaInfo.days}d)
+
+        </div>
+
+      )
     }
-  `}>
 
-    {calculateRisk(item)}
-
-  </span>
+  </div>
 
 </td>
                       <td className="px-6 py-5">
