@@ -3069,19 +3069,24 @@ align-middle">
       {calculateRisk(item)}
 
     </span>
+{
+  slaInfo.overdue && (
+
+    <div className="
+      text-red-500
+      text-xs
+      font-semibold
+    ">
+
+      ⚠ SLA Overdue
+      ({slaInfo.days}d)
+
+    </div>
+
+  )
+}
 
 
-    {
-      slaInfo.overdue && (
-
-        <div className="
-          text-red-500
-          text-xs
-          font-semibold
-        ">
-
-          ⚠ SLA Overdue
-          ({slaInfo.days}d)
 {
   responsibleInfo && (
 
@@ -3093,6 +3098,13 @@ align-middle">
 
       Owner:
       {responsibleInfo.owner}
+
+    </div>
+
+  )
+}
+
+
 {
   alerts.map(
     (
@@ -3117,14 +3129,6 @@ align-middle">
     )
   )
 }
-    </div>
-
-  )
-}
-        </div>
-
-      )
-    }
 
   </div>
 
@@ -4676,7 +4680,10 @@ onClick={(e) => {
 
         </h2>
 
-        <div className="space-y-3">
+        <div className="bg-slate-50
+  rounded-2xl
+  p-4
+  text-slate-800 space-y-3">
 
           <div>
             <span className="font-bold text-lg text-slate-400">             Load Port:
