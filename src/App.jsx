@@ -2596,6 +2596,7 @@ const overdueShipments =
 
     </div>
 </div>
+</div>
         <div className="
   bg-white
   rounded-3xl
@@ -5424,7 +5425,7 @@ placeholder:text-slate-400
 
   </div>
 </div>
-</div></div>
+</div>
     </div></PullToRefresh>
   )
   }
