@@ -384,6 +384,30 @@ const shipmentEvents = [
   }
 
 ]
+const nextActionMap = {
+
+  NEGOTIATION:
+    'CONTRACT_SIGNED',
+
+  CONTRACT:
+    'LC_OPENED',
+
+  LC:
+    'VESSEL_LOADING',
+
+  LOADING:
+    'VESSEL_DEPARTED',
+
+  IN_TRANSIT:
+    'VESSEL_ARRIVED',
+
+  ARRIVAL:
+    'CUSTOMS_CLEARANCE',
+
+  CUSTOMS:
+    'SHIPMENT_COMPLETED'
+
+}
 const checklistRules = {
 
   LC_OPENED: [
@@ -415,57 +439,6 @@ const checklistRules = {
   ]
 
 }
-const shipmentEvents = [
-
-  {
-    code: 'CONTRACT_SIGNED',
-    label: 'Ký hợp đồng',
-    phase: 'CONTRACT'
-  },
-
-  {
-    code: 'LC_OPENED',
-    label: 'Đã mở LC',
-    phase: 'LC'
-  },
-
-  {
-    code: 'VESSEL_LOADING',
-    label: 'Đang xếp tàu',
-    phase: 'LOADING'
-  },
-
-  {
-    code: 'VESSEL_DEPARTED',
-    label: 'Tàu khởi hành',
-    phase: 'IN_TRANSIT'
-  },
-
-  {
-    code: 'ETA_UPDATED',
-    label: 'ETA cập nhật',
-    phase: 'IN_TRANSIT'
-  },
-
-  {
-    code: 'VESSEL_ARRIVED',
-    label: 'Tàu cập cảng',
-    phase: 'ARRIVAL'
-  },
-
-  {
-    code: 'CUSTOMS_CLEARANCE',
-    label: 'Thông quan',
-    phase: 'CUSTOMS'
-  },
-
-  {
-    code: 'SHIPMENT_COMPLETED',
-    label: 'Hoàn tất shipment',
-    phase: 'COMPLETED'
-  }
-
-]
 const checklistKeywordMap = {
 
   'vat': 'VAT',
@@ -758,6 +731,28 @@ useEffect(() => {
 
     setshipments(data || [])
   }
+}
+function getNextAction(
+  shipment
+) {
+
+  const nextEventCode =
+
+    nextActionMap[
+      shipment.status
+    ]
+
+  if (!nextEventCode)
+    return null
+
+
+  return shipmentEvents.find(
+    event =>
+
+      event.code ===
+      nextEventCode
+  )
+
 }
 function detectBank(bankName = '') {
 
@@ -2641,7 +2636,8 @@ if (
     const slaInfo =
 
       getSlaStatus(item)
-
+const nextAction =
+  getNextAction(item)
     return (
 
     <tr
@@ -2893,7 +2889,23 @@ align-middle">
     <option>Hoàn tất</option>
 
   </select>
+{
+  nextAction && (
 
+    <div className="
+      text-xs
+      text-blue-600
+      mt-2
+      font-medium
+    ">
+
+      ⏭ Next:
+      {nextAction.label}
+
+    </div>
+
+  )
+}
 </td>
 <td className="px-6 py-5 text-center">
 
