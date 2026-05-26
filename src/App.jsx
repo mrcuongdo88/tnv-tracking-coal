@@ -1988,45 +1988,6 @@ const highRisk =
   shipments.filter(item =>
     calculateRisk(item) === 'Cao'
   )
-const overdueShipments =
-
-  mobileshipments.filter(
-    shipment =>
-
-      getSlaStatus(
-        shipment
-      ).overdue
-  )
-  const departmentSummary =
-
-  overdueShipments.reduce(
-
-    (
-      acc,
-      shipment
-    ) => {
-
-      const dept =
-
-        shipment
-          .current_department
-
-        || 'Unknown'
-
-
-      acc[dept] =
-
-        (
-          acc[dept] || 0
-        ) + 1
-
-      return acc
-
-    },
-
-    {}
-
-  )
 const pendingLc =
   shipments.filter(item =>
     item.status ===
@@ -2146,6 +2107,45 @@ if (
   mobileshipments =
     filteredshipments.slice(0, 5)
 }
+const overdueShipments =
+
+  mobileshipments.filter(
+    shipment =>
+
+      getSlaStatus(
+        shipment
+      ).overdue
+  )
+  const departmentSummary =
+
+  overdueShipments.reduce(
+
+    (
+      acc,
+      shipment
+    ) => {
+
+      const dept =
+
+        shipment
+          .current_department
+
+        || 'Unknown'
+
+
+      acc[dept] =
+
+        (
+          acc[dept] || 0
+        ) + 1
+
+      return acc
+
+    },
+
+    {}
+
+  )
   const processingCount =
     shipments.filter(item => {
 
