@@ -1635,6 +1635,38 @@ async function updateStatus(id, value) {
       'DanhSachHoSo.xlsx'
     )
   }
+function getStatusColor(status) {
+
+  switch (status) {
+
+    case 'NEGOTIATION':
+      return 'bg-amber-100 text-amber-700'
+
+    case 'CONTRACT':
+      return 'bg-slate-100 text-slate-700'
+
+    case 'LC':
+      return 'bg-cyan-100 text-cyan-700'
+
+    case 'LOADING':
+      return 'bg-indigo-100 text-indigo-700'
+
+    case 'IN_TRANSIT':
+      return 'bg-blue-100 text-blue-700'
+
+    case 'ARRIVAL':
+      return 'bg-purple-100 text-purple-700'
+
+    case 'CUSTOMS':
+      return 'bg-yellow-100 text-yellow-700'
+
+    case 'COMPLETED':
+      return 'bg-green-100 text-green-700'
+
+    default:
+      return 'bg-slate-100 text-slate-700'
+  }
+}
 function getLaycanColor(
   laycanStart
 ) {
