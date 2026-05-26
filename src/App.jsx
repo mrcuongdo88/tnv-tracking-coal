@@ -408,6 +408,38 @@ const nextActionMap = {
     'SHIPMENT_COMPLETED'
 
 }
+const phaseEventValidation = {
+
+  NEGOTIATION: [
+    'CONTRACT_SIGNED'
+  ],
+
+  CONTRACT: [
+    'LC_OPENED'
+  ],
+
+  LC: [
+    'VESSEL_LOADING'
+  ],
+
+  LOADING: [
+    'VESSEL_DEPARTED'
+  ],
+
+  IN_TRANSIT: [
+    'VESSEL_ARRIVED',
+    'ETA_UPDATED'
+  ],
+
+  ARRIVAL: [
+    'CUSTOMS_CLEARANCE'
+  ],
+
+  CUSTOMS: [
+    'SHIPMENT_COMPLETED'
+  ]
+
+}
 const checklistRules = {
 
   LC_OPENED: [
@@ -1663,73 +1695,125 @@ function getLaycanColor(
   `
 }
 function calculateRisk(
-  item
+  shipment
 ) {
 
-  const today =
-    new Date()
+  const slaInfo =
+
+    getSlaStatus(
+      shipment
+    )
 
   if (
-    item.eta_discharge
+    slaInfo.overdue
   ) {
 
-    const eta =
-      new Date(
-        item.eta_discharge
-      )
+    return 'Cao'
 
-    if (
-      eta < today &&
-      item.status !==
-      'Hoàn tất'
-    ) {
-
-      return 'Cao'
-    }
   }
+
 
   if (
-    item.laycan_start
+    shipment.eta &&
+    new Date(
+      shipment.eta
+    ) < new Date()
   ) {
 
-    const laycan =
-      new Date(
-        item.laycan_start
-      )
+    return 'Cao'
 
-    const diffDays =
-      Math.ceil(
-        (
-          laycan - today
-        ) /
-        (
-          1000 *
-          60 *
-          60 *
-          24
-        )
-      )
-
-    if (diffDays <= 2) {
-
-      return 'Cao'
-    }
-
-    if (diffDays <= 7) {
-
-      return 'Trung bình'
-    }
   }
+
+
+  return 'Thấp'
+
+}
+function getResponsibleParty(
+  shipment
+) {
+
+  const slaInfo =
+
+    getSlaStatus(
+      shipment
+    )
 
   if (
-    item.status ===
-    'Chờ mở LC'
+    !slaInfo.overdue
   ) {
 
-    return 'Trung bình'
+    return null
+
   }
 
-  return 'Bình thường'
+  return {
+
+    department:
+
+      shipment.current_department,
+
+    owner:
+
+      shipment.current_owner,
+
+    overdueDays:
+
+      slaInfo.days
+
+  }
+
+}
+function getShipmentAlerts(
+  shipment
+) {
+
+  const alerts = []
+
+  const slaInfo =
+
+    getSlaStatus(
+      shipment
+    )
+
+
+  if (
+    slaInfo.overdue
+  ) {
+
+    alerts.push({
+
+      type: 'danger',
+
+      message:
+
+        `SLA overdue ${slaInfo.days}d`
+
+    })
+
+  }
+
+
+  if (
+    shipment.eta &&
+    new Date(
+      shipment.eta
+    ) < new Date()
+  ) {
+
+    alerts.push({
+
+      type: 'danger',
+
+      message:
+        'ETA overdue'
+
+    })
+
+  }
+
+
+  return alerts
+
 }
 function getDemurrageRisk(
   item
@@ -2636,6 +2720,13 @@ if (
     const slaInfo =
 
       getSlaStatus(item)
+    const responsibleInfo =
+  getResponsibleParty(item)  
+  const alerts =
+
+  getShipmentAlerts(
+    item
+  )
 const nextAction =
   getNextAction(item)
     return (
@@ -2951,7 +3042,45 @@ align-middle">
 
           ⚠ SLA Overdue
           ({slaInfo.days}d)
+{
+  responsibleInfo && (
 
+    <div className="
+      text-[11px]
+      text-slate-500
+      mt-1
+    ">
+
+      Owner:
+      {responsibleInfo.owner}
+{
+  alerts.map(
+    (
+      alert,
+      index
+    ) => (
+
+      <div
+        key={index}
+        className="
+          text-[11px]
+          text-red-500
+          mt-1
+          font-medium
+        "
+      >
+
+        ⚠ {alert.message}
+
+      </div>
+
+    )
+  )
+}
+    </div>
+
+  )
+}
         </div>
 
       )
@@ -4651,6 +4780,11 @@ onClick={(e) => {
               </button>
 
             </div>
+            const allowedEvents =
+
+  phaseEventValidation[
+    selectedCase?.status
+  ] || []
 <select
   value={selectedEvent}
   onChange={e =>
@@ -4674,7 +4808,17 @@ onClick={(e) => {
   </option>
 
   {
-    shipmentEvents.map(
+    shipmentEvents
+
+  .filter(
+    event =>
+
+      allowedEvents.includes(
+        event.code
+      )
+  )
+
+  .map(
       event => (
 
         <option
