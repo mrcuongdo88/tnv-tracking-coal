@@ -1635,42 +1635,6 @@ async function updateStatus(id, value) {
       'DanhSachHoSo.xlsx'
     )
   }
-
-  function getStatusColor(status) {
-
-  switch (status) {
-
-    case 'NEGOTIATION':
-      return 'bg-slate-100 text-slate-700'
-
-    case 'Đang đàm phán':
-      return 'bg-amber-100 text-amber-700'
-
-    case 'Chờ mở LC':
-      return 'bg-orange-100 text-orange-700'
-
-    case 'Đã mở LC':
-      return 'bg-cyan-100 text-cyan-700'
-
-    case 'Tàu đang xếp hàng':
-      return 'bg-indigo-100 text-indigo-700'
-
-    case 'Đang hành trình':
-      return 'bg-blue-100 text-blue-700'
-
-    case 'Sắp cập cảng':
-      return 'bg-purple-100 text-purple-700'
-
-    case 'Đang dỡ hàng':
-      return 'bg-yellow-100 text-yellow-700'
-
-    case 'Hoàn tất':
-      return 'bg-green-100 text-green-700'
-
-    default:
-      return 'bg-slate-100 text-slate-700'
-  }
-}
 function getLaycanColor(
   laycanStart
 ) {
